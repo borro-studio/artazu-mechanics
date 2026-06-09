@@ -49,58 +49,107 @@
 
     /* ── HERO ───────────────────────────────────── */
     #hero {
-      min-height: 100vh; background: #111;
-      display: grid; grid-template-columns: 1fr 1fr;
-      align-items: end;
-      padding: 120px 60px 64px;
+      min-height: 100vh;
+      background: #0a0a0a;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 60px 72px;
       position: relative; overflow: hidden;
+    }
+
+    /* Gradient background glow */
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 60% at 75% 40%, rgba(238,116,25,.07) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 50% at 20% 80%, rgba(238,116,25,.04) 0%, transparent 60%);
+    }
+
+    /* Floating pill shapes — inspired by HeroGeometric */
+    .shape {
+      position: absolute; border-radius: 999px; pointer-events: none;
+      border: 1px solid rgba(238,116,25,.18);
+      background: linear-gradient(120deg, rgba(238,116,25,.1), transparent 60%);
+      backdrop-filter: blur(1px);
+      box-shadow: inset 0 0 30px rgba(255,255,255,.03);
+    }
+    .shape::after {
+      content:''; position:absolute; inset:0; border-radius:999px;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.08), transparent 70%);
+    }
+    @keyframes floatA { 0%,100%{transform:translate(0,0) rotate(var(--r))} 50%{transform:translate(0,22px) rotate(var(--r))} }
+    @keyframes floatB { 0%,100%{transform:translate(0,0) rotate(var(--r))} 50%{transform:translate(0,-18px) rotate(var(--r))} }
+    @keyframes floatC { 0%,100%{transform:translate(0,0) rotate(var(--r))} 50%{transform:translate(8px,14px) rotate(var(--r))} }
+    .s1 { width:580px; height:130px; top:18%; left:-8%; --r:12deg; animation:floatA 14s ease-in-out infinite; animation-delay:.3s; }
+    .s2 { width:480px; height:110px; top:68%; right:-4%; --r:-14deg; animation:floatB 12s ease-in-out infinite; animation-delay:.8s; }
+    .s3 { width:280px; height:72px; bottom:12%; left:8%; --r:-7deg; animation:floatC 10s ease-in-out infinite; animation-delay:.5s; }
+    .s4 { width:180px; height:50px; top:12%; right:22%; --r:20deg; animation:floatA 9s ease-in-out infinite; animation-delay:1s; border-color:rgba(255,255,255,.06); background:linear-gradient(120deg,rgba(255,255,255,.04),transparent); }
+    .s5 { width:120px; height:36px; top:30%; left:28%; --r:-22deg; animation:floatB 11s ease-in-out infinite; animation-delay:1.4s; border-color:rgba(255,255,255,.05); background:transparent; }
+
+    /* Hero content */
+    .hero-content {
+      position: relative; z-index: 10;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: end; gap: 0;
     }
     .hero-left {}
     .hero-eyebrow {
-      font-size: .7rem; font-weight: 500; letter-spacing: .22em;
-      text-transform: uppercase; color: #ee7419; margin-bottom: 32px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .68rem; font-weight: 600; letter-spacing: .2em;
+      text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 28px;
     }
+    .hero-eyebrow span { display:inline-block; width:20px; height:1px; background:#ee7419; }
     .hero-h1 {
-      font-size: clamp(3.8rem, 9vw, 9rem);
-      font-weight: 800; line-height: .92; letter-spacing: -.04em;
+      font-size: clamp(4rem, 10vw, 10.5rem);
+      font-weight: 800; line-height: .88; letter-spacing: -.05em;
       color: #fff;
     }
-    .hero-h1 .inline-iso {
-      display: inline-flex; align-items: center;
-      background: #ee7419; border-radius: 999px;
-      padding: 4px 18px 4px 12px; gap: 10px;
-      vertical-align: middle; margin: 0 6px;
-      font-size: .45em; font-weight: 700; letter-spacing: -.01em;
-      transform: translateY(-4px);
+    /* Inline pill in headline */
+    .hero-h1 .pill-tag {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: rgba(238,116,25,.15); border: 1px solid rgba(238,116,25,.35);
+      border-radius: 999px; padding: 4px 16px 4px 10px;
+      vertical-align: middle; margin: 0 4px;
+      font-size: .38em; font-weight: 600; letter-spacing: .01em;
+      color: #ee7419; transform: translateY(-6px);
+      white-space: nowrap;
     }
+
     .hero-right {
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding-left: 60px; padding-bottom: 8px;
+      padding-left: 80px; padding-bottom: 12px;
     }
     .hero-desc {
-      font-size: 1rem; font-weight: 300; line-height: 1.8;
-      color: rgba(255,255,255,.45); max-width: 340px; margin-bottom: 36px;
+      font-size: .95rem; font-weight: 300; line-height: 1.85;
+      color: rgba(255,255,255,.38); max-width: 360px; margin-bottom: 40px;
     }
     .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
     .btn-pill {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 14px 26px; border-radius: 999px;
       font-size: .78rem; font-weight: 600; letter-spacing: .04em;
-      transition: background .2s, color .2s, border-color .2s;
+      transition: background .25s, color .25s, border-color .25s;
+      cursor: pointer;
     }
     .btn-pill-fill { background: #fff; color: #111; }
     .btn-pill-fill:hover { background: #ee7419; color: #fff; }
-    .btn-pill-outline { border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.7); }
-    .btn-pill-outline:hover { border-color: #fff; color: #fff; }
-    .btn-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: rgba(0,0,0,.15); border-radius: 50%; flex-shrink: 0; }
-    /* Hero decorative isotipo */
-    .hero-iso-bg {
-      position: absolute; right: -40px; bottom: -60px;
-      width: 45vw; opacity: .04; pointer-events: none;
+    .btn-pill-outline { border: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.55); }
+    .btn-pill-outline:hover { border-color: rgba(255,255,255,.5); color: #fff; }
+    .btn-icon { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: rgba(0,0,0,.12); border-radius: 50%; flex-shrink: 0; }
+
+    /* Scroll hint */
+    .hero-scroll {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: .25; z-index: 10;
     }
+    .hero-scroll span { font-size: .55rem; letter-spacing: .22em; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, #fff, transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
     @media(max-width: 900px) {
-      #hero { grid-template-columns: 1fr; gap: 48px; padding: 100px 28px 56px; }
+      #hero { padding: 0 28px 60px; }
+      .hero-content { grid-template-columns: 1fr; gap: 40px; }
       .hero-right { padding-left: 0; }
+      .hero-h1 { font-size: clamp(3.2rem, 12vw, 6rem); }
     }
 
     /* ── TICKER ─────────────────────────────────── */
@@ -275,40 +324,52 @@
 
 <!-- HERO -->
 <section id="hero">
-  <!-- Isotipo decorativo bg -->
-  <svg class="hero-iso-bg" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
-    <path fill="#fff" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-    <path fill="#fff" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-    <circle fill="#fff" cx="1101.91" cy="6341.62" r="1101.91"/>
-  </svg>
+  <!-- Background glow -->
+  <div class="hero-glow" aria-hidden="true"></div>
 
-  <div class="hero-left">
-    <p class="hero-eyebrow">Partner industrial de precisión</p>
-    <h1 class="hero-h1">
-      De la<br/>
-      <span class="inline-iso">
-        <svg width="22" height="18" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
-          <path fill="#fff" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-          <path fill="#fff" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-          <circle fill="#fff" cx="1101.91" cy="6341.62" r="1101.91"/>
-        </svg>
-        precisión
-      </span><br/>
-      a la pieza<br/>final.
-    </h1>
+  <!-- Floating geometric pill shapes (HeroGeometric style) -->
+  <div class="shape s1" aria-hidden="true"></div>
+  <div class="shape s2" aria-hidden="true"></div>
+  <div class="shape s3" aria-hidden="true"></div>
+  <div class="shape s4" aria-hidden="true"></div>
+  <div class="shape s5" aria-hidden="true"></div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <div class="hero-left">
+      <p class="hero-eyebrow"><span></span>Partner industrial de precisión</p>
+      <h1 class="hero-h1">
+        Mecani&shy;zado<br/>
+        <span class="pill-tag">
+          <svg width="18" height="15" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+            <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+            <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+            <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+          </svg>
+          de precisión
+        </span><br/>
+        bajo plano.
+      </h1>
+    </div>
+
+    <div class="hero-right">
+      <p class="hero-desc">De la necesidad a la pieza final. Fabricamos con gestión integral del proceso — material, mecanizado, tratamientos y verificación. Un único interlocutor.</p>
+      <div class="hero-btns">
+        <a href="#servicios" class="btn-pill btn-pill-fill">
+          Nuestros servicios
+          <span class="btn-icon">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+          </span>
+        </a>
+        <a href="#contacto" class="btn-pill btn-pill-outline">Contactar</a>
+      </div>
+    </div>
   </div>
 
-  <div class="hero-right">
-    <p class="hero-desc">Mecanizado bajo plano y utillajes de verificación con gestión integral del proceso. Un único interlocutor, máxima garantía técnica.</p>
-    <div class="hero-btns">
-      <a href="#servicios" class="btn-pill btn-pill-fill">
-        Nuestros servicios
-        <span class="btn-icon">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
-        </span>
-      </a>
-      <a href="#contacto" class="btn-pill btn-pill-outline">Contactar</a>
-    </div>
+  <!-- Scroll indicator -->
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
   </div>
 </section>
 
