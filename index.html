@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artazu Mechanics — Mecanizado de precisión</title>
+  <meta name="description" content="Mecanizado bajo plano y utillajes de verificación. Partner industrial de precisión."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            o:    '#ee7419',
+            ink:  '#141414',
+            bone: '#F5F3EF',
+            mist: '#EDEAE4',
+            dim:  '#7a7570',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"','Georgia','serif'],
+            sans:  ['Barlow','system-ui','sans-serif'],
+            cond:  ['"Barlow Condensed"','sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'Barlow', sans-serif; background: #F5F3EF; color: #141414; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+    /* ── Scroll reveal ─────────────── */
+    .rv  { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+    .rv.on  { opacity: 1; transform: none; }
+    .rv-r { opacity: 0; transform: translateX(30px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+    .rv-r.on { opacity: 1; transform: none; }
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+    .d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+
+    /* ── Hero anim ─────────────────── */
+    @keyframes rise { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+    @keyframes appear { from { opacity:0; } to { opacity:1; } }
+    .ha { opacity:0; animation: rise .9s cubic-bezier(.22,1,.36,1) forwards; }
+    .hb { opacity:0; animation: appear 1.1s ease forwards; }
+    .a1{animation-delay:.1s}.a2{animation-delay:.25s}.a3{animation-delay:.4s}
+    .a4{animation-delay:.55s}.a5{animation-delay:.8s}.a6{animation-delay:1.1s}
+
+    /* ── Marquee ───────────────────── */
+    .mq  { display:flex; width:max-content; animation: mq 40s linear infinite; }
+    .mq2 { animation-direction:reverse; animation-duration:50s; }
+    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── Accent rule ───────────────── */
+    .rule { display:block; width:40px; height:1px; background:#ee7419; }
+
+    /* ── Underline link ─────────────── */
+    .ul-link { position:relative; display:inline-block; }
+    .ul-link::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:#ee7419; transition:width .3s cubic-bezier(.22,1,.36,1); }
+    .ul-link:hover::after { width:100%; }
+
+    /* ── Nav scrolled ──────────────── */
+    #nav { transition: background .3s, border-color .3s; }
+    #nav.scrolled { background: rgba(245,243,239,.95); backdrop-filter: blur(12px); border-bottom-color: rgba(20,20,20,.08); }
+
+    /* ── Form ──────────────────────── */
+    .fi { background:transparent; border:none; border-bottom:1px solid rgba(20,20,20,.15); padding:.75rem 0; width:100%; color:#141414; font-family:'Barlow',sans-serif; font-size:.9rem; outline:none; transition:border-color .25s; }
+    .fi:focus { border-color:#ee7419; }
+    .fi::placeholder { color:rgba(20,20,20,.25); }
+
+    /* ── Cursor ───────────────────── */
+    #cur { position:fixed; width:6px; height:6px; background:#ee7419; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .25s, height .25s, background .25s; }
+    #cur.expand { width:36px; height:36px; background:rgba(238,116,25,.12); border:1px solid rgba(238,116,25,.5); }
+    @media (hover:none) { #cur{display:none;} }
+
+    /* ── Scrollbar ────────────────── */
+    ::-webkit-scrollbar { width:2px; }
+    ::-webkit-scrollbar-track { background:#F5F3EF; }
+    ::-webkit-scrollbar-thumb { background:#ee7419; }
+
+    @media (prefers-reduced-motion:reduce) {
+      .rv,.rv-r{opacity:1;transform:none;transition:none;}
+      .ha,.hb{opacity:1;animation:none;}
+      .mq{animation:none;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div id="cur" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════
+     NAV
+══════════════════════════════ -->
+<header id="nav" class="fixed top-0 left-0 right-0 z-50 border-b border-transparent">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
+
+    <a href="#inicio" class="flex items-center gap-2.5 cursor-pointer" aria-label="Artazu Mechanics">
+      <svg width="20" height="17" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+        <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+        <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+        <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+      </svg>
+      <span class="font-cond font-semibold text-[.8rem] tracking-[.18em] text-ink uppercase">Artazu Mechanics</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-10" aria-label="Navegación principal">
+      <a href="#nosotros"    class="ul-link font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-dim hover:text-ink transition-colors cursor-pointer">Nosotros</a>
+      <a href="#mecanizado"  class="ul-link font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-dim hover:text-ink transition-colors cursor-pointer">Mecanizado</a>
+      <a href="#utillajes"   class="ul-link font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-dim hover:text-ink transition-colors cursor-pointer">Utillajes</a>
+      <a href="#capacidades" class="ul-link font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-dim hover:text-ink transition-colors cursor-pointer">Capacidades</a>
+    </nav>
+
+    <a href="#contacto" class="hidden md:inline-flex items-center gap-2 font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-ink border border-ink px-5 py-2.5 hover:bg-ink hover:text-bone transition-colors duration-200 cursor-pointer">
+      Contacto
+    </a>
+
+    <button id="ham" class="md:hidden flex flex-col gap-1.5 cursor-pointer" aria-label="Menú" aria-expanded="false">
+      <span class="ham-l block w-6 h-px bg-ink transition-all duration-300"></span>
+      <span class="ham-l block w-6 h-px bg-ink transition-all duration-300"></span>
+      <span class="ham-l block w-4 h-px bg-ink transition-all duration-300"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div id="mob" class="fixed inset-0 z-40 bg-bone hidden flex-col justify-center px-8 gap-8">
+  <a href="#nosotros"    class="mob-l font-serif italic text-4xl text-ink hover:text-o transition-colors cursor-pointer">Nosotros</a>
+  <a href="#mecanizado"  class="mob-l font-serif italic text-4xl text-ink hover:text-o transition-colors cursor-pointer">Mecanizado</a>
+  <a href="#utillajes"   class="mob-l font-serif italic text-4xl text-ink hover:text-o transition-colors cursor-pointer">Utillajes</a>
+  <a href="#capacidades" class="mob-l font-serif italic text-4xl text-ink hover:text-o transition-colors cursor-pointer">Capacidades</a>
+  <a href="#contacto"    class="mob-l font-serif italic text-4xl text-o cursor-pointer">Contacto</a>
+</div>
+
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section id="inicio" class="relative min-h-screen bg-bone flex flex-col justify-end overflow-hidden pt-16">
+
+  <!-- Isotipo watermark -->
+  <div id="iso-par" class="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none select-none" aria-hidden="true">
+    <svg style="width:min(55vw,700px);opacity:.04;" viewBox="0 0 8810.4 7443.53" fill="none">
+      <path fill="#141414" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+      <path fill="#141414" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+      <circle fill="#141414" cx="1101.91" cy="6341.62" r="1101.91"/>
+    </svg>
+  </div>
+
+  <div class="relative max-w-[1440px] mx-auto px-6 lg:px-12 w-full pb-20 pt-24">
+
+    <p class="ha a1 font-sans font-medium text-[.7rem] tracking-[.3em] uppercase text-o mb-10">
+      Partner industrial de precisión — Mecanizado &amp; Verificación
+    </p>
+
+    <h1 class="mb-12 leading-[1.0]">
+      <span class="ha a2 block font-serif font-light italic text-ink"
+            style="font-size:clamp(3.5rem,9vw,9rem);">De la necesidad</span>
+      <span class="ha a3 block font-serif font-black text-ink"
+            style="font-size:clamp(3.5rem,9vw,9rem);">a la pieza final.</span>
+    </h1>
+
+    <div class="ha a4 grid md:grid-cols-3 gap-0 border-t border-ink/10 pt-10 max-w-4xl">
+      <div class="pr-10 pb-8 md:pb-0 border-b md:border-b-0 md:border-r border-ink/10">
+        <p class="font-serif font-black text-ink leading-none mb-2" style="font-size:3.5rem;">5</p>
+        <p class="font-cond font-semibold text-[.7rem] tracking-[.2em] uppercase text-dim">ejes de mecanizado</p>
+      </div>
+      <div class="px-0 md:px-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-ink/10">
+        <p class="font-serif font-black text-ink leading-none mb-2" style="font-size:3.5rem;">0,01</p>
+        <p class="font-cond font-semibold text-[.7rem] tracking-[.2em] uppercase text-dim">mm de tolerancia</p>
+      </div>
+      <div class="pt-8 md:pt-0 md:pl-10">
+        <p class="font-sans font-light text-dim leading-relaxed text-sm max-w-xs" style="line-height:1.8;">
+          Fabricamos piezas de alta precisión con gestión integral del proceso — desde el plano hasta la entrega verificada.
+        </p>
+        <a href="#nosotros" class="ul-link mt-6 inline-flex items-center gap-3 font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-ink cursor-pointer">
+          Conocer más
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ha a5 absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30" aria-hidden="true">
+    <div style="width:1px;height:50px;background:linear-gradient(to bottom,#141414,transparent);"></div>
+    <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-ink">Scroll</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     TICKER
+══════════════════════════════ -->
+<div class="bg-ink overflow-hidden py-2.5 select-none" aria-hidden="true">
+  <div class="mq">
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Automoción</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Aeronáutico</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Ferroviario</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Industria general</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Siemens NX</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Tolerancias ±0,01 mm</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Automoción</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Aeronáutico</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Ferroviario</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Industria general</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Siemens NX</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Tolerancias ±0,01 mm</span>
+    <span class="text-o/60 px-4 text-xs">·</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     NOSOTROS
+══════════════════════════════ -->
+<section id="nosotros" class="bg-bone py-32 px-6 lg:px-12 border-b border-ink/[.07]">
+  <div class="max-w-[1440px] mx-auto">
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+
+      <div class="lg:col-span-5">
+        <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-8">Quiénes somos</p>
+        <h2 class="rv font-serif leading-[1.05] text-ink mb-12" style="font-size:clamp(2.6rem,5vw,4.8rem);">
+          Más que un<br/>proveedor,<br/><em class="text-o">tu partner.</em>
+        </h2>
+
+        <div class="rv d2 border-t border-ink/[.07]">
+          <div class="flex items-center justify-between py-5 border-b border-ink/[.07] group cursor-default">
+            <p class="font-sans font-medium text-sm text-ink">Flexibilidad total</p>
+            <span class="rule opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          </div>
+          <div class="flex items-center justify-between py-5 border-b border-ink/[.07] group cursor-default">
+            <p class="font-sans font-medium text-sm text-ink">Alto nivel técnico</p>
+            <span class="rule opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          </div>
+          <div class="flex items-center justify-between py-5 border-b border-ink/[.07] group cursor-default">
+            <p class="font-sans font-medium text-sm text-ink">Control de calidad exhaustivo</p>
+            <span class="rule opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          </div>
+          <div class="flex items-center justify-between py-5 group cursor-default">
+            <p class="font-sans font-medium text-sm text-ink">Plazos gestionados</p>
+            <span class="rule opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 lg:pt-20">
+        <p class="rv d1 font-sans font-light text-dim leading-relaxed max-w-xl mb-10" style="font-size:1.05rem;line-height:1.85;">
+          Nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor que asume la responsabilidad completa del proceso.
+        </p>
+        <p class="rv d2 font-sans font-light text-dim leading-relaxed max-w-xl mb-16" style="line-height:1.85;">
+          Desde la interpretación del plano hasta la entrega final, gestionamos aprovisionamiento de materiales, mecanizado, tratamientos, montaje y verificación. Tú te concentras en tu negocio.
+        </p>
+        <div class="rv d3 flex justify-end opacity-70" aria-hidden="true">
+          <svg style="width:min(38%,190px);" viewBox="0 0 8810.4 7443.53" fill="none">
+            <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+            <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+            <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     MECANIZADO
+══════════════════════════════ -->
+<section id="mecanizado" class="bg-bone py-32 px-6 lg:px-12 border-b border-ink/[.07]">
+  <div class="max-w-[1440px] mx-auto">
+
+    <div class="flex items-end justify-between mb-20 border-b border-ink/[.07] pb-8">
+      <div>
+        <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-o mb-4">Servicio 01</p>
+        <h2 class="rv font-serif text-ink leading-[1.0]" style="font-size:clamp(2.6rem,5.5vw,5rem);">
+          Mecanizado bajo<br/>plano con enfoque<br/><em>integral.</em>
+        </h2>
+      </div>
+      <span class="rv-r font-serif font-black text-ink/[.04] leading-none select-none hidden lg:block" style="font-size:10rem;line-height:.8;" aria-hidden="true">01</span>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-0 border border-ink/[.07] mb-20">
+      <div class="rv p-10 border-b md:border-b-0 md:border-r border-ink/[.07] hover:bg-mist transition-colors duration-300 cursor-default">
+        <span class="rule mb-6 block"></span>
+        <h3 class="font-serif font-bold text-ink text-xl mb-4">Mecanizado bajo plano</h3>
+        <p class="font-sans font-light text-dim text-sm" style="line-height:1.8;">
+          Fabricación de piezas conforme a planos del cliente con tolerancias estrictas. Verificación dimensional integrada en el proceso productivo.
+        </p>
+      </div>
+      <div class="rv d1 p-10 border-b md:border-b-0 border-ink/[.07] hover:bg-mist transition-colors duration-300 cursor-default">
+        <span class="rule mb-6 block"></span>
+        <h3 class="font-serif font-bold text-ink text-xl mb-4">Servicio 360°</h3>
+        <p class="font-sans font-light text-dim text-sm" style="line-height:1.8;">
+          Gestión integral desde el aprovisionamiento de materiales hasta la entrega: mecanizado, tratamientos térmicos y superficiales, montaje, verificación.
+        </p>
+      </div>
+      <div class="rv d2 p-10 md:border-r border-ink/[.07] hover:bg-mist transition-colors duration-300 cursor-default">
+        <span class="rule mb-6 block"></span>
+        <h3 class="font-serif font-bold text-ink text-xl mb-4">Prototipos y series</h3>
+        <p class="font-sans font-light text-dim text-sm" style="line-height:1.8;">
+          Flexibilidad para proyectos unitarios o series. Adaptación ágil a cambios de diseño o modificaciones de plano durante el proceso.
+        </p>
+      </div>
+      <div class="rv d3 p-10 hover:bg-mist transition-colors duration-300 cursor-default">
+        <span class="rule mb-6 block"></span>
+        <h3 class="font-serif font-bold text-ink text-xl mb-4">Ingeniería &amp; CAD/CAM</h3>
+        <p class="font-sans font-light text-dim text-sm" style="line-height:1.8;">
+          Oficina técnica propia con Siemens NX. Interpretación de planos, optimización de diseño, soporte en el desarrollo y análisis de viabilidad.
+        </p>
+      </div>
+    </div>
+
+    <div class="rv border-t border-ink/[.07] pt-12">
+      <p class="font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-8">Proceso</p>
+      <div class="flex flex-wrap items-center gap-0">
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">01</span>
+          <span class="font-sans font-medium text-sm text-ink">Interpretación</span>
+        </div>
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">02</span>
+          <span class="font-sans font-medium text-sm text-ink">Aprovisionamiento</span>
+        </div>
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">03</span>
+          <span class="font-sans font-medium text-sm text-ink">Mecanizado</span>
+        </div>
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">04</span>
+          <span class="font-sans font-medium text-sm text-ink">Tratamientos</span>
+        </div>
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">05</span>
+          <span class="font-sans font-medium text-sm text-ink">Verificación</span>
+        </div>
+        <div class="flex items-center gap-4 py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">06</span>
+          <span class="font-sans font-medium text-sm text-ink">Entrega</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     MARQUEE SEPARADOR
+══════════════════════════════ -->
+<div class="bg-mist overflow-hidden py-6 select-none border-y border-ink/[.05]" aria-hidden="true">
+  <div class="mq mq2">
+    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Precisión</span>
+    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Control</span>
+    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Calidad</span>
+    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Ingeniería</span>
+    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Precisión</span>
+    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Control</span>
+    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Calidad</span>
+    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Ingeniería</span>
+    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     UTILLAJES
+══════════════════════════════ -->
+<section id="utillajes" class="bg-ink py-32 px-6 lg:px-12 border-b border-bone/[.06]">
+  <div class="max-w-[1440px] mx-auto">
+
+    <div class="flex items-end justify-between mb-20 border-b border-bone/[.08] pb-8">
+      <div>
+        <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-o mb-4">Servicio 02</p>
+        <h2 class="rv font-serif text-bone leading-[1.0]" style="font-size:clamp(2.6rem,5.5vw,5rem);">
+          Diseño y fabricación<br/>de utillajes de<br/><em class="text-o">verificación.</em>
+        </h2>
+      </div>
+      <span class="rv-r font-serif font-black text-bone/[.03] leading-none select-none hidden lg:block" style="font-size:10rem;line-height:.8;" aria-hidden="true">02</span>
+    </div>
+
+    <p class="rv d1 font-sans font-light text-bone/50 max-w-2xl mb-20" style="line-height:1.85;">
+      Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente. Control y fiabilidad en cada comprobación.
+    </p>
+
+    <div class="rv grid sm:grid-cols-2 lg:grid-cols-5 gap-0 border border-bone/[.07] mb-20">
+      <div class="p-8 border-r border-bone/[.07] hover:bg-bone/[.03] transition-colors cursor-default">
+        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">01</p>
+        <p class="font-serif font-bold text-bone text-base mb-3">Automoción</p>
+        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Verificación en línea de producción.</p>
+      </div>
+      <div class="p-8 border-r border-bone/[.07] hover:bg-bone/[.03] transition-colors cursor-default">
+        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">02</p>
+        <p class="font-serif font-bold text-bone text-base mb-3">Fibra de carbono</p>
+        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Composites y materiales avanzados.</p>
+      </div>
+      <div class="p-8 border-r border-bone/[.07] hover:bg-bone/[.03] transition-colors cursor-default">
+        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">03</p>
+        <p class="font-serif font-bold text-bone text-base mb-3">Probetas</p>
+        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Útiles para ensayos y validaciones.</p>
+      </div>
+      <div class="p-8 border-r border-bone/[.07] hover:bg-bone/[.03] transition-colors cursor-default">
+        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">04</p>
+        <p class="font-serif font-bold text-bone text-base mb-3">Recanteo</p>
+        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Posicionamiento y referenciado.</p>
+      </div>
+      <div class="p-8 hover:bg-bone/[.03] transition-colors cursor-default">
+        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">05</p>
+        <p class="font-serif font-bold text-bone text-base mb-3">Plásticos</p>
+        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Composites y no metálicos.</p>
+      </div>
+    </div>
+
+    <div class="rv border-t border-bone/[.07] pt-12">
+      <p class="font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-bone/25 mb-8">Proceso completo</p>
+      <div class="flex flex-wrap items-center gap-0">
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-bone/[.07] py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">01</span>
+          <span class="font-sans font-medium text-sm text-bone/60">Diseño 3D</span>
+        </div>
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-bone/[.07] py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">02</span>
+          <span class="font-sans font-medium text-sm text-bone/60">Análisis</span>
+        </div>
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-bone/[.07] py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">03</span>
+          <span class="font-sans font-medium text-sm text-bone/60">Fabricación</span>
+        </div>
+        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-bone/[.07] py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">04</span>
+          <span class="font-sans font-medium text-sm text-bone/60">Montaje</span>
+        </div>
+        <div class="flex items-center gap-4 py-2">
+          <span class="font-cond text-[.65rem] tracking-wider text-o">05</span>
+          <span class="font-sans font-medium text-sm text-bone/60">Validación final</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     CAPACIDADES
+══════════════════════════════ -->
+<section id="capacidades" class="bg-bone py-32 px-6 lg:px-12 border-b border-ink/[.07]">
+  <div class="max-w-[1440px] mx-auto">
+
+    <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-6">Capacidades técnicas</p>
+    <h2 class="rv font-serif text-ink leading-[1.05] mb-20" style="font-size:clamp(2.6rem,5vw,4.8rem);">
+      Maquinaria &amp;<br/>equipamiento.
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-0 border border-ink/[.07] mb-20">
+      <div class="rv p-10 border-b md:border-b-0 md:border-r border-ink/[.07]">
+        <div class="flex items-start justify-between mb-8">
+          <div>
+            <p class="font-cond font-semibold text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Centro de mecanizado</p>
+            <h3 class="font-serif font-bold text-ink text-2xl">DMU 100 T</h3>
+          </div>
+          <span class="font-cond font-semibold text-[.65rem] tracking-[.18em] uppercase text-o border border-o/40 px-3 py-1.5">5 Ejes</span>
+        </div>
+        <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Recorridos X·Y·Z</p>
+            <p class="font-sans font-medium text-ink text-sm">1000 × 700 × 1000 mm</p>
+          </div>
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Velocidad husillo</p>
+            <p class="font-serif font-black text-ink" style="font-size:2rem;line-height:1;">18.000 <span class="font-sans font-light text-dim text-sm">rpm</span></p>
+          </div>
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Unidades</p>
+            <p class="font-serif font-black text-ink" style="font-size:2rem;line-height:1;">1</p>
+          </div>
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Materiales</p>
+            <p class="font-sans font-medium text-ink text-sm">Acero · Aluminio · Composites</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv d1 p-10">
+        <div class="flex items-start justify-between mb-8">
+          <div>
+            <p class="font-cond font-semibold text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Centro de mecanizado</p>
+            <h3 class="font-serif font-bold text-ink text-2xl">Mazak VTC-200B</h3>
+          </div>
+          <span class="font-cond font-semibold text-[.65rem] tracking-[.18em] uppercase text-o border border-o/40 px-3 py-1.5">3+1 Ejes</span>
+        </div>
+        <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Recorridos X·Y·Z</p>
+            <p class="font-sans font-medium text-ink text-sm">1120 × 510 × 510 mm</p>
+          </div>
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Velocidad husillo</p>
+            <p class="font-serif font-black text-ink" style="font-size:2rem;line-height:1;">10.000 <span class="font-sans font-light text-dim text-sm">rpm</span></p>
+          </div>
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Unidades</p>
+            <p class="font-serif font-black text-ink" style="font-size:2rem;line-height:1;">2</p>
+          </div>
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Materiales</p>
+            <p class="font-sans font-medium text-ink text-sm">Acero · Aluminio · Resinas</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv border-t border-ink/[.07] pt-12">
+      <p class="font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-8">Sectores</p>
+      <div class="flex flex-wrap gap-3">
+        <span class="font-sans font-light text-dim text-sm px-5 py-2.5 border border-ink/[.1] hover:border-o hover:text-o transition-colors cursor-default">Automoción</span>
+        <span class="font-sans font-light text-dim text-sm px-5 py-2.5 border border-ink/[.1] hover:border-o hover:text-o transition-colors cursor-default">Aeronáutico</span>
+        <span class="font-sans font-light text-dim text-sm px-5 py-2.5 border border-ink/[.1] hover:border-o hover:text-o transition-colors cursor-default">Ferroviario</span>
+        <span class="font-sans font-light text-dim text-sm px-5 py-2.5 border border-ink/[.1] hover:border-o hover:text-o transition-colors cursor-default">Industria general</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     CONTACTO
+══════════════════════════════ -->
+<section id="contacto" class="bg-bone py-32 px-6 lg:px-12">
+  <div class="max-w-[1440px] mx-auto">
+    <div class="grid lg:grid-cols-12 gap-16 items-start">
+
+      <div class="lg:col-span-4">
+        <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-6">Contacto</p>
+        <h2 class="rv font-serif text-ink leading-[1.0] mb-12" style="font-size:clamp(3rem,6vw,5.5rem);">
+          ¿Hablamos<br/>de tu<br/><em class="text-o">proyecto?</em>
+        </h2>
+
+        <div class="rv d2 space-y-8 border-t border-ink/[.07] pt-10">
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Email</p>
+            <a href="mailto:comercial@artazumechanics.com" class="ul-link font-sans font-medium text-ink text-sm hover:text-o transition-colors cursor-pointer">
+              comercial@artazumechanics.com
+            </a>
+          </div>
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Teléfono</p>
+            <a href="tel:+34606872175" class="ul-link font-sans font-medium text-ink text-sm hover:text-o transition-colors cursor-pointer">
+              606 87 21 75
+            </a>
+          </div>
+          <div>
+            <p class="font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Web</p>
+            <a href="https://www.artazumechanics.com" target="_blank" rel="noopener" class="ul-link font-sans font-medium text-ink text-sm hover:text-o transition-colors cursor-pointer">
+              www.artazumechanics.com
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <form id="cform" class="rv d1 lg:col-span-8" novalidate>
+        <div class="grid sm:grid-cols-2 gap-x-10 gap-y-10 mb-10">
+          <div>
+            <label for="fn" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Nombre</label>
+            <input id="fn" type="text" name="nombre" class="fi" placeholder="Tu nombre" required autocomplete="given-name"/>
+          </div>
+          <div>
+            <label for="fe" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Empresa</label>
+            <input id="fe" type="text" name="empresa" class="fi" placeholder="Nombre de empresa" autocomplete="organization"/>
+          </div>
+          <div>
+            <label for="fm" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Email</label>
+            <input id="fm" type="email" name="email" class="fi" placeholder="tu@empresa.com" required autocomplete="email"/>
+          </div>
+          <div>
+            <label for="ft" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Teléfono</label>
+            <input id="ft" type="tel" name="telefono" class="fi" placeholder="+34 000 000 000" autocomplete="tel"/>
+          </div>
+        </div>
+        <div class="mb-10">
+          <label for="fmsg" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Mensaje</label>
+          <textarea id="fmsg" name="mensaje" rows="5" class="fi" placeholder="Tipo de pieza, material, volumen…" required></textarea>
+        </div>
+        <div class="flex items-center gap-6">
+          <button id="fsub" type="submit"
+            class="inline-flex items-center gap-3 bg-ink text-bone font-sans font-medium text-[.75rem] tracking-[.14em] uppercase px-8 py-4 hover:bg-o transition-colors duration-200 cursor-pointer group">
+            Enviar consulta
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="group-hover:translate-x-1 transition-transform" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
+            </svg>
+          </button>
+          <p id="fok" class="hidden font-cond text-[.65rem] tracking-[.2em] uppercase text-o">Recibido — te contactamos pronto.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     FOOTER
+══════════════════════════════ -->
+<footer class="bg-ink py-8 px-6 lg:px-12">
+  <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2.5">
+      <svg width="16" height="14" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+        <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+        <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+        <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+      </svg>
+      <span class="font-cond font-semibold text-[.7rem] tracking-[.2em] uppercase text-bone/30">Artazu Mechanics</span>
+    </div>
+    <div class="flex gap-8">
+      <a href="#mecanizado"  class="font-cond text-[.65rem] tracking-[.18em] uppercase text-bone/20 hover:text-o transition-colors cursor-pointer">Mecanizado</a>
+      <a href="#utillajes"   class="font-cond text-[.65rem] tracking-[.18em] uppercase text-bone/20 hover:text-o transition-colors cursor-pointer">Utillajes</a>
+      <a href="#capacidades" class="font-cond text-[.65rem] tracking-[.18em] uppercase text-bone/20 hover:text-o transition-colors cursor-pointer">Capacidades</a>
+    </div>
+    <p class="font-cond text-[.6rem] tracking-wider uppercase text-bone/10">© 2025 Artazu Mechanics</p>
+  </div>
+</footer>
+
+
+<script>
+// Reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rv,.rv-r').forEach(el => io.observe(el));
+
+// Nav scrolled
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+}, { passive: true });
+
+// Parallax isotipo hero
+const isoPar = document.getElementById('iso-par');
+window.addEventListener('scroll', () => {
+  if(isoPar) isoPar.style.transform = `translateY(calc(-50% + ${window.scrollY * .08}px))`;
+}, { passive: true });
+
+// Cursor
+const cur = document.getElementById('cur');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a,button,[class*="cursor-pointer"],[class*="cursor-default"]').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('expand'));
+});
+
+// Mobile menu
+const ham  = document.getElementById('ham');
+const mob  = document.getElementById('mob');
+const hls  = document.querySelectorAll('.ham-l');
+let open   = false;
+ham.addEventListener('click', () => {
+  open = !open;
+  ham.setAttribute('aria-expanded', open);
+  mob.classList.toggle('hidden', !open);
+  mob.classList.toggle('flex', open);
+  if(open){
+    hls[0].style.cssText = 'transform:translateY(6px) rotate(45deg)';
+    hls[1].style.cssText = 'opacity:0';
+    hls[2].style.cssText = 'transform:translateY(-6px) rotate(-45deg);width:1.5rem';
+  } else {
+    hls.forEach(l => l.removeAttribute('style'));
+  }
+});
+document.querySelectorAll('.mob-l').forEach(l => l.addEventListener('click', () => {
+  open = false; ham.setAttribute('aria-expanded','false');
+  mob.classList.add('hidden'); mob.classList.remove('flex');
+  hls.forEach(l => l.removeAttribute('style'));
+}));
+
+// Form
+document.getElementById('cform').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('fsub');
+  btn.textContent = 'Enviando…'; btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('fok').classList.remove('hidden');
+    this.reset(); btn.innerHTML = 'Enviado';
+  }, 1200);
+});
+</script>
+</body>
+</html>
