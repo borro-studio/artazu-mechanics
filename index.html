@@ -19,274 +19,252 @@
     ::-webkit-scrollbar { width: 2px; }
     ::-webkit-scrollbar-thumb { background: #ee7419; }
 
-    /* ── REVEAL ──────────────────────── */
+    /* ── CLIP REVEAL (lines slide up on load) ── */
+    .clip-wrap { overflow: hidden; display: block; }
+    .clip-line {
+      display: block;
+      transform: translateY(110%);
+      transition: transform 1s cubic-bezier(.16,1,.3,1);
+    }
+    .clip-line.on { transform: translateY(0); }
+
+    /* ── SCROLL REVEAL ── */
     .rv { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
     .rv.on { opacity: 1; transform: none; }
     .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-    /* ── CLIP REVEAL (lines slide up) ─ */
-    .clip-wrap { overflow: hidden; }
-    .clip-line {
-      display: block;
-      transform: translateY(105%);
-      transition: transform .9s cubic-bezier(.16,1,.3,1);
-    }
-    .clip-line.on { transform: translateY(0); }
-
-    /* ─────────────────────────────────────────────
-       NAV — exact Tenity structure
-       Fixed header, inner .main = white rounded rect
-    ───────────────────────────────────────────── */
+    /* ════════════════════════════════════════
+       NAV
+       Floating white rounded-rect — Tenity exact
+    ════════════════════════════════════════ */
     .header {
       position: fixed; top: 0; left: 0; right: 0;
-      z-index: 300;
-      padding: 14px 0;
+      z-index: 300; padding: 14px 0;
     }
-    .header-inner {
-      max-width: 100%;
-      margin: 0 clamp(20px, 4vw, 60px);
-    }
+    .header-inner { margin: 0 clamp(16px, 3.5vw, 52px); }
     .header-main {
       display: flex; align-items: center;
-      background: #fff;
-      border-radius: 11px;
+      background: #fff; border-radius: 11px;
       padding: 9px 9px 9px clamp(18px, 2.5vw, 36px);
+      gap: 0;
     }
-    .nav-logo {
-      display: flex; align-items: center; gap: 9px;
-      margin-right: clamp(20px, 3vw, 48px);
-      flex-shrink: 0;
-    }
-    .nav-logo-text {
-      font-size: .7rem; font-weight: 700;
-      letter-spacing: .12em; text-transform: uppercase; color: #111;
-    }
-    .nav-links {
-      display: flex; gap: clamp(16px, 2.5vw, 32px);
-      flex: 1;
-    }
-    .nav-links a {
-      font-size: .72rem; font-weight: 500;
-      color: rgba(17,17,17,.45); transition: color .2s; letter-spacing: .02em;
-    }
+    .nav-logo { display: flex; align-items: center; gap: 9px; margin-right: clamp(20px, 3vw, 52px); flex-shrink: 0; }
+    .nav-logo-text { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #111; }
+    .nav-links { display: flex; gap: clamp(16px, 2.5vw, 32px); flex: 1; }
+    .nav-links a { font-size: .72rem; font-weight: 500; color: rgba(17,17,17,.4); transition: color .2s; }
     .nav-links a:hover { color: #111; }
     .nav-cta {
       background: #ee7419; color: #fff;
-      font-size: .72rem; font-weight: 600;
-      letter-spacing: .04em; padding: 10px 22px;
-      border-radius: 8px; transition: background .2s; flex-shrink: 0;
+      font-size: .72rem; font-weight: 600; letter-spacing: .04em;
+      padding: 10px 22px; border-radius: 8px;
+      transition: background .2s; flex-shrink: 0;
     }
     .nav-cta:hover { background: #111; }
-    @media(max-width: 700px) {
-      .nav-links { display: none; }
-      .header-main { padding: 9px 9px 9px 18px; }
+    @media(max-width: 680px) { .nav-links { display: none; } }
+
+    /* ════════════════════════════════════════
+       HERO — Tenity exact layout
+       Full-bleed bg image/canvas, text left, desc right bottom
+    ════════════════════════════════════════ */
+    .component--hero {
+      position: relative;
+      width: 100%; height: 100vh; min-height: 640px;
+      overflow: hidden;
+      display: flex; align-items: flex-end;
     }
 
-    /* ─────────────────────────────────────────────
-       HERO — exact Tenity measurements
-    ───────────────────────────────────────────── */
-    .component--hero {
-      background: #000;
-      position: relative;
-      overflow: hidden;
+    /* Full-bleed background photo (industrial/machining) */
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1800&q=80&fit=crop');
+      background-size: cover; background-position: center;
+      /* Dark overlays — left warm tint, right darker — like Tenity's warm/dark bg */
     }
+    /* Gradient overlay — matches Tenity's moody dark-with-warm-tones look */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to right,
+          rgba(5,3,2,.72) 0%,
+          rgba(5,3,2,.45) 40%,
+          rgba(5,3,2,.55) 60%,
+          rgba(5,3,2,.75) 100%
+        ),
+        linear-gradient(to top,
+          rgba(5,3,2,.6) 0%,
+          transparent 50%
+        );
+    }
+
+    /* Content wrapper */
     .hero-container {
-      margin: 0 clamp(24px, 18vw, 280px);
-      padding: clamp(120px, 18vw, 260px) 0 clamp(80px, 12vw, 175px);
+      position: relative; z-index: 2;
+      width: 100%;
+      padding: 0 clamp(24px, 4vw, 64px) clamp(48px, 7vw, 80px);
     }
-    /* Two columns, align bottom — exact Tenity */
     .hero-columns {
       display: flex;
       flex-direction: row;
       align-items: flex-end;
-      gap: clamp(40px, 6vw, 80px);
+      gap: clamp(32px, 5vw, 80px);
     }
-    .hero-col-left { flex: 1 1 auto; }
+    .hero-col-left { flex: 1 1 auto; min-width: 0; }
     .hero-col-right {
-      flex: 0 0 clamp(240px, 28vw, 400px);
-      padding-bottom: 6px;
+      flex: 0 0 clamp(220px, 30vw, 420px);
+      padding-bottom: 4px;
     }
 
-    /* H1 — exact Tenity: font-weight 600, line-height < font-size, each word its own line */
+    /* H1 — each word stacked, massive, Tenity weight 600 */
     .hero-title {
-      font-size: clamp(3rem, 6vw, 86.4px);
+      font-size: clamp(3.5rem, 8.5vw, 130px);
       font-weight: 600;
-      line-height: .916;
-      letter-spacing: clamp(-1px, -.04em, -3.5px);
+      line-height: .9;
+      letter-spacing: -.04em;
       color: #fff;
     }
-    /* Each word line — Tenity stacks them vertically */
-    .hero-title .line {
-      display: block;
+    /* Line with inline pill (like Tenity's "makers [image] and" line) */
+    .hero-line-pill {
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 1.5vw, 20px);
+      flex-wrap: nowrap;
     }
-    /* The inline image/pill inside "makers" line — Tenity has a photo pill */
-    .hero-title .line-with-pill {
-      display: flex; align-items: center; gap: 16px; flex-wrap: nowrap;
-    }
-    .hero-title .title-pill {
+    .title-pill {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(238,116,25,.12);
-      border: 1px solid rgba(238,116,25,.3);
+      background: rgba(238,116,25,.18);
+      border: 1px solid rgba(238,116,25,.4);
       border-radius: 999px;
-      padding: 6px 18px 6px 12px;
-      font-size: .32em; font-weight: 600;
-      color: #ee7419; letter-spacing: .02em;
-      white-space: nowrap; flex-shrink: 0;
-      /* Vertical align inline with text */
-      transform: translateY(-0.05em);
+      padding: clamp(4px,0.5vw,8px) clamp(12px,1.5vw,20px) clamp(4px,0.5vw,8px) clamp(8px,1vw,14px);
+      font-size: .3em; font-weight: 600; color: #ee7419;
+      letter-spacing: .03em; white-space: nowrap; flex-shrink: 0;
+      transform: translateY(-.08em);
     }
 
-    /* Right column */
+    /* Right col */
     .hero-desc {
-      font-size: clamp(1rem, 1.8vw, 26px);
-      font-weight: 400;
-      line-height: 1.22;
-      color: rgba(255,255,255,.55);
-      margin-bottom: clamp(28px, 3vw, 44px);
+      font-size: clamp(1rem, 1.6vw, 22px);
+      font-weight: 400; line-height: 1.3;
+      color: rgba(255,255,255,.6);
+      margin-bottom: clamp(24px, 3vw, 40px);
     }
-    .hero-actions {
-      display: flex; gap: 10px; flex-wrap: wrap;
-    }
-    /* Buttons — exact Tenity: border only, transparent bg, pill radius */
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* Buttons — Tenity exact: border only, pill, rounded arrow icon */
     .btn-border {
-      display: inline-flex; align-items: center; gap: 10px;
-      border: 1px solid rgba(247,244,237,.45);
+      display: inline-flex; align-items: center; gap: 12px;
+      border: 1px solid rgba(247,244,237,.4);
       border-radius: 999px;
-      padding: 11px 29px;
-      font-size: clamp(.78rem, 1.2vw, 17.28px);
-      font-weight: 600;
-      color: rgba(247,244,237,.85);
+      padding: 12px 28px;
+      font-size: clamp(.78rem, 1.1vw, 1rem);
+      font-weight: 600; color: rgba(247,244,237,.85);
       background: transparent;
       transition: border-color .2s, color .2s, background .2s;
-      cursor: pointer;
+      cursor: pointer; white-space: nowrap;
     }
-    .btn-border:hover {
-      border-color: rgba(247,244,237,1);
-      color: #fff;
-    }
-    .btn-border.--fill {
-      background: #fff; color: #111; border-color: #fff;
-    }
-    .btn-border.--fill:hover { background: #ee7419; color: #fff; border-color: #ee7419; }
-    .btn-icon {
+    .btn-border:hover { border-color: #fff; color: #fff; }
+    .btn-arrow {
       display: flex; align-items: center; justify-content: center;
-      width: 24px; height: 24px;
-      background: rgba(0,0,0,.08); border-radius: 50%; flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid rgba(247,244,237,.3);
+      flex-shrink: 0;
     }
 
-    /* Scroll cue */
+    /* Scroll hint */
     .hero-scroll {
-      position: absolute; bottom: 32px; left: clamp(24px, 18vw, 280px);
-      display: flex; align-items: center; gap: 12px;
-      opacity: .2;
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: .25; z-index: 3;
     }
     .hero-scroll-line {
-      width: 40px; height: 1px; background: #fff;
-      animation: scrollLine 2s ease-in-out infinite;
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, #fff, transparent);
+      animation: spulse 2s ease-in-out infinite;
     }
-    @keyframes scrollLine { 0%,100%{opacity:.3;width:24px} 50%{opacity:1;width:48px} }
-    .hero-scroll span { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; }
+    @keyframes spulse { 0%,100%{opacity:.3;transform:scaleY(.6)} 50%{opacity:1;transform:scaleY(1)} }
+    .hero-scroll span { font-size: .55rem; letter-spacing: .2em; text-transform: uppercase; }
 
-    @media(max-width: 900px) {
-      .hero-columns { flex-direction: column; align-items: flex-start; gap: 40px; }
+    @media(max-width: 860px) {
+      .hero-columns { flex-direction: column; align-items: flex-start; gap: 32px; }
       .hero-col-right { flex: none; width: 100%; }
-      .hero-container { margin: 0 clamp(20px, 6vw, 40px); }
     }
 
-    /* ─────────────────────────────────────────────
+    /* ════════════════════════════════════════
        TICKER
-    ───────────────────────────────────────────── */
+    ════════════════════════════════════════ */
     .ticker {
       overflow: hidden;
       border-top: 1px solid rgba(255,255,255,.07);
       border-bottom: 1px solid rgba(255,255,255,.07);
       padding: 13px 0; background: #000;
     }
-    .ticker-track {
-      display: flex; width: max-content;
-      animation: tk 28s linear infinite;
-    }
-    .ti { font-size: .7rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.22); padding: 0 28px; }
+    .ticker-track { display: flex; width: max-content; animation: tk 28s linear infinite; }
+    .ti { font-size: .7rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.2); padding: 0 28px; }
     .td { color: #ee7419; }
     @keyframes tk { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-    /* ─────────────────────────────────────────────
+    /* ════════════════════════════════════════
        SECTION BASE
-    ───────────────────────────────────────────── */
-    .section { padding: clamp(64px, 10vw, 120px) clamp(24px, 9vw, 140px); }
+    ════════════════════════════════════════ */
+    .section { padding: clamp(64px,10vw,120px) clamp(24px,6vw,96px); }
     .section-white { background: #fff; color: #111; }
     .section-light { background: #f4f3ef; color: #111; }
     .section-dark { background: #000; color: #fff; }
 
-    /* ─────────────────────────────────────────────
+    /* ════════════════════════════════════════
        NOSOTROS
-    ───────────────────────────────────────────── */
+    ════════════════════════════════════════ */
     .nos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-    .nos-h2 {
-      font-size: clamp(2.4rem, 5vw, 5rem);
-      font-weight: 600; line-height: .916; letter-spacing: -.04em; color: #111;
-    }
+    .nos-h2 { font-size: clamp(2.4rem,5vw,5rem); font-weight: 600; line-height: .916; letter-spacing: -.04em; color: #111; }
     .nos-h2 em { font-style: normal; color: #ee7419; }
     .nos-body { font-size: .95rem; font-weight: 300; line-height: 1.8; color: rgba(17,17,17,.5); margin-bottom: 40px; }
     .nos-list { border-top: 1px solid rgba(17,17,17,.1); }
-    .nos-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 18px 0; border-bottom: 1px solid rgba(17,17,17,.1);
-      font-size: .88rem; font-weight: 500; color: #111; cursor: default;
-      transition: color .2s;
-    }
+    .nos-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(17,17,17,.1); font-size: .88rem; font-weight: 500; color: #111; cursor: default; transition: color .2s; }
     .nos-item:hover { color: #ee7419; }
     .nos-arrow { opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s; }
     .nos-item:hover .nos-arrow { opacity: 1; transform: none; }
     @media(max-width: 768px) { .nos-grid { grid-template-columns: 1fr; gap: 40px; } }
 
-    /* Diff cards */
-    .diff-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 64px; }
-    .diff-card {
-      border: 1px solid rgba(17,17,17,.1); padding: 40px 32px;
-      margin-left: -1px; transition: background .2s; cursor: default;
-    }
+    /* Diff cards — Tenity style: large arc, text bottom-left */
+    .diff-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 72px; border-top: 1px solid rgba(17,17,17,.1); }
+    .diff-card { border-right: 1px solid rgba(17,17,17,.1); padding: 0; position: relative; overflow: hidden; transition: background .25s; cursor: default; aspect-ratio: 3/4; display: flex; flex-direction: column; }
+    .diff-card:last-child { border-right: none; }
     .diff-card:hover { background: #111; }
     .diff-card:hover .diff-title, .diff-card:hover .diff-body { color: #fff; }
-    .diff-arc {
-      width: 100%; aspect-ratio: 1;
-      border: 1px solid rgba(17,17,17,.12);
-      border-radius: 0 0 999px 0; margin-bottom: 32px;
-      transition: border-color .2s;
-    }
-    .diff-card:hover .diff-arc { border-color: rgba(238,116,25,.3); }
-    .diff-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em; color: #111; margin-bottom: 10px; transition: color .2s; }
-    .diff-body { font-size: .8rem; font-weight: 300; line-height: 1.7; color: rgba(17,17,17,.5); transition: color .2s; }
+    /* Large Tenity-style arc — takes up most of the card */
+    .diff-arc-wrap { flex: 1; position: relative; }
+    .diff-arc-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .diff-arc-path { fill: none; stroke: rgba(17,17,17,.12); stroke-width: 1; transition: stroke .25s; }
+    .diff-card:hover .diff-arc-path { stroke: rgba(238,116,25,.25); }
+    .diff-foot { padding: 20px 24px 28px; }
+    .diff-title { font-size: 1rem; font-weight: 700; letter-spacing: -.02em; color: #111; margin-bottom: 6px; transition: color .25s; }
+    .diff-body { font-size: .78rem; font-weight: 300; line-height: 1.6; color: rgba(17,17,17,.45); transition: color .25s; }
     @media(max-width: 900px) { .diff-grid { grid-template-columns: 1fr 1fr; } }
     @media(max-width: 560px) { .diff-grid { grid-template-columns: 1fr; } }
 
-    /* ─────────────────────────────────────────────
+    /* ════════════════════════════════════════
        STATS
-    ───────────────────────────────────────────── */
-    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid rgba(255,255,255,.07); }
-    .stat { padding: 48px clamp(20px,3vw,40px); border-right: 1px solid rgba(255,255,255,.07); }
+    ════════════════════════════════════════ */
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid rgba(255,255,255,.06); }
+    .stat { padding: 48px clamp(20px,3vw,40px); border-right: 1px solid rgba(255,255,255,.06); }
     .stat:last-child { border-right: none; }
     .stat-n { font-size: clamp(2.5rem,5vw,5rem); font-weight: 600; letter-spacing: -.04em; line-height: 1; color: #fff; }
     .stat-n em { color: #ee7419; font-style: normal; font-size: .4em; font-weight: 400; margin-left: 2px; }
-    .stat-l { font-size: .62rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.25); margin-top: 8px; }
-    @media(max-width: 768px) { .stats-row { grid-template-columns: 1fr 1fr; } .stat { padding: 32px 20px; border-bottom: 1px solid rgba(255,255,255,.07); } }
+    .stat-l { font-size: .62rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.22); margin-top: 8px; }
+    @media(max-width: 768px) { .stats-row { grid-template-columns: 1fr 1fr; } .stat { padding: 32px 20px; border-bottom: 1px solid rgba(255,255,255,.06); } }
 
-    /* ─────────────────────────────────────────────
+    /* ════════════════════════════════════════
        SERVICIOS
-    ───────────────────────────────────────────── */
+    ════════════════════════════════════════ */
     .svc-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 64px; flex-wrap: wrap; }
     .svc-h2 { font-size: clamp(2.4rem,5vw,5rem); font-weight: 600; letter-spacing: -.04em; line-height: .916; color: #111; }
     .svc-h2 em { font-style: normal; color: #ee7419; }
     .svc-intro { font-size: .9rem; font-weight: 300; line-height: 1.8; color: rgba(17,17,17,.45); max-width: 320px; }
-
     .svc-accordion { border-top: 1px solid rgba(17,17,17,.1); }
     .svc-item { border-bottom: 1px solid rgba(17,17,17,.1); }
-    .svc-btn {
-      width: 100%; display: flex; align-items: center; gap: 20px;
-      padding: 28px 0; background: none; border: none; cursor: pointer; text-align: left;
-    }
+    .svc-btn { width: 100%; display: flex; align-items: center; gap: 20px; padding: 28px 0; background: none; border: none; cursor: pointer; text-align: left; }
     .svc-num { font-size: .62rem; font-weight: 700; letter-spacing: .2em; color: #ee7419; min-width: 28px; }
-    .svc-name { font-size: clamp(1.2rem,2.5vw,1.8rem); font-weight: 600; letter-spacing: -.02em; color: #111; flex: 1; transition: color .2s; }
+    .svc-name { font-size: clamp(1.2rem,2.5vw,1.9rem); font-weight: 600; letter-spacing: -.02em; color: #111; flex: 1; transition: color .2s; }
     .svc-btn:hover .svc-name { color: #ee7419; }
     .svc-plus { font-size: 1.8rem; font-weight: 300; color: rgba(17,17,17,.3); line-height: 1; flex-shrink: 0; transition: transform .4s cubic-bezier(.16,1,.3,1), color .2s; }
     .svc-item.open .svc-plus { transform: rotate(45deg); color: #ee7419; }
@@ -296,17 +274,13 @@
     .svc-content { padding: 0 0 40px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
     .svc-desc { font-size: .88rem; font-weight: 300; line-height: 1.85; color: rgba(17,17,17,.5); }
     .svc-tags { display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; }
-    .svc-tag {
-      font-size: .72rem; font-weight: 500; color: #111;
-      border: 1px solid rgba(17,17,17,.15); border-radius: 999px;
-      padding: 6px 16px; transition: border-color .2s, background .2s, color .2s; cursor: default;
-    }
-    .svc-tag:hover { background: #111; color: #fff; border-color: #111; }
+    .svc-tag { font-size: .72rem; font-weight: 500; color: #111; border: 1px solid rgba(17,17,17,.15); border-radius: 999px; padding: 6px 16px; transition: background .2s, color .2s; cursor: default; }
+    .svc-tag:hover { background: #111; color: #fff; }
     @media(max-width: 768px) { .svc-content { grid-template-columns: 1fr; padding-left: 0; } }
 
-    /* ─────────────────────────────────────────────
+    /* ════════════════════════════════════════
        CAPACIDADES
-    ───────────────────────────────────────────── */
+    ════════════════════════════════════════ */
     .cap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(17,17,17,.1); margin-top: 64px; }
     .machine { background: #f4f3ef; padding: clamp(28px,4vw,48px); }
     .mach-badge { display: inline-block; font-size: .62rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #ee7419; border: 1px solid rgba(238,116,25,.3); border-radius: 999px; padding: 6px 16px; margin-bottom: 20px; }
@@ -314,61 +288,49 @@
     .mach-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .spec-k { font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(17,17,17,.3); margin-bottom: 5px; }
     .spec-v { font-size: .9rem; font-weight: 500; color: #111; }
-    .spec-v.big { font-size: 2.4rem; font-weight: 600; letter-spacing: -.05em; line-height: 1; color: #111; }
+    .spec-v.big { font-size: 2.4rem; font-weight: 600; letter-spacing: -.05em; line-height: 1; }
     .spec-v.big em { font-size: .38em; font-style: normal; color: rgba(17,17,17,.35); font-weight: 400; }
+    .sectors { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 48px; }
+    .sector-tag { font-size: .8rem; font-weight: 500; color: #111; border: 1px solid rgba(17,17,17,.2); border-radius: 999px; padding: 10px 22px; transition: background .2s, color .2s; cursor: default; }
+    .sector-tag:hover { background: #111; color: #fff; }
     @media(max-width: 768px) { .cap-grid { grid-template-columns: 1fr; } }
 
-    .sectors { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 48px; }
-    .sector-tag { font-size: .8rem; font-weight: 500; color: #111; border: 1px solid rgba(17,17,17,.2); border-radius: 999px; padding: 10px 22px; transition: background .2s, color .2s, border-color .2s; cursor: default; }
-    .sector-tag:hover { background: #111; color: #fff; border-color: #111; }
-
-    /* ─────────────────────────────────────────────
+    /* ════════════════════════════════════════
        CONTACTO
-    ───────────────────────────────────────────── */
+    ════════════════════════════════════════ */
     .contact-split { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; }
     .ci-k { font-size: .62rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgba(17,17,17,.3); margin-bottom: 8px; }
     .ci-v { font-size: 1rem; font-weight: 500; color: #111; transition: color .2s; display: block; margin-bottom: 32px; }
     .ci-v:hover { color: #ee7419; }
-    .fi { display: block; width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(17,17,17,.12); padding: 14px 0; margin-bottom: 24px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: .88rem; font-weight: 300; color: #111; outline: none; transition: border-color .25s; }
+    .fi { display: block; width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(17,17,17,.12); padding: 14px 0; margin-bottom: 24px; font-family: inherit; font-size: .88rem; font-weight: 300; color: #111; outline: none; transition: border-color .25s; }
     .fi:focus { border-color: #111; }
     .fi::placeholder { color: rgba(17,17,17,.3); }
     .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .btn-submit { display: inline-flex; align-items: center; gap: 10px; background: #111; color: #fff; border: none; border-radius: 999px; padding: 14px 28px; font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; transition: background .2s; }
+    .btn-submit:hover { background: #ee7419; }
     @media(max-width: 768px) { .contact-split { grid-template-columns: 1fr; gap: 48px; } .frow { grid-template-columns: 1fr; } }
 
-    /* CTA dark version for white sections */
-    .btn-dark {
-      display: inline-flex; align-items: center; gap: 10px;
-      border: 1px solid rgba(17,17,17,.2); border-radius: 999px;
-      padding: 12px 26px; font-size: .78rem; font-weight: 600;
-      color: #111; background: transparent; transition: background .2s, color .2s, border-color .2s; cursor: pointer;
-    }
-    .btn-dark.--fill { background: #111; color: #fff; border-color: #111; }
-    .btn-dark.--fill:hover { background: #ee7419; border-color: #ee7419; }
-    .btn-dark:hover { border-color: #111; }
-    .btn-icon { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(0,0,0,.06); border-radius: 50%; flex-shrink: 0; }
-
-    /* ─────────────────────────────────────────────
+    /* ════════════════════════════════════════
        FOOTER
-    ───────────────────────────────────────────── */
-    footer { background: #000; border-top: 1px solid rgba(255,255,255,.07); padding: 28px clamp(20px,4vw,60px); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    ════════════════════════════════════════ */
+    footer { background: #000; border-top: 1px solid rgba(255,255,255,.07); padding: 28px clamp(20px,4vw,64px); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
     .f-logo { display: flex; align-items: center; gap: 10px; }
     .f-name { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.18); }
     .f-nav { display: flex; gap: 24px; }
-    .f-nav a { font-size: .65rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.18); transition: color .2s; }
+    .f-nav a { font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.18); transition: color .2s; font-weight: 500; }
     .f-nav a:hover { color: #ee7419; }
     .f-copy { font-size: .6rem; color: rgba(255,255,255,.1); letter-spacing: .1em; text-transform: uppercase; }
     @media(max-width: 768px) { footer { flex-direction: column; align-items: flex-start; padding: 24px 20px; gap: 12px; } }
 
-    @media(prefers-reduced-motion: reduce) {
-      .rv,.clip-line { opacity:1; transform:none; transition:none; }
-      .ticker-track { animation:none; }
-      .hero-scroll-line { animation:none; }
+    @media(prefers-reduced-motion:reduce) {
+      .clip-line,.rv { opacity:1; transform:none; transition:none; }
+      .ticker-track,.hero-scroll-line { animation:none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ─────────────────────────────────── -->
+<!-- ── HEADER ──────────────────────────────────────── -->
 <header class="header">
   <div class="header-inner">
     <div class="header-main">
@@ -391,52 +353,63 @@
 </header>
 
 
-<!-- ── HERO ─────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════════
+     HERO — full-bleed background + text overlay
+════════════════════════════════════════════════════ -->
 <section class="component--hero">
+
+  <!-- Background photo: CNC machining, dark industrial -->
+  <div class="hero-bg" role="img" aria-label="Máquina CNC de precisión"></div>
+
   <div class="hero-container">
     <div class="hero-columns">
 
-      <!-- Left: stacked word lines exactly like Tenity -->
+      <!-- LEFT: stacked word lines — Tenity exact structure -->
       <div class="hero-col-left">
         <h1 class="hero-title">
           <div class="clip-wrap"><span class="clip-line">Mecani&shy;zado</span></div>
-          <!-- Line with inline pill — Tenity puts an image pill on "makers" line -->
-          <div class="line-with-pill">
-            <div class="clip-wrap"><span class="clip-line" style="transition-delay:.08s">bajo plano</span></div>
-            <span class="title-pill" aria-hidden="true">
-              <svg width="16" height="13" viewBox="0 0 8810.4 7443.53" fill="none">
+          <!-- Line with inline isotipo pill — Tenity's "makers [img] and" -->
+          <div class="hero-line-pill">
+            <div class="clip-wrap" style="flex-shrink:0"><span class="clip-line" style="transition-delay:.07s">bajo plano</span></div>
+            <div class="title-pill" aria-hidden="true">
+              <svg width="15" height="12" viewBox="0 0 8810.4 7443.53" fill="none">
                 <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
                 <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
                 <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
               </svg>
               precisión
-            </span>
+            </div>
           </div>
-          <div class="clip-wrap"><span class="clip-line" style="transition-delay:.16s">y utillajes</span></div>
-          <div class="clip-wrap"><span class="clip-line" style="transition-delay:.24s">de verifi&shy;cación.</span></div>
+          <div class="clip-wrap"><span class="clip-line" style="transition-delay:.14s">y utillajes</span></div>
+          <div class="clip-wrap"><span class="clip-line" style="transition-delay:.21s">de verifi&shy;cación.</span></div>
         </h1>
       </div>
 
-      <!-- Right: description + buttons -->
+      <!-- RIGHT: desc + buttons — aligned bottom -->
       <div class="hero-col-right">
         <p class="hero-desc rv d2">
           De la necesidad a la pieza final. Fabricamos con gestión integral del proceso — material, mecanizado, tratamientos y verificación. Un único interlocutor.
         </p>
         <div class="hero-actions rv d3">
-          <a href="#servicios" class="btn-border --fill">
-            Servicios
-            <span class="btn-icon">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+          <a href="#servicios" class="btn-border">
+            Mecanizado
+            <span class="btn-arrow">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
             </span>
           </a>
-          <a href="#contacto" class="btn-border">Contactar</a>
+          <a href="#contacto" class="btn-border">
+            Utillajes
+            <span class="btn-arrow">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </span>
+          </a>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- Scroll indicator -->
+  <!-- Scroll cue -->
   <div class="hero-scroll" aria-hidden="true">
     <div class="hero-scroll-line"></div>
     <span>Scroll</span>
@@ -444,7 +417,7 @@
 </section>
 
 
-<!-- ── TICKER ────────────────────────────────── -->
+<!-- ── TICKER ──────────────────────────────────────── -->
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track">
     <span class="ti">Automoción</span><span class="td ti">·</span>
@@ -465,13 +438,11 @@
 </div>
 
 
-<!-- ── NOSOTROS ───────────────────────────────── -->
+<!-- ── NOSOTROS ────────────────────────────────────── -->
 <section id="nosotros" class="section section-white">
   <div class="nos-grid">
     <div>
-      <h2 class="nos-h2 rv">
-        Más que un<br/>proveedor,<br/>tu <em>partner.</em>
-      </h2>
+      <h2 class="nos-h2 rv">Más que un<br/>proveedor,<br/>tu <em>partner.</em></h2>
     </div>
     <div>
       <p class="nos-body rv d1">Nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor que asume la responsabilidad completa del proceso.</p>
@@ -483,41 +454,67 @@
       </div>
     </div>
   </div>
+
+  <!-- Diff cards — Tenity "The difference" large arc style -->
   <div class="diff-grid rv d2">
     <div class="diff-card">
-      <div class="diff-arc"></div>
-      <div class="diff-title">Flexibilidad</div>
-      <div class="diff-body">Adaptación total al volumen, plazos y especificaciones del cliente.</div>
+      <div class="diff-arc-wrap">
+        <svg class="diff-arc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path class="diff-arc-path" d="M0,0 Q100,0 100,100"/>
+        </svg>
+      </div>
+      <div class="diff-foot">
+        <div class="diff-title">Flexibilidad</div>
+        <div class="diff-body">Adaptación total al volumen, plazos y especificaciones.</div>
+      </div>
     </div>
     <div class="diff-card">
-      <div class="diff-arc"></div>
-      <div class="diff-title">Nivel técnico</div>
-      <div class="diff-body">Oficina técnica propia con Siemens NX CAD/CAM. Soporte desde el primer plano.</div>
+      <div class="diff-arc-wrap">
+        <svg class="diff-arc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path class="diff-arc-path" d="M0,0 Q100,0 100,100"/>
+        </svg>
+      </div>
+      <div class="diff-foot">
+        <div class="diff-title">Nivel técnico</div>
+        <div class="diff-body">Oficina técnica con Siemens NX CAD/CAM. Soporte desde el primer plano.</div>
+      </div>
     </div>
     <div class="diff-card">
-      <div class="diff-arc"></div>
-      <div class="diff-title">Calidad</div>
-      <div class="diff-body">Verificación dimensional integrada en cada fase del proceso productivo.</div>
+      <div class="diff-arc-wrap">
+        <svg class="diff-arc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path class="diff-arc-path" d="M0,0 Q100,0 100,100"/>
+        </svg>
+      </div>
+      <div class="diff-foot">
+        <div class="diff-title">Calidad</div>
+        <div class="diff-body">Verificación dimensional integrada en cada fase del proceso.</div>
+      </div>
     </div>
     <div class="diff-card">
-      <div class="diff-arc"></div>
-      <div class="diff-title">360°</div>
-      <div class="diff-body">Un único interlocutor: material, mecanizado, tratamientos, montaje y entrega.</div>
+      <div class="diff-arc-wrap">
+        <svg class="diff-arc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path class="diff-arc-path" d="M0,0 Q100,0 100,100"/>
+        </svg>
+      </div>
+      <div class="diff-foot">
+        <div class="diff-title">Servicio 360°</div>
+        <div class="diff-body">Un único interlocutor: material, mecanizado, tratamientos, montaje.</div>
+      </div>
     </div>
   </div>
 </section>
 
 
-<!-- ── STATS ──────────────────────────────────── -->
+<!-- ── STATS ───────────────────────────────────────── -->
 <div class="stats-row section-dark">
   <div class="stat rv"><div class="stat-n">5<em>ejes</em></div><div class="stat-l">Mecanizado máximo</div></div>
   <div class="stat rv d1"><div class="stat-n">0,01<em>mm</em></div><div class="stat-l">Tolerancia</div></div>
   <div class="stat rv d2"><div class="stat-n">360<em>°</em></div><div class="stat-l">Gestión integral</div></div>
-  <div class="stat rv d3"><div class="stat-n">2<em>svc</em></div><div class="stat-l">Servicios especializados</div></div>
+  <div class="stat rv d3"><div class="stat-n">2<em>áreas</em></div><div class="stat-l">Servicios especializados</div></div>
 </div>
 
 
-<!-- ── SERVICIOS ─────────────────────────────── -->
+<!-- ── SERVICIOS ───────────────────────────────────── -->
 <section id="servicios" class="section section-white">
   <div class="svc-header">
     <h2 class="svc-h2 rv">Lo que<br/>hacemos.</h2>
@@ -535,14 +532,10 @@
           <div class="svc-content">
             <p class="svc-desc">De la necesidad a la pieza final. Fabricamos piezas de alta precisión bajo planos del cliente con gestión integral del proceso. Desde el aprovisionamiento de materiales hasta la verificación final, con un único interlocutor.</p>
             <div class="svc-tags">
-              <span class="svc-tag">Mecanizado bajo plano</span>
-              <span class="svc-tag">Servicio 360°</span>
-              <span class="svc-tag">Aprovisionamiento</span>
-              <span class="svc-tag">Tratamientos térmicos</span>
-              <span class="svc-tag">Montaje de subconjuntos</span>
-              <span class="svc-tag">Verificación</span>
-              <span class="svc-tag">Prototipos y series</span>
-              <span class="svc-tag">Siemens NX</span>
+              <span class="svc-tag">Mecanizado bajo plano</span><span class="svc-tag">Servicio 360°</span>
+              <span class="svc-tag">Aprovisionamiento</span><span class="svc-tag">Tratamientos térmicos</span>
+              <span class="svc-tag">Montaje de subconjuntos</span><span class="svc-tag">Verificación</span>
+              <span class="svc-tag">Prototipos y series</span><span class="svc-tag">Siemens NX</span>
             </div>
           </div>
         </div>
@@ -557,16 +550,12 @@
       <div class="svc-body">
         <div class="svc-inner">
           <div class="svc-content">
-            <p class="svc-desc">Soluciones a medida para la verificación de piezas seriadas y prototipos. Diseño 3D, análisis, fabricación, montaje y validación final. Precisión y fiabilidad en cada comprobación.</p>
+            <p class="svc-desc">Soluciones a medida para la verificación de piezas seriadas y prototipos. Diseño 3D, análisis, fabricación, montaje y validación final. Precisión y fiabilidad adaptadas a cada especificación.</p>
             <div class="svc-tags">
-              <span class="svc-tag">Automoción</span>
-              <span class="svc-tag">Fibra de carbono</span>
-              <span class="svc-tag">Probetas y ensayos</span>
-              <span class="svc-tag">Recanteo y posición</span>
-              <span class="svc-tag">Plásticos</span>
-              <span class="svc-tag">Composites</span>
-              <span class="svc-tag">Diseño 3D</span>
-              <span class="svc-tag">Validación</span>
+              <span class="svc-tag">Automoción</span><span class="svc-tag">Fibra de carbono</span>
+              <span class="svc-tag">Probetas y ensayos</span><span class="svc-tag">Recanteo y posición</span>
+              <span class="svc-tag">Plásticos</span><span class="svc-tag">Composites</span>
+              <span class="svc-tag">Diseño 3D</span><span class="svc-tag">Validación</span>
             </div>
           </div>
         </div>
@@ -576,7 +565,7 @@
 </section>
 
 
-<!-- ── CAPACIDADES ───────────────────────────── -->
+<!-- ── CAPACIDADES ─────────────────────────────────── -->
 <section id="capacidades" class="section section-light">
   <h2 class="svc-h2 rv">Maquinaria<br/>&amp; equipos.</h2>
   <div class="cap-grid rv d1">
@@ -587,7 +576,7 @@
         <div><div class="spec-k">Recorridos X·Y·Z</div><div class="spec-v">1000×700×1000 mm</div></div>
         <div><div class="spec-k">Velocidad husillo</div><div class="spec-v big">18.000<em> rpm</em></div></div>
         <div><div class="spec-k">Unidades</div><div class="spec-v big">1</div></div>
-        <div><div class="spec-k">Materiales</div><div class="spec-v" style="color:rgba(17,17,17,.45);font-size:.85rem;">Acero · Aluminio · Composites</div></div>
+        <div><div class="spec-k">Materiales</div><div class="spec-v" style="font-size:.82rem;color:rgba(17,17,17,.4)">Acero · Aluminio · Composites</div></div>
       </div>
     </div>
     <div class="machine">
@@ -597,7 +586,7 @@
         <div><div class="spec-k">Recorridos X·Y·Z</div><div class="spec-v">1120×510×510 mm</div></div>
         <div><div class="spec-k">Velocidad husillo</div><div class="spec-v big">10.000<em> rpm</em></div></div>
         <div><div class="spec-k">Unidades</div><div class="spec-v big">2</div></div>
-        <div><div class="spec-k">Materiales</div><div class="spec-v" style="color:rgba(17,17,17,.45);font-size:.85rem;">Acero · Aluminio · Resinas</div></div>
+        <div><div class="spec-k">Materiales</div><div class="spec-v" style="font-size:.82rem;color:rgba(17,17,17,.4)">Acero · Aluminio · Resinas</div></div>
       </div>
     </div>
   </div>
@@ -610,7 +599,7 @@
 </section>
 
 
-<!-- ── CONTACTO ──────────────────────────────── -->
+<!-- ── CONTACTO ────────────────────────────────────── -->
 <section id="contacto" class="section section-white">
   <h2 class="svc-h2 rv">¿Hablamos<br/>de tu <em style="font-style:normal;color:#ee7419">proyecto?</em></h2>
   <div class="contact-split">
@@ -632,10 +621,10 @@
         <input type="tel" class="fi" placeholder="Teléfono" autocomplete="tel"/>
       </div>
       <textarea class="fi" rows="4" placeholder="Tipo de pieza, material, volumen…" required></textarea>
-      <div style="display:flex;align-items:center;gap:16px;">
-        <button type="submit" class="btn-dark --fill" id="fsub">
+      <div style="display:flex;align-items:center;gap:16px">
+        <button type="submit" class="btn-submit" id="fsub">
           Enviar consulta
-          <span class="btn-icon" style="background:rgba(255,255,255,.12)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
         </button>
         <span id="fok" style="display:none;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#ee7419">Recibido ✓</span>
       </div>
@@ -644,7 +633,7 @@
 </section>
 
 
-<!-- ── FOOTER ────────────────────────────────── -->
+<!-- ── FOOTER ──────────────────────────────────────── -->
 <footer>
   <div class="f-logo">
     <svg width="18" height="14" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
@@ -665,20 +654,22 @@
 
 
 <script>
-// ── Clip-line reveal on load
+// Clip-line reveal on load
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.querySelectorAll('.clip-line').forEach(el => el.classList.add('on'));
-  }, 100);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.clip-line').forEach(el => el.classList.add('on'));
+    });
+  });
 });
 
-// ── Scroll reveal
+// Scroll reveal
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-// ── Accordion
+// Accordion
 function toggleSvc(id) {
   const item = document.getElementById(id);
   const isOpen = item.classList.contains('open');
@@ -686,12 +677,16 @@ function toggleSvc(id) {
   if (!isOpen) { item.classList.add('open'); item.querySelector('button').setAttribute('aria-expanded','true'); }
 }
 
-// ── Form
+// Form
 document.getElementById('cform').addEventListener('submit', function(e) {
   e.preventDefault();
   const btn = document.getElementById('fsub');
   btn.textContent = 'Enviando…'; btn.disabled = true;
-  setTimeout(() => { document.getElementById('fok').style.display = 'inline'; this.reset(); btn.innerHTML = 'Enviado ✓'; }, 1200);
+  setTimeout(() => {
+    document.getElementById('fok').style.display = 'inline';
+    this.reset();
+    btn.textContent = 'Enviado ✓';
+  }, 1200);
 });
 </script>
 </body>
