@@ -3,706 +3,405 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Artazu Mechanics — Mecanizado de precisión</title>
-  <meta name="description" content="Mecanizado bajo plano y utillajes de verificación. Partner industrial de precisión."/>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            o:    '#ee7419',
-            ink:  '#141414',
-            bone: '#F5F3EF',
-            mist: '#EDEAE4',
-            dim:  '#7a7570',
-          },
-          fontFamily: {
-            serif: ['"Playfair Display"','Georgia','serif'],
-            sans:  ['Barlow','system-ui','sans-serif'],
-            cond:  ['"Barlow Condensed"','sans-serif'],
-          },
-        },
-      },
-    }
-  </script>
-
+  <title>Artazu Mechanics</title>
+  <meta name="description" content="Mecanizado de precisión y utillajes de verificación. Partner industrial."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-    body { font-family: 'Barlow', sans-serif; background: #F5F3EF; color: #141414; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #0d0d0d; color: #e8e4df; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    :root { --o: #ee7419; --dark: #0d0d0d; --light: #f0ede8; --dim: rgba(232,228,223,.4); }
+    ::-webkit-scrollbar { width: 2px; }
+    ::-webkit-scrollbar-thumb { background: var(--o); }
 
-    /* ── Scroll reveal ─────────────── */
-    .rv  { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
-    .rv.on  { opacity: 1; transform: none; }
-    .rv-r { opacity: 0; transform: translateX(30px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
-    .rv-r.on { opacity: 1; transform: none; }
-    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
-    .d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+    [data-r] { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+    [data-r].on { opacity: 1; transform: none; }
+    .d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}
 
-    /* ── Hero anim ─────────────────── */
-    @keyframes rise { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
-    @keyframes appear { from { opacity:0; } to { opacity:1; } }
-    .ha { opacity:0; animation: rise .9s cubic-bezier(.22,1,.36,1) forwards; }
-    .hb { opacity:0; animation: appear 1.1s ease forwards; }
-    .a1{animation-delay:.1s}.a2{animation-delay:.25s}.a3{animation-delay:.4s}
-    .a4{animation-delay:.55s}.a5{animation-delay:.8s}.a6{animation-delay:1.1s}
+    /* NAV */
+    nav#topnav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;transition:background .4s; }
+    nav#topnav.bg { background:rgba(13,13,13,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05); }
+    .logo { display:flex;align-items:center;gap:10px;text-decoration:none; }
+    .logo-name { font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:.12em;color:var(--light); }
+    .nav-links { display:flex;gap:36px; }
+    .nav-links a { font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,223,.4);text-decoration:none;transition:color .2s; }
+    .nav-links a:hover { color:var(--light); }
+    .nav-cta { font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--dark);background:var(--o);padding:10px 22px;text-decoration:none;transition:background .2s; }
+    .nav-cta:hover { background:var(--light); }
+    @media(max-width:768px){.nav-links{display:none;}}
 
-    /* ── Marquee ───────────────────── */
-    .mq  { display:flex; width:max-content; animation: mq 40s linear infinite; }
-    .mq2 { animation-direction:reverse; animation-duration:50s; }
-    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    /* HERO */
+    .hero { position:relative;height:100vh;min-height:600px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden; }
+    .hero-img { position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1565688534245-05d6b5be184a?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;will-change:transform; }
+    .hero-overlay { position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,13,1) 0%,rgba(13,13,13,.65) 50%,rgba(13,13,13,.25) 100%); }
+    .hero-content { position:relative;padding:0 40px 64px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px; }
+    .hero-title { font-family:'Bebas Neue';font-size:clamp(5rem,14vw,13rem);line-height:.9;letter-spacing:.02em;color:var(--light); }
+    .hero-title em { color:var(--o);display:block;font-style:normal; }
+    .hero-meta { display:flex;flex-direction:column;gap:20px;max-width:280px;padding-bottom:6px; }
+    .hero-tag { font-size:.65rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--o); }
+    .hero-desc { font-size:.85rem;font-weight:300;line-height:1.8;color:rgba(232,228,223,.5); }
+    .hero-link { display:inline-flex;align-items:center;gap:10px;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--o);text-decoration:none; }
+    .hero-scroll { position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.2; }
+    .hero-scroll div { width:1px;height:48px;background:linear-gradient(to bottom,var(--light),transparent); }
+    .hero-scroll p { font-size:.55rem;letter-spacing:.28em;text-transform:uppercase; }
+    @media(max-width:768px){ .hero-content{flex-direction:column;align-items:flex-start;padding:0 24px 48px;} .hero-meta{max-width:100%;} }
 
-    /* ── Accent rule ───────────────── */
-    .rule { display:block; width:40px; height:1px; background:#ee7419; }
+    /* TICKER */
+    .ticker { background:var(--o);overflow:hidden;padding:10px 0; }
+    .ticker-track { display:flex;width:max-content;animation:tick 35s linear infinite; }
+    .ticker-track span { font-family:'Bebas Neue';font-size:1rem;letter-spacing:.15em;color:rgba(13,13,13,.65);padding:0 28px; }
+    .ticker-track .dot { color:rgba(13,13,13,.35); }
+    @keyframes tick { from{transform:translateX(0)}to{transform:translateX(-50%)} }
 
-    /* ── Underline link ─────────────── */
-    .ul-link { position:relative; display:inline-block; }
-    .ul-link::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:#ee7419; transition:width .3s cubic-bezier(.22,1,.36,1); }
-    .ul-link:hover::after { width:100%; }
+    /* LABELS / SHARED */
+    .label { font-size:.62rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--o);display:block;margin-bottom:18px; }
+    .big-title { font-family:'Bebas Neue';font-size:clamp(3rem,7vw,6.5rem);line-height:.92;letter-spacing:.03em; }
+    .body-text { font-size:.875rem;font-weight:300;line-height:1.85;color:rgba(232,228,223,.5); }
 
-    /* ── Nav scrolled ──────────────── */
-    #nav { transition: background .3s, border-color .3s; }
-    #nav.scrolled { background: rgba(245,243,239,.95); backdrop-filter: blur(12px); border-bottom-color: rgba(20,20,20,.08); }
+    /* NOSOTROS */
+    .nosotros-wrap { display:grid;grid-template-columns:1fr 1fr;min-height:75vh; }
+    .nos-photo { position:relative;overflow:hidden;background:url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80') center/cover no-repeat; }
+    .nos-photo::after { content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 55%,#0d0d0d); }
+    .nos-content { padding:80px 60px;display:flex;flex-direction:column;justify-content:center; }
+    .nos-values { margin-top:44px;border-top:1px solid rgba(255,255,255,.07); }
+    .nos-val { display:flex;align-items:center;justify-content:space-between;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07);cursor:default; }
+    .nos-val span { font-size:.85rem;font-weight:400;color:rgba(232,228,223,.55);transition:color .2s; }
+    .nos-val-dot { width:5px;height:5px;border-radius:50%;background:var(--o);opacity:0;transition:opacity .2s; }
+    .nos-val:hover span { color:var(--light); }
+    .nos-val:hover .nos-val-dot { opacity:1; }
+    @media(max-width:768px){ .nosotros-wrap{grid-template-columns:1fr;} .nos-photo{min-height:280px;} .nos-photo::after{background:linear-gradient(to top,#0d0d0d,transparent);} .nos-content{padding:48px 24px;} }
 
-    /* ── Form ──────────────────────── */
-    .fi { background:transparent; border:none; border-bottom:1px solid rgba(20,20,20,.15); padding:.75rem 0; width:100%; color:#141414; font-family:'Barlow',sans-serif; font-size:.9rem; outline:none; transition:border-color .25s; }
-    .fi:focus { border-color:#ee7419; }
-    .fi::placeholder { color:rgba(20,20,20,.25); }
+    /* STATS */
+    .stats-bar { display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07); }
+    .stat { padding:40px 32px;border-right:1px solid rgba(255,255,255,.07); }
+    .stat:last-child{border-right:none;}
+    .stat-num { font-family:'Bebas Neue';font-size:clamp(2.8rem,5vw,4.5rem);line-height:1;color:var(--light); }
+    .stat-num em { color:var(--o);font-style:normal;font-size:.42em;margin-left:4px; }
+    .stat-label { font-size:.62rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-top:6px; }
+    @media(max-width:768px){ .stats-bar{grid-template-columns:1fr 1fr;} .stat{padding:28px 20px;border-bottom:1px solid rgba(255,255,255,.07);} }
 
-    /* ── Cursor ───────────────────── */
-    #cur { position:fixed; width:6px; height:6px; background:#ee7419; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .25s, height .25s, background .25s; }
-    #cur.expand { width:36px; height:36px; background:rgba(238,116,25,.12); border:1px solid rgba(238,116,25,.5); }
-    @media (hover:none) { #cur{display:none;} }
+    /* MECANIZADO */
+    .mec-wrap { display:grid;grid-template-columns:1fr 1fr; }
+    .mec-content { padding:80px 60px;display:flex;flex-direction:column;justify-content:center; }
+    .mec-photo { position:relative;overflow:hidden;min-height:600px;background:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=900&q=80') center/cover no-repeat; }
+    .mec-photo::before { content:'';position:absolute;inset:0;background:linear-gradient(to left,transparent 55%,#0d0d0d);z-index:1; }
+    .mec-num { position:absolute;bottom:-16px;right:-8px;font-family:'Bebas Neue';font-size:16rem;line-height:1;color:rgba(255,255,255,.04);pointer-events:none; }
+    .cards { display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);margin-top:44px; }
+    .card { background:#0d0d0d;padding:24px 20px; }
+    .card-num { font-family:'Bebas Neue';font-size:1.6rem;color:rgba(238,116,25,.25);margin-bottom:10px; }
+    .card h3 { font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-bottom:6px; }
+    .card p { font-size:.76rem;font-weight:300;line-height:1.7;color:var(--dim); }
+    @media(max-width:768px){ .mec-wrap{grid-template-columns:1fr;} .mec-content{padding:48px 24px;} .mec-photo{min-height:260px;order:-1;} .mec-photo::before{background:linear-gradient(to top,#0d0d0d,transparent);} }
 
-    /* ── Scrollbar ────────────────── */
-    ::-webkit-scrollbar { width:2px; }
-    ::-webkit-scrollbar-track { background:#F5F3EF; }
-    ::-webkit-scrollbar-thumb { background:#ee7419; }
+    /* PROCESO */
+    .proceso { padding:64px 60px;border-top:1px solid rgba(255,255,255,.06); }
+    .proceso-steps { display:flex;overflow-x:auto;margin-top:36px;gap:0; }
+    .step { flex:1;min-width:130px;padding:20px 24px;border-right:1px solid rgba(255,255,255,.06); }
+    .step:last-child{border-right:none;}
+    .step-n { font-family:'Bebas Neue';font-size:2.2rem;color:rgba(238,116,25,.2);line-height:1;margin-bottom:8px; }
+    .step h4 { font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light); }
+    .step p { font-size:.71rem;font-weight:300;color:var(--dim);margin-top:5px;line-height:1.6; }
+    @media(max-width:768px){.proceso{padding:48px 24px;}}
 
-    @media (prefers-reduced-motion:reduce) {
-      .rv,.rv-r{opacity:1;transform:none;transition:none;}
-      .ha,.hb{opacity:1;animation:none;}
-      .mq{animation:none;}
-    }
+    /* MQ SEP */
+    .mq-sep { overflow:hidden;border-top:1px solid rgba(255,255,255,.04);background:#111;padding:18px 0; }
+    .mq-track { display:flex;width:max-content;animation:mq 55s linear infinite reverse; }
+    .mq-track .mw { font-family:'Bebas Neue';font-size:clamp(3rem,7vw,5.5rem);letter-spacing:.06em;color:rgba(255,255,255,.04);padding:0 36px;white-space:nowrap; }
+    .mq-track .mo { color:rgba(238,116,25,.07); }
+    @keyframes mq { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+
+    /* UTILLAJES */
+    .uti-wrap { display:grid;grid-template-columns:1fr 1fr;background:#f0ede8; }
+    .uti-photo { position:relative;overflow:hidden;min-height:600px;background:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80') center/cover no-repeat; }
+    .uti-photo::after { content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 55%,#f0ede8); }
+    .uti-content { padding:80px 60px;display:flex;flex-direction:column;justify-content:center; }
+    .uti-content .label { color:var(--o); }
+    .uti-content .big-title,.uti-content h2 { color:#0d0d0d; }
+    .uti-content .body-text { color:rgba(13,13,13,.5); }
+    .apps { display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid rgba(13,13,13,.1);margin-top:36px; }
+    .app { padding:20px;border-bottom:1px solid rgba(13,13,13,.1);border-right:1px solid rgba(13,13,13,.1); }
+    .app:nth-child(2n){border-right:none;}
+    .app:nth-last-child(-n+2){border-bottom:none;}
+    .app-n { font-size:.6rem;letter-spacing:.2em;color:var(--o);font-weight:500;margin-bottom:5px;text-transform:uppercase; }
+    .app h4 { font-size:.8rem;font-weight:600;color:#0d0d0d;margin-bottom:3px; }
+    .app p { font-size:.74rem;font-weight:300;color:rgba(13,13,13,.45);line-height:1.6; }
+    .app.span2 { grid-column:span 2;border-right:none; }
+    @media(max-width:768px){ .uti-wrap{grid-template-columns:1fr;} .uti-photo{min-height:260px;} .uti-photo::after{background:linear-gradient(to bottom,transparent,#f0ede8);} .uti-content{padding:48px 24px;} }
+
+    /* CAPACIDADES */
+    .cap-wrap { padding:80px 60px;border-top:1px solid rgba(255,255,255,.06); }
+    .maquinas { display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);margin-top:44px; }
+    .maquina { background:#0d0d0d;padding:48px; }
+    .maq-badge { display:inline-block;font-size:.6rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--o);border:1px solid rgba(238,116,25,.3);padding:6px 14px;margin-bottom:20px; }
+    .maq-name { font-family:'Bebas Neue';font-size:clamp(2rem,4vw,3.5rem);line-height:1;color:var(--light);margin-bottom:32px; }
+    .maq-specs { display:grid;grid-template-columns:1fr 1fr;gap:24px; }
+    .spec-k { font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:5px; }
+    .spec-v { font-size:.9rem;font-weight:400;color:var(--light); }
+    .spec-v.big { font-family:'Bebas Neue';font-size:2.2rem;line-height:1; }
+    .spec-v.big em { font-size:.42em;font-style:normal;color:var(--dim);font-family:'Inter';font-weight:300; }
+    .sect { margin-top:56px;border-top:1px solid rgba(255,255,255,.06);padding-top:44px; }
+    .sect-tags { display:flex;flex-wrap:wrap;gap:10px;margin-top:20px; }
+    .sect-tag { font-size:.75rem;font-weight:400;color:rgba(232,228,223,.45);border:1px solid rgba(255,255,255,.1);padding:10px 20px;transition:border-color .2s,color .2s;cursor:default; }
+    .sect-tag:hover { border-color:var(--o);color:var(--o); }
+    @media(max-width:768px){ .cap-wrap{padding:48px 24px;} .maquinas{grid-template-columns:1fr;} .maquina{padding:32px 20px;} }
+
+    /* CONTACTO */
+    .contact-wrap { display:grid;grid-template-columns:1fr 1fr; }
+    .cta-left { background:var(--o);padding:80px 60px;display:flex;flex-direction:column;justify-content:space-between; }
+    .cta-title { font-family:'Bebas Neue';font-size:clamp(3.5rem,8vw,7rem);line-height:.88;color:#0d0d0d; }
+    .cta-data { display:flex;flex-direction:column;gap:22px;margin-top:40px; }
+    .ci-l { font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(13,13,13,.5);margin-bottom:4px; }
+    .ci-v { font-size:.9rem;font-weight:500;color:#0d0d0d;text-decoration:none;transition:opacity .2s; }
+    .ci-v:hover{opacity:.6;}
+    .cta-right { background:#111;padding:80px 60px; }
+    .fi { display:block;width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.1);padding:13px 0;color:var(--light);font-family:'Inter';font-size:.85rem;font-weight:300;outline:none;transition:border-color .2s;margin-bottom:24px; }
+    .fi::placeholder{color:rgba(232,228,223,.2);}
+    .fi:focus{border-color:var(--o);}
+    .fi-row { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
+    .btn-sub { font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:var(--o);color:#0d0d0d;border:none;padding:14px 30px;cursor:pointer;transition:background .2s; }
+    .btn-sub:hover{background:var(--light);}
+    .form-ok { display:none;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--o);font-weight:500;margin-left:16px; }
+    @media(max-width:768px){ .contact-wrap{grid-template-columns:1fr;} .cta-left{padding:48px 24px;} .cta-right{padding:48px 24px;} .fi-row{grid-template-columns:1fr;} }
+
+    /* FOOTER */
+    footer { display:flex;align-items:center;justify-content:space-between;padding:22px 40px;border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap;gap:14px; }
+    .f-logo { display:flex;align-items:center;gap:10px; }
+    .f-name { font-family:'Bebas Neue';font-size:.9rem;letter-spacing:.15em;color:rgba(232,228,223,.18); }
+    .f-nav a { font-size:.62rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,223,.14);text-decoration:none;margin-left:24px;transition:color .2s; }
+    .f-nav a:hover{color:var(--o);}
+    .f-copy { font-size:.58rem;letter-spacing:.14em;color:rgba(232,228,223,.1);text-transform:uppercase; }
+    @media(max-width:768px){footer{padding:20px 24px;flex-direction:column;align-items:flex-start;gap:10px;} .f-nav a{margin-left:0;margin-right:16px;}}
+
+    @media(prefers-reduced-motion:reduce){ [data-r]{opacity:1;transform:none;transition:none;} .ticker-track,.mq-track{animation:none;} }
   </style>
 </head>
 <body>
 
-<!-- Cursor -->
-<div id="cur" aria-hidden="true"></div>
-
-<!-- ══════════════════════════════
-     NAV
-══════════════════════════════ -->
-<header id="nav" class="fixed top-0 left-0 right-0 z-50 border-b border-transparent">
-  <div class="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
-
-    <a href="#inicio" class="flex items-center gap-2.5 cursor-pointer" aria-label="Artazu Mechanics">
-      <svg width="20" height="17" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
-        <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-        <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-        <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
-      </svg>
-      <span class="font-cond font-semibold text-[.8rem] tracking-[.18em] text-ink uppercase">Artazu Mechanics</span>
-    </a>
-
-    <nav class="hidden md:flex items-center gap-10" aria-label="Navegación principal">
-      <a href="#nosotros"    class="ul-link font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-dim hover:text-ink transition-colors cursor-pointer">Nosotros</a>
-      <a href="#mecanizado"  class="ul-link font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-dim hover:text-ink transition-colors cursor-pointer">Mecanizado</a>
-      <a href="#utillajes"   class="ul-link font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-dim hover:text-ink transition-colors cursor-pointer">Utillajes</a>
-      <a href="#capacidades" class="ul-link font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-dim hover:text-ink transition-colors cursor-pointer">Capacidades</a>
-    </nav>
-
-    <a href="#contacto" class="hidden md:inline-flex items-center gap-2 font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-ink border border-ink px-5 py-2.5 hover:bg-ink hover:text-bone transition-colors duration-200 cursor-pointer">
-      Contacto
-    </a>
-
-    <button id="ham" class="md:hidden flex flex-col gap-1.5 cursor-pointer" aria-label="Menú" aria-expanded="false">
-      <span class="ham-l block w-6 h-px bg-ink transition-all duration-300"></span>
-      <span class="ham-l block w-6 h-px bg-ink transition-all duration-300"></span>
-      <span class="ham-l block w-4 h-px bg-ink transition-all duration-300"></span>
-    </button>
-  </div>
-</header>
-
-<!-- Mobile menu -->
-<div id="mob" class="fixed inset-0 z-40 bg-bone hidden flex-col justify-center px-8 gap-8">
-  <a href="#nosotros"    class="mob-l font-serif italic text-4xl text-ink hover:text-o transition-colors cursor-pointer">Nosotros</a>
-  <a href="#mecanizado"  class="mob-l font-serif italic text-4xl text-ink hover:text-o transition-colors cursor-pointer">Mecanizado</a>
-  <a href="#utillajes"   class="mob-l font-serif italic text-4xl text-ink hover:text-o transition-colors cursor-pointer">Utillajes</a>
-  <a href="#capacidades" class="mob-l font-serif italic text-4xl text-ink hover:text-o transition-colors cursor-pointer">Capacidades</a>
-  <a href="#contacto"    class="mob-l font-serif italic text-4xl text-o cursor-pointer">Contacto</a>
-</div>
-
-
-<!-- ══════════════════════════════
-     HERO
-══════════════════════════════ -->
-<section id="inicio" class="relative min-h-screen bg-bone flex flex-col justify-end overflow-hidden pt-16">
-
-  <!-- Isotipo watermark -->
-  <div id="iso-par" class="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none select-none" aria-hidden="true">
-    <svg style="width:min(55vw,700px);opacity:.04;" viewBox="0 0 8810.4 7443.53" fill="none">
-      <path fill="#141414" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-      <path fill="#141414" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-      <circle fill="#141414" cx="1101.91" cy="6341.62" r="1101.91"/>
+<nav id="topnav">
+  <a href="#" class="logo" aria-label="Artazu Mechanics">
+    <svg width="22" height="18" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+      <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+      <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+      <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
     </svg>
+    <span class="logo-name">Artazu Mechanics</span>
+  </a>
+  <div class="nav-links">
+    <a href="#nosotros">Nosotros</a>
+    <a href="#mecanizado">Mecanizado</a>
+    <a href="#utillajes">Utillajes</a>
+    <a href="#capacidades">Capacidades</a>
   </div>
+  <a href="#contacto" class="nav-cta">Contacto</a>
+</nav>
 
-  <div class="relative max-w-[1440px] mx-auto px-6 lg:px-12 w-full pb-20 pt-24">
-
-    <p class="ha a1 font-sans font-medium text-[.7rem] tracking-[.3em] uppercase text-o mb-10">
-      Partner industrial de precisión — Mecanizado &amp; Verificación
-    </p>
-
-    <h1 class="mb-12 leading-[1.0]">
-      <span class="ha a2 block font-serif font-light italic text-ink"
-            style="font-size:clamp(3.5rem,9vw,9rem);">De la necesidad</span>
-      <span class="ha a3 block font-serif font-black text-ink"
-            style="font-size:clamp(3.5rem,9vw,9rem);">a la pieza final.</span>
-    </h1>
-
-    <div class="ha a4 grid md:grid-cols-3 gap-0 border-t border-ink/10 pt-10 max-w-4xl">
-      <div class="pr-10 pb-8 md:pb-0 border-b md:border-b-0 md:border-r border-ink/10">
-        <p class="font-serif font-black text-ink leading-none mb-2" style="font-size:3.5rem;">5</p>
-        <p class="font-cond font-semibold text-[.7rem] tracking-[.2em] uppercase text-dim">ejes de mecanizado</p>
-      </div>
-      <div class="px-0 md:px-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-ink/10">
-        <p class="font-serif font-black text-ink leading-none mb-2" style="font-size:3.5rem;">0,01</p>
-        <p class="font-cond font-semibold text-[.7rem] tracking-[.2em] uppercase text-dim">mm de tolerancia</p>
-      </div>
-      <div class="pt-8 md:pt-0 md:pl-10">
-        <p class="font-sans font-light text-dim leading-relaxed text-sm max-w-xs" style="line-height:1.8;">
-          Fabricamos piezas de alta precisión con gestión integral del proceso — desde el plano hasta la entrega verificada.
-        </p>
-        <a href="#nosotros" class="ul-link mt-6 inline-flex items-center gap-3 font-sans text-[.75rem] font-medium tracking-[.14em] uppercase text-ink cursor-pointer">
-          Conocer más
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
-        </a>
-      </div>
+<div class="hero" id="inicio">
+  <div class="hero-img" id="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">ARTAZU<em>MECHANICS</em></h1>
+    <div class="hero-meta">
+      <p class="hero-tag">Partner industrial de precisión</p>
+      <p class="hero-desc">De la necesidad a la pieza final. Mecanizado bajo plano y utillajes de verificación con gestión integral del proceso.</p>
+      <a href="#mecanizado" class="hero-link">
+        Descubrir servicios
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+      </a>
     </div>
   </div>
+  <div class="hero-scroll" aria-hidden="true"><div></div><p>Scroll</p></div>
+</div>
 
-  <div class="ha a5 absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30" aria-hidden="true">
-    <div style="width:1px;height:50px;background:linear-gradient(to bottom,#141414,transparent);"></div>
-    <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-ink">Scroll</p>
-  </div>
-</section>
-
-
-<!-- ══════════════════════════════
-     TICKER
-══════════════════════════════ -->
-<div class="bg-ink overflow-hidden py-2.5 select-none" aria-hidden="true">
-  <div class="mq">
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Automoción</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Aeronáutico</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Ferroviario</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Industria general</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Siemens NX</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Tolerancias ±0,01 mm</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Automoción</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Aeronáutico</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Ferroviario</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Industria general</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Siemens NX</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
-    <span class="font-cond font-semibold text-bone/30 text-xs tracking-[.25em] uppercase px-8">Tolerancias ±0,01 mm</span>
-    <span class="text-o/60 px-4 text-xs">·</span>
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Automoción</span><span class="dot">·</span><span>Aeronáutico</span><span class="dot">·</span><span>Ferroviario</span><span class="dot">·</span><span>Industria General</span><span class="dot">·</span><span>Siemens NX</span><span class="dot">·</span><span>5 Ejes</span><span class="dot">·</span><span>±0,01 mm</span><span class="dot">·</span>
+    <span>Automoción</span><span class="dot">·</span><span>Aeronáutico</span><span class="dot">·</span><span>Ferroviario</span><span class="dot">·</span><span>Industria General</span><span class="dot">·</span><span>Siemens NX</span><span class="dot">·</span><span>5 Ejes</span><span class="dot">·</span><span>±0,01 mm</span><span class="dot">·</span>
   </div>
 </div>
 
-
-<!-- ══════════════════════════════
-     NOSOTROS
-══════════════════════════════ -->
-<section id="nosotros" class="bg-bone py-32 px-6 lg:px-12 border-b border-ink/[.07]">
-  <div class="max-w-[1440px] mx-auto">
-    <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-
-      <div class="lg:col-span-5">
-        <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-8">Quiénes somos</p>
-        <h2 class="rv font-serif leading-[1.05] text-ink mb-12" style="font-size:clamp(2.6rem,5vw,4.8rem);">
-          Más que un<br/>proveedor,<br/><em class="text-o">tu partner.</em>
-        </h2>
-
-        <div class="rv d2 border-t border-ink/[.07]">
-          <div class="flex items-center justify-between py-5 border-b border-ink/[.07] group cursor-default">
-            <p class="font-sans font-medium text-sm text-ink">Flexibilidad total</p>
-            <span class="rule opacity-0 group-hover:opacity-100 transition-opacity"></span>
-          </div>
-          <div class="flex items-center justify-between py-5 border-b border-ink/[.07] group cursor-default">
-            <p class="font-sans font-medium text-sm text-ink">Alto nivel técnico</p>
-            <span class="rule opacity-0 group-hover:opacity-100 transition-opacity"></span>
-          </div>
-          <div class="flex items-center justify-between py-5 border-b border-ink/[.07] group cursor-default">
-            <p class="font-sans font-medium text-sm text-ink">Control de calidad exhaustivo</p>
-            <span class="rule opacity-0 group-hover:opacity-100 transition-opacity"></span>
-          </div>
-          <div class="flex items-center justify-between py-5 group cursor-default">
-            <p class="font-sans font-medium text-sm text-ink">Plazos gestionados</p>
-            <span class="rule opacity-0 group-hover:opacity-100 transition-opacity"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="lg:col-span-7 lg:pt-20">
-        <p class="rv d1 font-sans font-light text-dim leading-relaxed max-w-xl mb-10" style="font-size:1.05rem;line-height:1.85;">
-          Nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor que asume la responsabilidad completa del proceso.
-        </p>
-        <p class="rv d2 font-sans font-light text-dim leading-relaxed max-w-xl mb-16" style="line-height:1.85;">
-          Desde la interpretación del plano hasta la entrega final, gestionamos aprovisionamiento de materiales, mecanizado, tratamientos, montaje y verificación. Tú te concentras en tu negocio.
-        </p>
-        <div class="rv d3 flex justify-end opacity-70" aria-hidden="true">
-          <svg style="width:min(38%,190px);" viewBox="0 0 8810.4 7443.53" fill="none">
-            <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-            <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-            <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════════════
-     MECANIZADO
-══════════════════════════════ -->
-<section id="mecanizado" class="bg-bone py-32 px-6 lg:px-12 border-b border-ink/[.07]">
-  <div class="max-w-[1440px] mx-auto">
-
-    <div class="flex items-end justify-between mb-20 border-b border-ink/[.07] pb-8">
+<section id="nosotros">
+  <div class="nosotros-wrap">
+    <div class="nos-photo" role="img" aria-label="Mecanizado de precisión"></div>
+    <div class="nos-content">
       <div>
-        <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-o mb-4">Servicio 01</p>
-        <h2 class="rv font-serif text-ink leading-[1.0]" style="font-size:clamp(2.6rem,5.5vw,5rem);">
-          Mecanizado bajo<br/>plano con enfoque<br/><em>integral.</em>
-        </h2>
+        <span class="label" data-r>Quiénes somos</span>
+        <h2 class="big-title" data-r style="color:var(--light);">MÁS QUE<br/>UN<br/>PROVEEDOR.</h2>
+        <p class="body-text" data-r style="margin-top:22px;max-width:400px;">Nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano. Un único interlocutor que asume la responsabilidad completa del proceso.</p>
       </div>
-      <span class="rv-r font-serif font-black text-ink/[.04] leading-none select-none hidden lg:block" style="font-size:10rem;line-height:.8;" aria-hidden="true">01</span>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-0 border border-ink/[.07] mb-20">
-      <div class="rv p-10 border-b md:border-b-0 md:border-r border-ink/[.07] hover:bg-mist transition-colors duration-300 cursor-default">
-        <span class="rule mb-6 block"></span>
-        <h3 class="font-serif font-bold text-ink text-xl mb-4">Mecanizado bajo plano</h3>
-        <p class="font-sans font-light text-dim text-sm" style="line-height:1.8;">
-          Fabricación de piezas conforme a planos del cliente con tolerancias estrictas. Verificación dimensional integrada en el proceso productivo.
-        </p>
-      </div>
-      <div class="rv d1 p-10 border-b md:border-b-0 border-ink/[.07] hover:bg-mist transition-colors duration-300 cursor-default">
-        <span class="rule mb-6 block"></span>
-        <h3 class="font-serif font-bold text-ink text-xl mb-4">Servicio 360°</h3>
-        <p class="font-sans font-light text-dim text-sm" style="line-height:1.8;">
-          Gestión integral desde el aprovisionamiento de materiales hasta la entrega: mecanizado, tratamientos térmicos y superficiales, montaje, verificación.
-        </p>
-      </div>
-      <div class="rv d2 p-10 md:border-r border-ink/[.07] hover:bg-mist transition-colors duration-300 cursor-default">
-        <span class="rule mb-6 block"></span>
-        <h3 class="font-serif font-bold text-ink text-xl mb-4">Prototipos y series</h3>
-        <p class="font-sans font-light text-dim text-sm" style="line-height:1.8;">
-          Flexibilidad para proyectos unitarios o series. Adaptación ágil a cambios de diseño o modificaciones de plano durante el proceso.
-        </p>
-      </div>
-      <div class="rv d3 p-10 hover:bg-mist transition-colors duration-300 cursor-default">
-        <span class="rule mb-6 block"></span>
-        <h3 class="font-serif font-bold text-ink text-xl mb-4">Ingeniería &amp; CAD/CAM</h3>
-        <p class="font-sans font-light text-dim text-sm" style="line-height:1.8;">
-          Oficina técnica propia con Siemens NX. Interpretación de planos, optimización de diseño, soporte en el desarrollo y análisis de viabilidad.
-        </p>
+      <div class="nos-values" data-r>
+        <div class="nos-val"><span>Flexibilidad total</span><div class="nos-val-dot"></div></div>
+        <div class="nos-val"><span>Alto nivel técnico</span><div class="nos-val-dot"></div></div>
+        <div class="nos-val"><span>Control de calidad</span><div class="nos-val-dot"></div></div>
+        <div class="nos-val"><span>Plazos garantizados</span><div class="nos-val-dot"></div></div>
       </div>
     </div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat" data-r><div class="stat-num">5<em>EJES</em></div><div class="stat-label">Mecanizado máximo</div></div>
+    <div class="stat d1" data-r><div class="stat-num">0,01<em>mm</em></div><div class="stat-label">Tolerancia</div></div>
+    <div class="stat d2" data-r><div class="stat-num">360<em>°</em></div><div class="stat-label">Gestión integral</div></div>
+    <div class="stat d3" data-r><div class="stat-num">2<em>SVC</em></div><div class="stat-label">Servicios especializados</div></div>
+  </div>
+</section>
 
-    <div class="rv border-t border-ink/[.07] pt-12">
-      <p class="font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-8">Proceso</p>
-      <div class="flex flex-wrap items-center gap-0">
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">01</span>
-          <span class="font-sans font-medium text-sm text-ink">Interpretación</span>
-        </div>
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">02</span>
-          <span class="font-sans font-medium text-sm text-ink">Aprovisionamiento</span>
-        </div>
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">03</span>
-          <span class="font-sans font-medium text-sm text-ink">Mecanizado</span>
-        </div>
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">04</span>
-          <span class="font-sans font-medium text-sm text-ink">Tratamientos</span>
-        </div>
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-ink/10 py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">05</span>
-          <span class="font-sans font-medium text-sm text-ink">Verificación</span>
-        </div>
-        <div class="flex items-center gap-4 py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">06</span>
-          <span class="font-sans font-medium text-sm text-ink">Entrega</span>
-        </div>
+<section id="mecanizado">
+  <div class="mec-wrap">
+    <div class="mec-content">
+      <span class="label" data-r>Servicio 01</span>
+      <h2 class="big-title" data-r style="color:var(--light);">MECANIZADO<br/>BAJO<br/>PLANO.</h2>
+      <p class="body-text" data-r style="margin-top:22px;max-width:420px;">De la necesidad a la pieza final. Fabricación bajo plano con gestión integral — aprovisionamiento, mecanizado, tratamientos, montaje y verificación.</p>
+      <div class="cards" data-r>
+        <div class="card"><div class="card-num">01</div><h3>Bajo plano</h3><p>Fiel a especificaciones con tolerancias estrictas y verificación integrada.</p></div>
+        <div class="card"><div class="card-num">02</div><h3>Servicio 360°</h3><p>Material, tratamientos, montaje y entrega. Un solo interlocutor.</p></div>
+        <div class="card"><div class="card-num">03</div><h3>Prototipos y series</h3><p>Flexibilidad desde piezas únicas hasta producción en serie.</p></div>
+        <div class="card"><div class="card-num">04</div><h3>CAD/CAM</h3><p>Oficina técnica propia con Siemens NX. Soporte desde el primer plano.</p></div>
       </div>
+    </div>
+    <div class="mec-photo" role="img" aria-label="Proceso de fabricación industrial"><div class="mec-num" aria-hidden="true">01</div></div>
+  </div>
+  <div class="proceso">
+    <span class="label" data-r>Proceso completo</span>
+    <div class="proceso-steps" data-r>
+      <div class="step"><div class="step-n">01</div><h4>Interpretación</h4><p>Análisis del plano y viabilidad.</p></div>
+      <div class="step"><div class="step-n">02</div><h4>Aprovisionamiento</h4><p>Materiales y subcontratación.</p></div>
+      <div class="step"><div class="step-n">03</div><h4>Mecanizado</h4><p>Fabricación de alta precisión.</p></div>
+      <div class="step"><div class="step-n">04</div><h4>Tratamientos</h4><p>Térmicos y superficiales.</p></div>
+      <div class="step"><div class="step-n">05</div><h4>Verificación</h4><p>Control dimensional.</p></div>
+      <div class="step"><div class="step-n">06</div><h4>Entrega</h4><p>A tiempo, documentado.</p></div>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════
-     MARQUEE SEPARADOR
-══════════════════════════════ -->
-<div class="bg-mist overflow-hidden py-6 select-none border-y border-ink/[.05]" aria-hidden="true">
-  <div class="mq mq2">
-    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Precisión</span>
-    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
-    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Control</span>
-    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
-    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Calidad</span>
-    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
-    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Ingeniería</span>
-    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
-    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Precisión</span>
-    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
-    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Control</span>
-    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
-    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Calidad</span>
-    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
-    <span class="font-serif italic font-light text-ink/10 px-10" style="font-size:clamp(2.5rem,6vw,5rem);">Ingeniería</span>
-    <span class="font-sans text-o/20 px-6 text-2xl">—</span>
+<div class="mq-sep" aria-hidden="true">
+  <div class="mq-track">
+    <span class="mw">PRECISIÓN</span><span class="mo mw">—</span><span class="mw">CONTROL</span><span class="mo mw">—</span><span class="mw">INGENIERÍA</span><span class="mo mw">—</span><span class="mw">CALIDAD</span><span class="mo mw">—</span>
+    <span class="mw">PRECISIÓN</span><span class="mo mw">—</span><span class="mw">CONTROL</span><span class="mo mw">—</span><span class="mw">INGENIERÍA</span><span class="mo mw">—</span><span class="mw">CALIDAD</span><span class="mo mw">—</span>
   </div>
 </div>
 
-
-<!-- ══════════════════════════════
-     UTILLAJES
-══════════════════════════════ -->
-<section id="utillajes" class="bg-ink py-32 px-6 lg:px-12 border-b border-bone/[.06]">
-  <div class="max-w-[1440px] mx-auto">
-
-    <div class="flex items-end justify-between mb-20 border-b border-bone/[.08] pb-8">
-      <div>
-        <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-o mb-4">Servicio 02</p>
-        <h2 class="rv font-serif text-bone leading-[1.0]" style="font-size:clamp(2.6rem,5.5vw,5rem);">
-          Diseño y fabricación<br/>de utillajes de<br/><em class="text-o">verificación.</em>
-        </h2>
-      </div>
-      <span class="rv-r font-serif font-black text-bone/[.03] leading-none select-none hidden lg:block" style="font-size:10rem;line-height:.8;" aria-hidden="true">02</span>
-    </div>
-
-    <p class="rv d1 font-sans font-light text-bone/50 max-w-2xl mb-20" style="line-height:1.85;">
-      Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente. Control y fiabilidad en cada comprobación.
-    </p>
-
-    <div class="rv grid sm:grid-cols-2 lg:grid-cols-5 gap-0 border border-bone/[.07] mb-20">
-      <div class="p-8 border-r border-bone/[.07] hover:bg-bone/[.03] transition-colors cursor-default">
-        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">01</p>
-        <p class="font-serif font-bold text-bone text-base mb-3">Automoción</p>
-        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Verificación en línea de producción.</p>
-      </div>
-      <div class="p-8 border-r border-bone/[.07] hover:bg-bone/[.03] transition-colors cursor-default">
-        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">02</p>
-        <p class="font-serif font-bold text-bone text-base mb-3">Fibra de carbono</p>
-        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Composites y materiales avanzados.</p>
-      </div>
-      <div class="p-8 border-r border-bone/[.07] hover:bg-bone/[.03] transition-colors cursor-default">
-        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">03</p>
-        <p class="font-serif font-bold text-bone text-base mb-3">Probetas</p>
-        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Útiles para ensayos y validaciones.</p>
-      </div>
-      <div class="p-8 border-r border-bone/[.07] hover:bg-bone/[.03] transition-colors cursor-default">
-        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">04</p>
-        <p class="font-serif font-bold text-bone text-base mb-3">Recanteo</p>
-        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Posicionamiento y referenciado.</p>
-      </div>
-      <div class="p-8 hover:bg-bone/[.03] transition-colors cursor-default">
-        <p class="font-cond text-[.6rem] tracking-[.25em] uppercase text-o mb-4">05</p>
-        <p class="font-serif font-bold text-bone text-base mb-3">Plásticos</p>
-        <p class="font-sans font-light text-bone/35 text-xs" style="line-height:1.7;">Composites y no metálicos.</p>
-      </div>
-    </div>
-
-    <div class="rv border-t border-bone/[.07] pt-12">
-      <p class="font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-bone/25 mb-8">Proceso completo</p>
-      <div class="flex flex-wrap items-center gap-0">
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-bone/[.07] py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">01</span>
-          <span class="font-sans font-medium text-sm text-bone/60">Diseño 3D</span>
-        </div>
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-bone/[.07] py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">02</span>
-          <span class="font-sans font-medium text-sm text-bone/60">Análisis</span>
-        </div>
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-bone/[.07] py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">03</span>
-          <span class="font-sans font-medium text-sm text-bone/60">Fabricación</span>
-        </div>
-        <div class="flex items-center gap-4 pr-8 mr-8 border-r border-bone/[.07] py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">04</span>
-          <span class="font-sans font-medium text-sm text-bone/60">Montaje</span>
-        </div>
-        <div class="flex items-center gap-4 py-2">
-          <span class="font-cond text-[.65rem] tracking-wider text-o">05</span>
-          <span class="font-sans font-medium text-sm text-bone/60">Validación final</span>
-        </div>
+<section id="utillajes">
+  <div class="uti-wrap">
+    <div class="uti-photo" role="img" aria-label="Torno de precisión en taller"></div>
+    <div class="uti-content">
+      <span class="label">Servicio 02</span>
+      <h2 class="big-title" data-r style="color:#0d0d0d;">UTILLAJES<br/>DE<br/>VERIFICACIÓN.</h2>
+      <p class="body-text" data-r style="margin-top:22px;max-width:380px;color:rgba(13,13,13,.5);">Soluciones a medida para la verificación de piezas seriadas y prototipos. Diseño, fabricación, montaje y validación final.</p>
+      <div class="apps" data-r>
+        <div class="app"><div class="app-n">01</div><h4>Automoción</h4><p>Verificación en línea de producción.</p></div>
+        <div class="app"><div class="app-n">02</div><h4>Fibra de carbono</h4><p>Composites y materiales avanzados.</p></div>
+        <div class="app"><div class="app-n">03</div><h4>Probetas</h4><p>Útiles para ensayos y validaciones.</p></div>
+        <div class="app"><div class="app-n">04</div><h4>Recanteo</h4><p>Posicionamiento y referenciado preciso.</p></div>
+        <div class="app span2"><div class="app-n">05</div><h4>Plásticos y composites</h4><p>Materiales no metálicos y compuestos.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════
-     CAPACIDADES
-══════════════════════════════ -->
-<section id="capacidades" class="bg-bone py-32 px-6 lg:px-12 border-b border-ink/[.07]">
-  <div class="max-w-[1440px] mx-auto">
-
-    <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-6">Capacidades técnicas</p>
-    <h2 class="rv font-serif text-ink leading-[1.05] mb-20" style="font-size:clamp(2.6rem,5vw,4.8rem);">
-      Maquinaria &amp;<br/>equipamiento.
-    </h2>
-
-    <div class="grid md:grid-cols-2 gap-0 border border-ink/[.07] mb-20">
-      <div class="rv p-10 border-b md:border-b-0 md:border-r border-ink/[.07]">
-        <div class="flex items-start justify-between mb-8">
-          <div>
-            <p class="font-cond font-semibold text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Centro de mecanizado</p>
-            <h3 class="font-serif font-bold text-ink text-2xl">DMU 100 T</h3>
-          </div>
-          <span class="font-cond font-semibold text-[.65rem] tracking-[.18em] uppercase text-o border border-o/40 px-3 py-1.5">5 Ejes</span>
-        </div>
-        <div class="grid grid-cols-2 gap-x-8 gap-y-6">
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Recorridos X·Y·Z</p>
-            <p class="font-sans font-medium text-ink text-sm">1000 × 700 × 1000 mm</p>
-          </div>
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Velocidad husillo</p>
-            <p class="font-serif font-black text-ink" style="font-size:2rem;line-height:1;">18.000 <span class="font-sans font-light text-dim text-sm">rpm</span></p>
-          </div>
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Unidades</p>
-            <p class="font-serif font-black text-ink" style="font-size:2rem;line-height:1;">1</p>
-          </div>
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Materiales</p>
-            <p class="font-sans font-medium text-ink text-sm">Acero · Aluminio · Composites</p>
-          </div>
+<section id="capacidades">
+  <div class="cap-wrap">
+    <span class="label" data-r>Capacidades técnicas</span>
+    <h2 class="big-title" data-r style="color:var(--light);">MAQUINARIA<br/>&amp; EQUIPOS.</h2>
+    <div class="maquinas" data-r>
+      <div class="maquina">
+        <div class="maq-badge">5 Ejes</div>
+        <div class="maq-name">DMU 100 T</div>
+        <div class="maq-specs">
+          <div><div class="spec-k">Recorridos X·Y·Z</div><div class="spec-v">1000×700×1000 mm</div></div>
+          <div><div class="spec-k">Velocidad husillo</div><div class="spec-v big">18.000<em> rpm</em></div></div>
+          <div><div class="spec-k">Unidades</div><div class="spec-v big">1</div></div>
+          <div><div class="spec-k">Materiales</div><div class="spec-v" style="font-size:.8rem;color:var(--dim);">Acero · Aluminio · Composites</div></div>
         </div>
       </div>
-
-      <div class="rv d1 p-10">
-        <div class="flex items-start justify-between mb-8">
-          <div>
-            <p class="font-cond font-semibold text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Centro de mecanizado</p>
-            <h3 class="font-serif font-bold text-ink text-2xl">Mazak VTC-200B</h3>
-          </div>
-          <span class="font-cond font-semibold text-[.65rem] tracking-[.18em] uppercase text-o border border-o/40 px-3 py-1.5">3+1 Ejes</span>
-        </div>
-        <div class="grid grid-cols-2 gap-x-8 gap-y-6">
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Recorridos X·Y·Z</p>
-            <p class="font-sans font-medium text-ink text-sm">1120 × 510 × 510 mm</p>
-          </div>
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Velocidad husillo</p>
-            <p class="font-serif font-black text-ink" style="font-size:2rem;line-height:1;">10.000 <span class="font-sans font-light text-dim text-sm">rpm</span></p>
-          </div>
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Unidades</p>
-            <p class="font-serif font-black text-ink" style="font-size:2rem;line-height:1;">2</p>
-          </div>
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.2em] uppercase text-dim mb-1.5">Materiales</p>
-            <p class="font-sans font-medium text-ink text-sm">Acero · Aluminio · Resinas</p>
-          </div>
+      <div class="maquina">
+        <div class="maq-badge">3+1 Ejes</div>
+        <div class="maq-name">Mazak VTC-200B</div>
+        <div class="maq-specs">
+          <div><div class="spec-k">Recorridos X·Y·Z</div><div class="spec-v">1120×510×510 mm</div></div>
+          <div><div class="spec-k">Velocidad husillo</div><div class="spec-v big">10.000<em> rpm</em></div></div>
+          <div><div class="spec-k">Unidades</div><div class="spec-v big">2</div></div>
+          <div><div class="spec-k">Materiales</div><div class="spec-v" style="font-size:.8rem;color:var(--dim);">Acero · Aluminio · Resinas</div></div>
         </div>
       </div>
     </div>
-
-    <div class="rv border-t border-ink/[.07] pt-12">
-      <p class="font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-8">Sectores</p>
-      <div class="flex flex-wrap gap-3">
-        <span class="font-sans font-light text-dim text-sm px-5 py-2.5 border border-ink/[.1] hover:border-o hover:text-o transition-colors cursor-default">Automoción</span>
-        <span class="font-sans font-light text-dim text-sm px-5 py-2.5 border border-ink/[.1] hover:border-o hover:text-o transition-colors cursor-default">Aeronáutico</span>
-        <span class="font-sans font-light text-dim text-sm px-5 py-2.5 border border-ink/[.1] hover:border-o hover:text-o transition-colors cursor-default">Ferroviario</span>
-        <span class="font-sans font-light text-dim text-sm px-5 py-2.5 border border-ink/[.1] hover:border-o hover:text-o transition-colors cursor-default">Industria general</span>
+    <div class="sect" data-r>
+      <span class="label">Sectores</span>
+      <div class="sect-tags">
+        <span class="sect-tag">Automoción</span>
+        <span class="sect-tag">Aeronáutico</span>
+        <span class="sect-tag">Ferroviario</span>
+        <span class="sect-tag">Industria general</span>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════
-     CONTACTO
-══════════════════════════════ -->
-<section id="contacto" class="bg-bone py-32 px-6 lg:px-12">
-  <div class="max-w-[1440px] mx-auto">
-    <div class="grid lg:grid-cols-12 gap-16 items-start">
-
-      <div class="lg:col-span-4">
-        <p class="rv font-cond font-semibold text-[.65rem] tracking-[.3em] uppercase text-dim mb-6">Contacto</p>
-        <h2 class="rv font-serif text-ink leading-[1.0] mb-12" style="font-size:clamp(3rem,6vw,5.5rem);">
-          ¿Hablamos<br/>de tu<br/><em class="text-o">proyecto?</em>
-        </h2>
-
-        <div class="rv d2 space-y-8 border-t border-ink/[.07] pt-10">
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Email</p>
-            <a href="mailto:comercial@artazumechanics.com" class="ul-link font-sans font-medium text-ink text-sm hover:text-o transition-colors cursor-pointer">
-              comercial@artazumechanics.com
-            </a>
-          </div>
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Teléfono</p>
-            <a href="tel:+34606872175" class="ul-link font-sans font-medium text-ink text-sm hover:text-o transition-colors cursor-pointer">
-              606 87 21 75
-            </a>
-          </div>
-          <div>
-            <p class="font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-2">Web</p>
-            <a href="https://www.artazumechanics.com" target="_blank" rel="noopener" class="ul-link font-sans font-medium text-ink text-sm hover:text-o transition-colors cursor-pointer">
-              www.artazumechanics.com
-            </a>
-          </div>
-        </div>
+<section id="contacto">
+  <div class="contact-wrap">
+    <div class="cta-left">
+      <h2 class="cta-title">¿HABLA<br/>MOS?</h2>
+      <div class="cta-data">
+        <div><div class="ci-l">Email</div><a href="mailto:comercial@artazumechanics.com" class="ci-v">comercial@artazumechanics.com</a></div>
+        <div><div class="ci-l">Teléfono</div><a href="tel:+34606872175" class="ci-v">606 87 21 75</a></div>
+        <div><div class="ci-l">Web</div><a href="https://www.artazumechanics.com" target="_blank" rel="noopener" class="ci-v">www.artazumechanics.com</a></div>
       </div>
-
-      <form id="cform" class="rv d1 lg:col-span-8" novalidate>
-        <div class="grid sm:grid-cols-2 gap-x-10 gap-y-10 mb-10">
-          <div>
-            <label for="fn" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Nombre</label>
-            <input id="fn" type="text" name="nombre" class="fi" placeholder="Tu nombre" required autocomplete="given-name"/>
-          </div>
-          <div>
-            <label for="fe" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Empresa</label>
-            <input id="fe" type="text" name="empresa" class="fi" placeholder="Nombre de empresa" autocomplete="organization"/>
-          </div>
-          <div>
-            <label for="fm" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Email</label>
-            <input id="fm" type="email" name="email" class="fi" placeholder="tu@empresa.com" required autocomplete="email"/>
-          </div>
-          <div>
-            <label for="ft" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Teléfono</label>
-            <input id="ft" type="tel" name="telefono" class="fi" placeholder="+34 000 000 000" autocomplete="tel"/>
-          </div>
+    </div>
+    <div class="cta-right">
+      <span class="label" style="color:var(--o);">Solicitar información</span>
+      <form id="cform" novalidate style="margin-top:28px;">
+        <div class="fi-row">
+          <input type="text" class="fi" placeholder="Nombre" required autocomplete="given-name"/>
+          <input type="text" class="fi" placeholder="Empresa" autocomplete="organization"/>
         </div>
-        <div class="mb-10">
-          <label for="fmsg" class="block font-cond text-[.6rem] tracking-[.22em] uppercase text-dim mb-3">Mensaje</label>
-          <textarea id="fmsg" name="mensaje" rows="5" class="fi" placeholder="Tipo de pieza, material, volumen…" required></textarea>
+        <div class="fi-row">
+          <input type="email" class="fi" placeholder="Email" required autocomplete="email"/>
+          <input type="tel" class="fi" placeholder="Teléfono" autocomplete="tel"/>
         </div>
-        <div class="flex items-center gap-6">
-          <button id="fsub" type="submit"
-            class="inline-flex items-center gap-3 bg-ink text-bone font-sans font-medium text-[.75rem] tracking-[.14em] uppercase px-8 py-4 hover:bg-o transition-colors duration-200 cursor-pointer group">
-            Enviar consulta
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="group-hover:translate-x-1 transition-transform" aria-hidden="true">
-              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
-            </svg>
-          </button>
-          <p id="fok" class="hidden font-cond text-[.65rem] tracking-[.2em] uppercase text-o">Recibido — te contactamos pronto.</p>
+        <textarea class="fi" rows="4" placeholder="Tipo de pieza, material, volumen aproximado…" required></textarea>
+        <div style="display:flex;align-items:center;">
+          <button type="submit" class="btn-sub" id="fsub">Enviar consulta</button>
+          <span class="form-ok" id="fok">Recibido — te contactamos pronto.</span>
         </div>
       </form>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════
-     FOOTER
-══════════════════════════════ -->
-<footer class="bg-ink py-8 px-6 lg:px-12">
-  <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-    <div class="flex items-center gap-2.5">
-      <svg width="16" height="14" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
-        <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-        <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
-        <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
-      </svg>
-      <span class="font-cond font-semibold text-[.7rem] tracking-[.2em] uppercase text-bone/30">Artazu Mechanics</span>
-    </div>
-    <div class="flex gap-8">
-      <a href="#mecanizado"  class="font-cond text-[.65rem] tracking-[.18em] uppercase text-bone/20 hover:text-o transition-colors cursor-pointer">Mecanizado</a>
-      <a href="#utillajes"   class="font-cond text-[.65rem] tracking-[.18em] uppercase text-bone/20 hover:text-o transition-colors cursor-pointer">Utillajes</a>
-      <a href="#capacidades" class="font-cond text-[.65rem] tracking-[.18em] uppercase text-bone/20 hover:text-o transition-colors cursor-pointer">Capacidades</a>
-    </div>
-    <p class="font-cond text-[.6rem] tracking-wider uppercase text-bone/10">© 2025 Artazu Mechanics</p>
+<footer>
+  <div class="f-logo">
+    <svg width="16" height="13" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+      <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+      <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+      <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+    </svg>
+    <span class="f-name">Artazu Mechanics</span>
   </div>
+  <nav class="f-nav" aria-label="Footer">
+    <a href="#mecanizado">Mecanizado</a>
+    <a href="#utillajes">Utillajes</a>
+    <a href="#capacidades">Capacidades</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <span class="f-copy">© 2025 Artazu Mechanics</span>
 </footer>
 
-
 <script>
-// Reveal
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.rv,.rv-r').forEach(el => io.observe(el));
+}, { threshold: 0.08, rootMargin: '0px 0px -36px 0px' });
+document.querySelectorAll('[data-r]').forEach(el => io.observe(el));
 
-// Nav scrolled
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 30);
-}, { passive: true });
+const nav = document.getElementById('topnav');
+window.addEventListener('scroll', () => nav.classList.toggle('bg', window.scrollY > 60), { passive: true });
 
-// Parallax isotipo hero
-const isoPar = document.getElementById('iso-par');
-window.addEventListener('scroll', () => {
-  if(isoPar) isoPar.style.transform = `translateY(calc(-50% + ${window.scrollY * .08}px))`;
-}, { passive: true });
+const heroImg = document.getElementById('hero-img');
+window.addEventListener('scroll', () => { heroImg.style.transform = `translateY(${window.scrollY * .28}px)`; }, { passive: true });
 
-// Cursor
-const cur = document.getElementById('cur');
-document.addEventListener('mousemove', e => {
-  cur.style.left = e.clientX + 'px';
-  cur.style.top  = e.clientY + 'px';
-});
-document.querySelectorAll('a,button,[class*="cursor-pointer"],[class*="cursor-default"]').forEach(el => {
-  el.addEventListener('mouseenter', () => cur.classList.add('expand'));
-  el.addEventListener('mouseleave', () => cur.classList.remove('expand'));
-});
-
-// Mobile menu
-const ham  = document.getElementById('ham');
-const mob  = document.getElementById('mob');
-const hls  = document.querySelectorAll('.ham-l');
-let open   = false;
-ham.addEventListener('click', () => {
-  open = !open;
-  ham.setAttribute('aria-expanded', open);
-  mob.classList.toggle('hidden', !open);
-  mob.classList.toggle('flex', open);
-  if(open){
-    hls[0].style.cssText = 'transform:translateY(6px) rotate(45deg)';
-    hls[1].style.cssText = 'opacity:0';
-    hls[2].style.cssText = 'transform:translateY(-6px) rotate(-45deg);width:1.5rem';
-  } else {
-    hls.forEach(l => l.removeAttribute('style'));
-  }
-});
-document.querySelectorAll('.mob-l').forEach(l => l.addEventListener('click', () => {
-  open = false; ham.setAttribute('aria-expanded','false');
-  mob.classList.add('hidden'); mob.classList.remove('flex');
-  hls.forEach(l => l.removeAttribute('style'));
-}));
-
-// Form
 document.getElementById('cform').addEventListener('submit', function(e) {
   e.preventDefault();
   const btn = document.getElementById('fsub');
   btn.textContent = 'Enviando…'; btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('fok').classList.remove('hidden');
-    this.reset(); btn.innerHTML = 'Enviado';
-  }, 1200);
+  setTimeout(() => { document.getElementById('fok').style.display = 'inline'; this.reset(); btn.textContent = 'Enviado'; }, 1200);
 });
 </script>
 </body>
