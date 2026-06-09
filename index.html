@@ -5,403 +5,783 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Artazu Mechanics</title>
   <meta name="description" content="Mecanizado de precisión y utillajes de verificación. Partner industrial."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
+    /* ─────────────────────────────────────
+       RESET & BASE
+    ───────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: #0d0d0d; color: #e8e4df; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-    :root { --o: #ee7419; --dark: #0d0d0d; --light: #f0ede8; --dim: rgba(232,228,223,.4); }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #f9f8f6;
+      color: #111;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
     ::-webkit-scrollbar { width: 2px; }
-    ::-webkit-scrollbar-thumb { background: var(--o); }
+    ::-webkit-scrollbar-thumb { background: #ee7419; }
 
-    [data-r] { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
-    [data-r].on { opacity: 1; transform: none; }
-    .d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}
+    /* ─────────────────────────────────────
+       CSS VARS
+    ───────────────────────────────────── */
+    :root {
+      --o: #ee7419;
+      --ink: #111111;
+      --bg: #f9f8f6;
+      --dim: rgba(17,17,17,.35);
+      --line: rgba(17,17,17,.1);
+      --pad: clamp(24px, 5vw, 64px);
+    }
 
-    /* NAV */
-    nav#topnav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;transition:background .4s; }
-    nav#topnav.bg { background:rgba(13,13,13,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05); }
-    .logo { display:flex;align-items:center;gap:10px;text-decoration:none; }
-    .logo-name { font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:.12em;color:var(--light); }
-    .nav-links { display:flex;gap:36px; }
-    .nav-links a { font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,223,.4);text-decoration:none;transition:color .2s; }
-    .nav-links a:hover { color:var(--light); }
-    .nav-cta { font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--dark);background:var(--o);padding:10px 22px;text-decoration:none;transition:background .2s; }
-    .nav-cta:hover { background:var(--light); }
-    @media(max-width:768px){.nav-links{display:none;}}
+    /* ─────────────────────────────────────
+       TEXT REVEAL ANIMATION
+    ───────────────────────────────────── */
+    .reveal-wrap { overflow: hidden; display: block; }
+    .reveal-line {
+      display: block;
+      transform: translateY(105%);
+      transition: transform .85s cubic-bezier(.16, 1, .3, 1);
+    }
+    .reveal-line.up { transform: translateY(0); }
 
-    /* HERO */
-    .hero { position:relative;height:100vh;min-height:600px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden; }
-    .hero-img { position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1565688534245-05d6b5be184a?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;will-change:transform; }
-    .hero-overlay { position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,13,1) 0%,rgba(13,13,13,.65) 50%,rgba(13,13,13,.25) 100%); }
-    .hero-content { position:relative;padding:0 40px 64px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px; }
-    .hero-title { font-family:'Bebas Neue';font-size:clamp(5rem,14vw,13rem);line-height:.9;letter-spacing:.02em;color:var(--light); }
-    .hero-title em { color:var(--o);display:block;font-style:normal; }
-    .hero-meta { display:flex;flex-direction:column;gap:20px;max-width:280px;padding-bottom:6px; }
-    .hero-tag { font-size:.65rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--o); }
-    .hero-desc { font-size:.85rem;font-weight:300;line-height:1.8;color:rgba(232,228,223,.5); }
-    .hero-link { display:inline-flex;align-items:center;gap:10px;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--o);text-decoration:none; }
-    .hero-scroll { position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.2; }
-    .hero-scroll div { width:1px;height:48px;background:linear-gradient(to bottom,var(--light),transparent); }
-    .hero-scroll p { font-size:.55rem;letter-spacing:.28em;text-transform:uppercase; }
-    @media(max-width:768px){ .hero-content{flex-direction:column;align-items:flex-start;padding:0 24px 48px;} .hero-meta{max-width:100%;} }
+    /* Fade in for non-text elements */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+    }
+    .fade-in.on { opacity: 1; transform: none; }
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+    .d4{transition-delay:.4s}.d5{transition-delay:.5s}
 
-    /* TICKER */
-    .ticker { background:var(--o);overflow:hidden;padding:10px 0; }
-    .ticker-track { display:flex;width:max-content;animation:tick 35s linear infinite; }
-    .ticker-track span { font-family:'Bebas Neue';font-size:1rem;letter-spacing:.15em;color:rgba(13,13,13,.65);padding:0 28px; }
-    .ticker-track .dot { color:rgba(13,13,13,.35); }
-    @keyframes tick { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+    /* ─────────────────────────────────────
+       NAV
+    ───────────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 var(--pad); height: 60px;
+      background: rgba(249,248,246,0);
+      transition: background .4s, border-color .4s;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.scrolled {
+      background: rgba(249,248,246,.95);
+      backdrop-filter: blur(12px);
+      border-bottom-color: var(--line);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .nav-logo-text {
+      font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--ink);
+    }
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+    .nav-link {
+      font-size: .7rem; font-weight: 500; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--dim);
+      transition: color .2s; cursor: pointer;
+    }
+    .nav-link:hover { color: var(--ink); }
+    .nav-btn {
+      font-size: .7rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--bg);
+      background: var(--ink); padding: 9px 20px;
+      transition: background .2s; cursor: pointer;
+    }
+    .nav-btn:hover { background: var(--o); }
+    @media(max-width:768px){ .nav-right .nav-link{display:none;} }
 
-    /* LABELS / SHARED */
-    .label { font-size:.62rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--o);display:block;margin-bottom:18px; }
-    .big-title { font-family:'Bebas Neue';font-size:clamp(3rem,7vw,6.5rem);line-height:.92;letter-spacing:.03em; }
-    .body-text { font-size:.875rem;font-weight:300;line-height:1.85;color:rgba(232,228,223,.5); }
+    /* ─────────────────────────────────────
+       HERO
+    ───────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 var(--pad) clamp(48px, 8vh, 80px);
+      position: relative; overflow: hidden;
+    }
+    .hero-label {
+      font-size: .68rem; font-weight: 500; letter-spacing: .24em;
+      text-transform: uppercase; color: var(--o);
+      margin-bottom: clamp(24px, 5vh, 48px);
+    }
+    .hero-h1 {
+      font-size: clamp(3.8rem, 10.5vw, 11rem);
+      font-weight: 700;
+      line-height: .92;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      margin-bottom: clamp(32px, 6vh, 56px);
+    }
+    .hero-bottom {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 40px; flex-wrap: wrap;
+    }
+    .hero-desc {
+      font-size: clamp(.85rem, 1.5vw, 1rem);
+      font-weight: 300; line-height: 1.75;
+      color: var(--dim); max-width: 380px;
+    }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      font-size: .72rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; background: var(--ink); color: var(--bg);
+      padding: 14px 28px; display: inline-flex; align-items: center; gap: 10px;
+      transition: background .2s; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--o); }
+    .btn-ghost {
+      font-size: .72rem; font-weight: 500; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--ink);
+      padding: 14px 28px; border: 1px solid var(--line);
+      transition: border-color .2s, color .2s; cursor: pointer;
+    }
+    .btn-ghost:hover { border-color: var(--ink); }
+    /* Isotipo hero bg */
+    .hero-iso {
+      position: absolute; right: -4vw; top: 50%; transform: translateY(-50%);
+      opacity: .04; pointer-events: none; width: 55vw; max-width: 700px;
+    }
 
-    /* NOSOTROS */
-    .nosotros-wrap { display:grid;grid-template-columns:1fr 1fr;min-height:75vh; }
-    .nos-photo { position:relative;overflow:hidden;background:url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80') center/cover no-repeat; }
-    .nos-photo::after { content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 55%,#0d0d0d); }
-    .nos-content { padding:80px 60px;display:flex;flex-direction:column;justify-content:center; }
-    .nos-values { margin-top:44px;border-top:1px solid rgba(255,255,255,.07); }
-    .nos-val { display:flex;align-items:center;justify-content:space-between;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07);cursor:default; }
-    .nos-val span { font-size:.85rem;font-weight:400;color:rgba(232,228,223,.55);transition:color .2s; }
-    .nos-val-dot { width:5px;height:5px;border-radius:50%;background:var(--o);opacity:0;transition:opacity .2s; }
-    .nos-val:hover span { color:var(--light); }
-    .nos-val:hover .nos-val-dot { opacity:1; }
-    @media(max-width:768px){ .nosotros-wrap{grid-template-columns:1fr;} .nos-photo{min-height:280px;} .nos-photo::after{background:linear-gradient(to top,#0d0d0d,transparent);} .nos-content{padding:48px 24px;} }
+    /* ─────────────────────────────────────
+       TICKER
+    ───────────────────────────────────── */
+    .ticker-wrap {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden; padding: 13px 0;
+    }
+    .ticker-track { display: flex; width: max-content; animation: tickrun 32s linear infinite; }
+    .ticker-item { font-size: .72rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); padding: 0 32px; white-space: nowrap; }
+    .ticker-dot { color: var(--o); }
+    @keyframes tickrun { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-    /* STATS */
-    .stats-bar { display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07); }
-    .stat { padding:40px 32px;border-right:1px solid rgba(255,255,255,.07); }
-    .stat:last-child{border-right:none;}
-    .stat-num { font-family:'Bebas Neue';font-size:clamp(2.8rem,5vw,4.5rem);line-height:1;color:var(--light); }
-    .stat-num em { color:var(--o);font-style:normal;font-size:.42em;margin-left:4px; }
-    .stat-label { font-size:.62rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-top:6px; }
-    @media(max-width:768px){ .stats-bar{grid-template-columns:1fr 1fr;} .stat{padding:28px 20px;border-bottom:1px solid rgba(255,255,255,.07);} }
+    /* ─────────────────────────────────────
+       SECTION SHARED
+    ───────────────────────────────────── */
+    .section { padding: clamp(64px, 12vh, 120px) var(--pad); border-top: 1px solid var(--line); }
+    .section-label {
+      font-size: .65rem; font-weight: 600; letter-spacing: .24em;
+      text-transform: uppercase; color: var(--o); margin-bottom: 48px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); max-width: 80px; }
+    .section-h2 {
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      font-weight: 700; line-height: .95; letter-spacing: -.025em; color: var(--ink);
+    }
+    .section-h2 em { font-style: normal; color: var(--o); }
 
-    /* MECANIZADO */
-    .mec-wrap { display:grid;grid-template-columns:1fr 1fr; }
-    .mec-content { padding:80px 60px;display:flex;flex-direction:column;justify-content:center; }
-    .mec-photo { position:relative;overflow:hidden;min-height:600px;background:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=900&q=80') center/cover no-repeat; }
-    .mec-photo::before { content:'';position:absolute;inset:0;background:linear-gradient(to left,transparent 55%,#0d0d0d);z-index:1; }
-    .mec-num { position:absolute;bottom:-16px;right:-8px;font-family:'Bebas Neue';font-size:16rem;line-height:1;color:rgba(255,255,255,.04);pointer-events:none; }
-    .cards { display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);margin-top:44px; }
-    .card { background:#0d0d0d;padding:24px 20px; }
-    .card-num { font-family:'Bebas Neue';font-size:1.6rem;color:rgba(238,116,25,.25);margin-bottom:10px; }
-    .card h3 { font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-bottom:6px; }
-    .card p { font-size:.76rem;font-weight:300;line-height:1.7;color:var(--dim); }
-    @media(max-width:768px){ .mec-wrap{grid-template-columns:1fr;} .mec-content{padding:48px 24px;} .mec-photo{min-height:260px;order:-1;} .mec-photo::before{background:linear-gradient(to top,#0d0d0d,transparent);} }
+    /* ─────────────────────────────────────
+       NOSOTROS
+    ───────────────────────────────────── */
+    .nos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-top: 64px; }
+    .nos-body { font-size: 1.05rem; font-weight: 300; line-height: 1.8; color: var(--dim); }
+    .nos-list { margin-top: 48px; }
+    .nos-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0; border-bottom: 1px solid var(--line); cursor: default;
+    }
+    .nos-item:first-child { border-top: 1px solid var(--line); }
+    .nos-item-label { font-size: .9rem; font-weight: 500; color: var(--ink); transition: color .2s; }
+    .nos-item-arrow {
+      font-size: 1.2rem; color: var(--o); opacity: 0;
+      transform: translateX(-6px); transition: opacity .2s, transform .2s;
+    }
+    .nos-item:hover .nos-item-label { color: var(--o); }
+    .nos-item:hover .nos-item-arrow { opacity: 1; transform: none; }
 
-    /* PROCESO */
-    .proceso { padding:64px 60px;border-top:1px solid rgba(255,255,255,.06); }
-    .proceso-steps { display:flex;overflow-x:auto;margin-top:36px;gap:0; }
-    .step { flex:1;min-width:130px;padding:20px 24px;border-right:1px solid rgba(255,255,255,.06); }
-    .step:last-child{border-right:none;}
-    .step-n { font-family:'Bebas Neue';font-size:2.2rem;color:rgba(238,116,25,.2);line-height:1;margin-bottom:8px; }
-    .step h4 { font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light); }
-    .step p { font-size:.71rem;font-weight:300;color:var(--dim);margin-top:5px;line-height:1.6; }
-    @media(max-width:768px){.proceso{padding:48px 24px;}}
+    /* ─────────────────────────────────────
+       STATS
+    ───────────────────────────────────── */
+    .stats-section { background: var(--ink); color: var(--bg); border-top: none; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 0; }
+    .stat-item { padding: 48px 40px; border-right: 1px solid rgba(255,255,255,.07); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 700; letter-spacing: -.04em; line-height: 1;
+      color: #fff;
+    }
+    .stat-num span { color: var(--o); font-size: .5em; font-weight: 400; margin-left: 2px; }
+    .stat-desc { font-size: .72rem; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 10px; }
+    @media(max-width:768px){ .stats-grid{grid-template-columns:1fr 1fr;} .stat-item{padding:32px 24px;border-bottom:1px solid rgba(255,255,255,.07);} }
 
-    /* MQ SEP */
-    .mq-sep { overflow:hidden;border-top:1px solid rgba(255,255,255,.04);background:#111;padding:18px 0; }
-    .mq-track { display:flex;width:max-content;animation:mq 55s linear infinite reverse; }
-    .mq-track .mw { font-family:'Bebas Neue';font-size:clamp(3rem,7vw,5.5rem);letter-spacing:.06em;color:rgba(255,255,255,.04);padding:0 36px;white-space:nowrap; }
-    .mq-track .mo { color:rgba(238,116,25,.07); }
-    @keyframes mq { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+    /* ─────────────────────────────────────
+       SERVICIOS
+    ───────────────────────────────────── */
+    .svc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 64px; }
+    .svc-intro { font-size: .95rem; font-weight: 300; line-height: 1.75; color: var(--dim); max-width: 380px; }
 
-    /* UTILLAJES */
-    .uti-wrap { display:grid;grid-template-columns:1fr 1fr;background:#f0ede8; }
-    .uti-photo { position:relative;overflow:hidden;min-height:600px;background:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80') center/cover no-repeat; }
-    .uti-photo::after { content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 55%,#f0ede8); }
-    .uti-content { padding:80px 60px;display:flex;flex-direction:column;justify-content:center; }
-    .uti-content .label { color:var(--o); }
-    .uti-content .big-title,.uti-content h2 { color:#0d0d0d; }
-    .uti-content .body-text { color:rgba(13,13,13,.5); }
-    .apps { display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid rgba(13,13,13,.1);margin-top:36px; }
-    .app { padding:20px;border-bottom:1px solid rgba(13,13,13,.1);border-right:1px solid rgba(13,13,13,.1); }
-    .app:nth-child(2n){border-right:none;}
-    .app:nth-last-child(-n+2){border-bottom:none;}
-    .app-n { font-size:.6rem;letter-spacing:.2em;color:var(--o);font-weight:500;margin-bottom:5px;text-transform:uppercase; }
-    .app h4 { font-size:.8rem;font-weight:600;color:#0d0d0d;margin-bottom:3px; }
-    .app p { font-size:.74rem;font-weight:300;color:rgba(13,13,13,.45);line-height:1.6; }
-    .app.span2 { grid-column:span 2;border-right:none; }
-    @media(max-width:768px){ .uti-wrap{grid-template-columns:1fr;} .uti-photo{min-height:260px;} .uti-photo::after{background:linear-gradient(to bottom,transparent,#f0ede8);} .uti-content{padding:48px 24px;} }
+    /* Servicio accordion */
+    .svc-list { border-top: 1px solid var(--line); }
+    .svc-item { border-bottom: 1px solid var(--line); }
+    .svc-toggle {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 32px 0; background: none; border: none; cursor: pointer; text-align: left;
+      gap: 20px;
+    }
+    .svc-toggle:hover .svc-name { color: var(--o); }
+    .svc-num { font-size: .65rem; font-weight: 600; letter-spacing: .2em; color: var(--o); min-width: 32px; }
+    .svc-name { font-size: clamp(1.2rem, 3vw, 2rem); font-weight: 600; letter-spacing: -.02em; color: var(--ink); flex: 1; transition: color .2s; }
+    .svc-icon { font-size: 1.4rem; color: var(--dim); transition: transform .4s cubic-bezier(.16,1,.3,1), color .2s; flex-shrink: 0; }
+    .svc-item.open .svc-icon { transform: rotate(45deg); color: var(--o); }
+    .svc-body {
+      display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.16,1,.3,1);
+    }
+    .svc-item.open .svc-body { grid-template-rows: 1fr; }
+    .svc-inner { overflow: hidden; }
+    .svc-content { padding: 0 0 40px 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .svc-desc { font-size: .9rem; font-weight: 300; line-height: 1.8; color: var(--dim); }
+    .svc-features { display: flex; flex-direction: column; gap: 12px; }
+    .svc-feature {
+      display: flex; align-items: center; gap: 12px;
+      font-size: .82rem; font-weight: 400; color: var(--dim);
+    }
+    .svc-feature::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--o); flex-shrink: 0; }
+    @media(max-width:768px){ .svc-content{grid-template-columns:1fr;padding-left:0;} }
 
-    /* CAPACIDADES */
-    .cap-wrap { padding:80px 60px;border-top:1px solid rgba(255,255,255,.06); }
-    .maquinas { display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);margin-top:44px; }
-    .maquina { background:#0d0d0d;padding:48px; }
-    .maq-badge { display:inline-block;font-size:.6rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--o);border:1px solid rgba(238,116,25,.3);padding:6px 14px;margin-bottom:20px; }
-    .maq-name { font-family:'Bebas Neue';font-size:clamp(2rem,4vw,3.5rem);line-height:1;color:var(--light);margin-bottom:32px; }
-    .maq-specs { display:grid;grid-template-columns:1fr 1fr;gap:24px; }
-    .spec-k { font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:5px; }
-    .spec-v { font-size:.9rem;font-weight:400;color:var(--light); }
-    .spec-v.big { font-family:'Bebas Neue';font-size:2.2rem;line-height:1; }
-    .spec-v.big em { font-size:.42em;font-style:normal;color:var(--dim);font-family:'Inter';font-weight:300; }
-    .sect { margin-top:56px;border-top:1px solid rgba(255,255,255,.06);padding-top:44px; }
-    .sect-tags { display:flex;flex-wrap:wrap;gap:10px;margin-top:20px; }
-    .sect-tag { font-size:.75rem;font-weight:400;color:rgba(232,228,223,.45);border:1px solid rgba(255,255,255,.1);padding:10px 20px;transition:border-color .2s,color .2s;cursor:default; }
-    .sect-tag:hover { border-color:var(--o);color:var(--o); }
-    @media(max-width:768px){ .cap-wrap{padding:48px 24px;} .maquinas{grid-template-columns:1fr;} .maquina{padding:32px 20px;} }
+    /* ─────────────────────────────────────
+       PROCESO
+    ───────────────────────────────────── */
+    .proceso-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; margin-top: 64px; border: 1px solid var(--line); }
+    .proceso-step { padding: 32px 24px; border-right: 1px solid var(--line); }
+    .proceso-step:last-child { border-right: none; }
+    .p-num { font-size: 2rem; font-weight: 700; letter-spacing: -.04em; color: rgba(17,17,17,.06); line-height: 1; margin-bottom: 14px; }
+    .p-name { font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+    .p-desc { font-size: .75rem; font-weight: 300; line-height: 1.6; color: var(--dim); }
+    @media(max-width:900px){ .proceso-grid{grid-template-columns:repeat(3,1fr);} .proceso-step{border-bottom:1px solid var(--line);} }
+    @media(max-width:560px){ .proceso-grid{grid-template-columns:repeat(2,1fr);} }
 
-    /* CONTACTO */
-    .contact-wrap { display:grid;grid-template-columns:1fr 1fr; }
-    .cta-left { background:var(--o);padding:80px 60px;display:flex;flex-direction:column;justify-content:space-between; }
-    .cta-title { font-family:'Bebas Neue';font-size:clamp(3.5rem,8vw,7rem);line-height:.88;color:#0d0d0d; }
-    .cta-data { display:flex;flex-direction:column;gap:22px;margin-top:40px; }
-    .ci-l { font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(13,13,13,.5);margin-bottom:4px; }
-    .ci-v { font-size:.9rem;font-weight:500;color:#0d0d0d;text-decoration:none;transition:opacity .2s; }
-    .ci-v:hover{opacity:.6;}
-    .cta-right { background:#111;padding:80px 60px; }
-    .fi { display:block;width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.1);padding:13px 0;color:var(--light);font-family:'Inter';font-size:.85rem;font-weight:300;outline:none;transition:border-color .2s;margin-bottom:24px; }
-    .fi::placeholder{color:rgba(232,228,223,.2);}
-    .fi:focus{border-color:var(--o);}
-    .fi-row { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
-    .btn-sub { font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:var(--o);color:#0d0d0d;border:none;padding:14px 30px;cursor:pointer;transition:background .2s; }
-    .btn-sub:hover{background:var(--light);}
-    .form-ok { display:none;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--o);font-weight:500;margin-left:16px; }
-    @media(max-width:768px){ .contact-wrap{grid-template-columns:1fr;} .cta-left{padding:48px 24px;} .cta-right{padding:48px 24px;} .fi-row{grid-template-columns:1fr;} }
+    /* ─────────────────────────────────────
+       CAPACIDADES
+    ───────────────────────────────────── */
+    .cap-machines { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); margin-top: 64px; }
+    .machine { background: var(--bg); padding: 48px; }
+    .machine-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .62rem; font-weight: 600; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--o);
+      border: 1px solid rgba(238,116,25,.3); padding: 6px 14px;
+      margin-bottom: 24px;
+    }
+    .machine-name { font-size: clamp(1.6rem, 3vw, 2.8rem); font-weight: 700; letter-spacing: -.03em; color: var(--ink); margin-bottom: 36px; line-height: 1; }
+    .machine-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .spec { }
+    .spec-k { font-size: .6rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+    .spec-v { font-size: .95rem; font-weight: 500; color: var(--ink); }
+    .spec-v.hero-num { font-size: 2.4rem; font-weight: 700; letter-spacing: -.04em; line-height: 1; }
+    .spec-v.hero-num em { font-size: .4em; font-style: normal; color: var(--dim); font-weight: 400; }
+    @media(max-width:768px){ .cap-machines{grid-template-columns:1fr;} .machine{padding:32px 24px;} .machine-specs{grid-template-columns:1fr 1fr;} }
 
-    /* FOOTER */
-    footer { display:flex;align-items:center;justify-content:space-between;padding:22px 40px;border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap;gap:14px; }
-    .f-logo { display:flex;align-items:center;gap:10px; }
-    .f-name { font-family:'Bebas Neue';font-size:.9rem;letter-spacing:.15em;color:rgba(232,228,223,.18); }
-    .f-nav a { font-size:.62rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,223,.14);text-decoration:none;margin-left:24px;transition:color .2s; }
-    .f-nav a:hover{color:var(--o);}
-    .f-copy { font-size:.58rem;letter-spacing:.14em;color:rgba(232,228,223,.1);text-transform:uppercase; }
-    @media(max-width:768px){footer{padding:20px 24px;flex-direction:column;align-items:flex-start;gap:10px;} .f-nav a{margin-left:0;margin-right:16px;}}
+    /* sectores */
+    .sectores { margin-top: 64px; display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line); }
+    .sector {
+      flex: 1; min-width: 160px; padding: 24px 32px;
+      border-right: 1px solid var(--line); cursor: default;
+      transition: background .2s;
+    }
+    .sector:last-child { border-right: none; }
+    .sector:hover { background: var(--ink); }
+    .sector:hover .sector-name { color: var(--bg); }
+    .sector-name { font-size: .9rem; font-weight: 500; color: var(--ink); transition: color .2s; }
+    @media(max-width:600px){ .sectores{flex-direction:column;} .sector{border-right:none;border-bottom:1px solid var(--line);} .sector:last-child{border-bottom:none;} }
 
-    @media(prefers-reduced-motion:reduce){ [data-r]{opacity:1;transform:none;transition:none;} .ticker-track,.mq-track{animation:none;} }
+    /* ─────────────────────────────────────
+       CONTACTO
+    ───────────────────────────────────── */
+    .contact-split { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; }
+    .contact-info { display: flex; flex-direction: column; gap: 40px; }
+    .ci { }
+    .ci-k { font-size: .62rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+    .ci-v { font-size: 1rem; font-weight: 400; color: var(--ink); transition: color .2s; }
+    .ci-v:hover { color: var(--o); }
+    .contact-form { }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .fi {
+      display: block; width: 100%; background: transparent; border: none;
+      border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 28px;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: .9rem; font-weight: 300; color: var(--ink); outline: none;
+      transition: border-color .25s;
+    }
+    .fi:focus { border-color: var(--ink); }
+    .fi::placeholder { color: var(--dim); }
+    .form-btn {
+      font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      background: var(--ink); color: var(--bg); border: none;
+      padding: 16px 36px; cursor: pointer; transition: background .2s;
+      display: inline-flex; align-items: center; gap: 12px;
+    }
+    .form-btn:hover { background: var(--o); }
+    .form-ok { display: none; font-size: .68rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--o); margin-left: 20px; }
+    @media(max-width:768px){ .contact-split{grid-template-columns:1fr;gap:48px;} .form-row{grid-template-columns:1fr;} }
+
+    /* ─────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────── */
+    #footer {
+      border-top: 1px solid var(--line);
+      padding: 32px var(--pad);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .f-logo { display: flex; align-items: center; gap: 10px; }
+    .f-logo-text { font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(17,17,17,.25); }
+    .f-nav { display: flex; gap: 28px; }
+    .f-nav a { font-size: .65rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); transition: color .2s; }
+    .f-nav a:hover { color: var(--o); }
+    .f-copy { font-size: .62rem; color: rgba(17,17,17,.2); letter-spacing: .1em; text-transform: uppercase; }
+
+    @media(prefers-reduced-motion:reduce){
+      .reveal-line{transform:none;transition:none;}
+      .fade-in{opacity:1;transform:none;transition:none;}
+      .ticker-track{animation:none;}
+    }
   </style>
 </head>
 <body>
 
-<nav id="topnav">
-  <a href="#" class="logo" aria-label="Artazu Mechanics">
-    <svg width="22" height="18" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+<!-- ══ NAV ══════════════════════════════════════ -->
+<nav id="nav">
+  <a href="#" class="nav-logo" aria-label="Artazu Mechanics">
+    <!-- Wordmark SVG completo (isotipo + texto) -->
+    <svg height="28" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true" style="width:auto;">
       <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
       <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
       <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
     </svg>
-    <span class="logo-name">Artazu Mechanics</span>
+    <span class="nav-logo-text">Artazu Mechanics</span>
   </a>
-  <div class="nav-links">
-    <a href="#nosotros">Nosotros</a>
-    <a href="#mecanizado">Mecanizado</a>
-    <a href="#utillajes">Utillajes</a>
-    <a href="#capacidades">Capacidades</a>
+  <div class="nav-right">
+    <a href="#nosotros" class="nav-link">Nosotros</a>
+    <a href="#servicios" class="nav-link">Servicios</a>
+    <a href="#capacidades" class="nav-link">Capacidades</a>
+    <a href="#contacto" class="nav-btn">Contacto</a>
   </div>
-  <a href="#contacto" class="nav-cta">Contacto</a>
 </nav>
 
-<div class="hero" id="inicio">
-  <div class="hero-img" id="hero-img"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <h1 class="hero-title">ARTAZU<em>MECHANICS</em></h1>
-    <div class="hero-meta">
-      <p class="hero-tag">Partner industrial de precisión</p>
-      <p class="hero-desc">De la necesidad a la pieza final. Mecanizado bajo plano y utillajes de verificación con gestión integral del proceso.</p>
-      <a href="#mecanizado" class="hero-link">
-        Descubrir servicios
+
+<!-- ══ HERO ══════════════════════════════════════ -->
+<section id="hero">
+  <!-- Isotipo de fondo -->
+  <svg class="hero-iso" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+    <path fill="#111" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+    <path fill="#111" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+    <circle fill="#111" cx="1101.91" cy="6341.62" r="1101.91"/>
+  </svg>
+
+  <p class="hero-label fade-in">Partner industrial de precisión</p>
+
+  <h1 class="hero-h1">
+    <span class="reveal-wrap"><span class="reveal-line" id="hl1">De la necesidad</span></span>
+    <span class="reveal-wrap"><span class="reveal-line" id="hl2">a la pieza <em style="color:var(--o);">final.</em></span></span>
+  </h1>
+
+  <div class="hero-bottom fade-in d2">
+    <p class="hero-desc">Mecanizado bajo plano y utillajes de verificación con gestión integral del proceso. Un único interlocutor, máxima garantía.</p>
+    <div class="hero-ctas">
+      <a href="#servicios" class="btn-primary">
+        Nuestros servicios
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
       </a>
+      <a href="#contacto" class="btn-ghost">Contactar</a>
     </div>
   </div>
-  <div class="hero-scroll" aria-hidden="true"><div></div><p>Scroll</p></div>
-</div>
+</section>
 
-<div class="ticker" aria-hidden="true">
+
+<!-- ══ TICKER ════════════════════════════════════ -->
+<div class="ticker-wrap" aria-hidden="true">
   <div class="ticker-track">
-    <span>Automoción</span><span class="dot">·</span><span>Aeronáutico</span><span class="dot">·</span><span>Ferroviario</span><span class="dot">·</span><span>Industria General</span><span class="dot">·</span><span>Siemens NX</span><span class="dot">·</span><span>5 Ejes</span><span class="dot">·</span><span>±0,01 mm</span><span class="dot">·</span>
-    <span>Automoción</span><span class="dot">·</span><span>Aeronáutico</span><span class="dot">·</span><span>Ferroviario</span><span class="dot">·</span><span>Industria General</span><span class="dot">·</span><span>Siemens NX</span><span class="dot">·</span><span>5 Ejes</span><span class="dot">·</span><span>±0,01 mm</span><span class="dot">·</span>
+    <span class="ticker-item">Automoción</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Aeronáutico</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Ferroviario</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Industria General</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Siemens NX</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">5 Ejes</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">±0,01 mm</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Automoción</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Aeronáutico</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Ferroviario</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Industria General</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">Siemens NX</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">5 Ejes</span><span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">±0,01 mm</span><span class="ticker-item ticker-dot">·</span>
   </div>
 </div>
 
-<section id="nosotros">
-  <div class="nosotros-wrap">
-    <div class="nos-photo" role="img" aria-label="Mecanizado de precisión"></div>
-    <div class="nos-content">
-      <div>
-        <span class="label" data-r>Quiénes somos</span>
-        <h2 class="big-title" data-r style="color:var(--light);">MÁS QUE<br/>UN<br/>PROVEEDOR.</h2>
-        <p class="body-text" data-r style="margin-top:22px;max-width:400px;">Nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano. Un único interlocutor que asume la responsabilidad completa del proceso.</p>
-      </div>
-      <div class="nos-values" data-r>
-        <div class="nos-val"><span>Flexibilidad total</span><div class="nos-val-dot"></div></div>
-        <div class="nos-val"><span>Alto nivel técnico</span><div class="nos-val-dot"></div></div>
-        <div class="nos-val"><span>Control de calidad</span><div class="nos-val-dot"></div></div>
-        <div class="nos-val"><span>Plazos garantizados</span><div class="nos-val-dot"></div></div>
-      </div>
-    </div>
-  </div>
-  <div class="stats-bar">
-    <div class="stat" data-r><div class="stat-num">5<em>EJES</em></div><div class="stat-label">Mecanizado máximo</div></div>
-    <div class="stat d1" data-r><div class="stat-num">0,01<em>mm</em></div><div class="stat-label">Tolerancia</div></div>
-    <div class="stat d2" data-r><div class="stat-num">360<em>°</em></div><div class="stat-label">Gestión integral</div></div>
-    <div class="stat d3" data-r><div class="stat-num">2<em>SVC</em></div><div class="stat-label">Servicios especializados</div></div>
-  </div>
-</section>
 
-<section id="mecanizado">
-  <div class="mec-wrap">
-    <div class="mec-content">
-      <span class="label" data-r>Servicio 01</span>
-      <h2 class="big-title" data-r style="color:var(--light);">MECANIZADO<br/>BAJO<br/>PLANO.</h2>
-      <p class="body-text" data-r style="margin-top:22px;max-width:420px;">De la necesidad a la pieza final. Fabricación bajo plano con gestión integral — aprovisionamiento, mecanizado, tratamientos, montaje y verificación.</p>
-      <div class="cards" data-r>
-        <div class="card"><div class="card-num">01</div><h3>Bajo plano</h3><p>Fiel a especificaciones con tolerancias estrictas y verificación integrada.</p></div>
-        <div class="card"><div class="card-num">02</div><h3>Servicio 360°</h3><p>Material, tratamientos, montaje y entrega. Un solo interlocutor.</p></div>
-        <div class="card"><div class="card-num">03</div><h3>Prototipos y series</h3><p>Flexibilidad desde piezas únicas hasta producción en serie.</p></div>
-        <div class="card"><div class="card-num">04</div><h3>CAD/CAM</h3><p>Oficina técnica propia con Siemens NX. Soporte desde el primer plano.</p></div>
-      </div>
+<!-- ══ NOSOTROS ══════════════════════════════════ -->
+<section id="nosotros" class="section">
+  <p class="section-label fade-in">Quiénes somos</p>
+  <div class="nos-grid">
+    <div>
+      <h2 class="section-h2">
+        <span class="reveal-wrap"><span class="reveal-line">Más que un</span></span>
+        <span class="reveal-wrap"><span class="reveal-line">proveedor,</span></span>
+        <span class="reveal-wrap"><span class="reveal-line">tu <em>partner.</em></span></span>
+      </h2>
     </div>
-    <div class="mec-photo" role="img" aria-label="Proceso de fabricación industrial"><div class="mec-num" aria-hidden="true">01</div></div>
-  </div>
-  <div class="proceso">
-    <span class="label" data-r>Proceso completo</span>
-    <div class="proceso-steps" data-r>
-      <div class="step"><div class="step-n">01</div><h4>Interpretación</h4><p>Análisis del plano y viabilidad.</p></div>
-      <div class="step"><div class="step-n">02</div><h4>Aprovisionamiento</h4><p>Materiales y subcontratación.</p></div>
-      <div class="step"><div class="step-n">03</div><h4>Mecanizado</h4><p>Fabricación de alta precisión.</p></div>
-      <div class="step"><div class="step-n">04</div><h4>Tratamientos</h4><p>Térmicos y superficiales.</p></div>
-      <div class="step"><div class="step-n">05</div><h4>Verificación</h4><p>Control dimensional.</p></div>
-      <div class="step"><div class="step-n">06</div><h4>Entrega</h4><p>A tiempo, documentado.</p></div>
+    <div>
+      <p class="nos-body fade-in">
+        Nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor que asume la responsabilidad completa del proceso — desde el plano hasta la entrega verificada.
+      </p>
+      <div class="nos-list fade-in d2">
+        <div class="nos-item"><span class="nos-item-label">Flexibilidad total</span><span class="nos-item-arrow">→</span></div>
+        <div class="nos-item"><span class="nos-item-label">Alto nivel técnico</span><span class="nos-item-arrow">→</span></div>
+        <div class="nos-item"><span class="nos-item-label">Control de calidad exhaustivo</span><span class="nos-item-arrow">→</span></div>
+        <div class="nos-item"><span class="nos-item-label">Plazos garantizados</span><span class="nos-item-arrow">→</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="mq-sep" aria-hidden="true">
-  <div class="mq-track">
-    <span class="mw">PRECISIÓN</span><span class="mo mw">—</span><span class="mw">CONTROL</span><span class="mo mw">—</span><span class="mw">INGENIERÍA</span><span class="mo mw">—</span><span class="mw">CALIDAD</span><span class="mo mw">—</span>
-    <span class="mw">PRECISIÓN</span><span class="mo mw">—</span><span class="mw">CONTROL</span><span class="mo mw">—</span><span class="mw">INGENIERÍA</span><span class="mo mw">—</span><span class="mw">CALIDAD</span><span class="mo mw">—</span>
+
+<!-- ══ STATS DARK ════════════════════════════════ -->
+<div class="stats-section section">
+  <div class="stats-grid">
+    <div class="stat-item fade-in">
+      <div class="stat-num">5<span>ejes</span></div>
+      <div class="stat-desc">Mecanizado máximo</div>
+    </div>
+    <div class="stat-item d1 fade-in">
+      <div class="stat-num">0,01<span>mm</span></div>
+      <div class="stat-desc">Tolerancia</div>
+    </div>
+    <div class="stat-item d2 fade-in">
+      <div class="stat-num">360<span>°</span></div>
+      <div class="stat-desc">Gestión integral</div>
+    </div>
+    <div class="stat-item d3 fade-in">
+      <div class="stat-num">2<span>svc</span></div>
+      <div class="stat-desc">Servicios especializados</div>
+    </div>
   </div>
 </div>
 
-<section id="utillajes">
-  <div class="uti-wrap">
-    <div class="uti-photo" role="img" aria-label="Torno de precisión en taller"></div>
-    <div class="uti-content">
-      <span class="label">Servicio 02</span>
-      <h2 class="big-title" data-r style="color:#0d0d0d;">UTILLAJES<br/>DE<br/>VERIFICACIÓN.</h2>
-      <p class="body-text" data-r style="margin-top:22px;max-width:380px;color:rgba(13,13,13,.5);">Soluciones a medida para la verificación de piezas seriadas y prototipos. Diseño, fabricación, montaje y validación final.</p>
-      <div class="apps" data-r>
-        <div class="app"><div class="app-n">01</div><h4>Automoción</h4><p>Verificación en línea de producción.</p></div>
-        <div class="app"><div class="app-n">02</div><h4>Fibra de carbono</h4><p>Composites y materiales avanzados.</p></div>
-        <div class="app"><div class="app-n">03</div><h4>Probetas</h4><p>Útiles para ensayos y validaciones.</p></div>
-        <div class="app"><div class="app-n">04</div><h4>Recanteo</h4><p>Posicionamiento y referenciado preciso.</p></div>
-        <div class="app span2"><div class="app-n">05</div><h4>Plásticos y composites</h4><p>Materiales no metálicos y compuestos.</p></div>
+
+<!-- ══ SERVICIOS ═════════════════════════════════ -->
+<section id="servicios" class="section">
+  <div class="svc-header">
+    <div>
+      <p class="section-label fade-in">Servicios</p>
+      <h2 class="section-h2">
+        <span class="reveal-wrap"><span class="reveal-line">Lo que</span></span>
+        <span class="reveal-wrap"><span class="reveal-line">hacemos.</span></span>
+      </h2>
+    </div>
+    <p class="svc-intro fade-in d2">Dos servicios especializados que se complementan para ofrecer una solución industrial completa de alta precisión.</p>
+  </div>
+
+  <div class="svc-list">
+
+    <!-- SVC 01 -->
+    <div class="svc-item open" id="svc1">
+      <button class="svc-toggle" aria-expanded="true" onclick="toggleSvc('svc1')">
+        <span class="svc-num">01</span>
+        <span class="svc-name">Mecanizado bajo plano</span>
+        <span class="svc-icon">+</span>
+      </button>
+      <div class="svc-body">
+        <div class="svc-inner">
+          <div class="svc-content">
+            <div>
+              <p class="svc-desc">De la necesidad a la pieza final. Fabricamos piezas de alta precisión bajo planos del cliente con gestión integral del proceso — aprovisionamiento, mecanizado, tratamientos térmicos y superficiales, montaje de subconjuntos y verificación.</p>
+              <p class="svc-desc" style="margin-top:16px;">Oficina técnica propia con Siemens NX CAD/CAM. Soporte desde el primer plano: interpretación, análisis de viabilidad y optimización de diseño.</p>
+            </div>
+            <div class="svc-features">
+              <div class="svc-feature">Mecanizado bajo plano con tolerancias estrictas</div>
+              <div class="svc-feature">Servicio 360° — un único interlocutor</div>
+              <div class="svc-feature">Aprovisionamiento y gestión de materiales</div>
+              <div class="svc-feature">Tratamientos térmicos y superficiales</div>
+              <div class="svc-feature">Montaje de subconjuntos</div>
+              <div class="svc-feature">Verificación y control dimensional</div>
+              <div class="svc-feature">Prototipos y series</div>
+              <div class="svc-feature">CAD/CAM con Siemens NX</div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <!-- SVC 02 -->
+    <div class="svc-item" id="svc2">
+      <button class="svc-toggle" aria-expanded="false" onclick="toggleSvc('svc2')">
+        <span class="svc-num">02</span>
+        <span class="svc-name">Diseño y fabricación de utillajes de verificación</span>
+        <span class="svc-icon">+</span>
+      </button>
+      <div class="svc-body">
+        <div class="svc-inner">
+          <div class="svc-content">
+            <div>
+              <p class="svc-desc">Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente. Precisión, control y fiabilidad en cada comprobación.</p>
+              <p class="svc-desc" style="margin-top:16px;">Proceso completo: diseño 3D, análisis, fabricación, montaje y validación final del utillaje.</p>
+            </div>
+            <div class="svc-features">
+              <div class="svc-feature">Utillajes para automoción</div>
+              <div class="svc-feature">Verificación de fibra de carbono</div>
+              <div class="svc-feature">Probetas y útiles de ensayo</div>
+              <div class="svc-feature">Útiles de recanteo y posición</div>
+              <div class="svc-feature">Verificación de plásticos y composites</div>
+              <div class="svc-feature">Diseño 3D y análisis previo</div>
+              <div class="svc-feature">Fabricación y montaje completo</div>
+              <div class="svc-feature">Validación y entrega</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══ PROCESO ═══════════════════════════════════ -->
+<section class="section" style="padding-top:0;border-top:none;">
+  <p class="section-label fade-in">Proceso</p>
+  <div class="proceso-grid fade-in">
+    <div class="proceso-step">
+      <div class="p-num">01</div>
+      <div class="p-name">Interpretación</div>
+      <div class="p-desc">Análisis del plano y estudio de viabilidad técnica.</div>
+    </div>
+    <div class="proceso-step">
+      <div class="p-num">02</div>
+      <div class="p-name">Aprovisionamiento</div>
+      <div class="p-desc">Gestión de materiales y subcontratación especializada.</div>
+    </div>
+    <div class="proceso-step">
+      <div class="p-num">03</div>
+      <div class="p-name">Mecanizado</div>
+      <div class="p-desc">Fabricación de alta precisión en centros de 3 a 5 ejes.</div>
+    </div>
+    <div class="proceso-step">
+      <div class="p-num">04</div>
+      <div class="p-name">Tratamientos</div>
+      <div class="p-desc">Térmicos y superficiales según especificación.</div>
+    </div>
+    <div class="proceso-step">
+      <div class="p-num">05</div>
+      <div class="p-name">Verificación</div>
+      <div class="p-desc">Control dimensional y de calidad en cada pieza.</div>
+    </div>
+    <div class="proceso-step" style="border-right:none;">
+      <div class="p-num">06</div>
+      <div class="p-name">Entrega</div>
+      <div class="p-desc">A tiempo, documentado y con informe de calidad.</div>
     </div>
   </div>
 </section>
 
-<section id="capacidades">
-  <div class="cap-wrap">
-    <span class="label" data-r>Capacidades técnicas</span>
-    <h2 class="big-title" data-r style="color:var(--light);">MAQUINARIA<br/>&amp; EQUIPOS.</h2>
-    <div class="maquinas" data-r>
-      <div class="maquina">
-        <div class="maq-badge">5 Ejes</div>
-        <div class="maq-name">DMU 100 T</div>
-        <div class="maq-specs">
-          <div><div class="spec-k">Recorridos X·Y·Z</div><div class="spec-v">1000×700×1000 mm</div></div>
-          <div><div class="spec-k">Velocidad husillo</div><div class="spec-v big">18.000<em> rpm</em></div></div>
-          <div><div class="spec-k">Unidades</div><div class="spec-v big">1</div></div>
-          <div><div class="spec-k">Materiales</div><div class="spec-v" style="font-size:.8rem;color:var(--dim);">Acero · Aluminio · Composites</div></div>
+
+<!-- ══ CAPACIDADES ═══════════════════════════════ -->
+<section id="capacidades" class="section">
+  <p class="section-label fade-in">Capacidades técnicas</p>
+  <h2 class="section-h2">
+    <span class="reveal-wrap"><span class="reveal-line">Maquinaria</span></span>
+    <span class="reveal-wrap"><span class="reveal-line">&amp; equipos.</span></span>
+  </h2>
+
+  <div class="cap-machines">
+    <div class="machine fade-in">
+      <div class="machine-badge">5 Ejes</div>
+      <div class="machine-name">DMU 100 T</div>
+      <div class="machine-specs">
+        <div class="spec">
+          <div class="spec-k">Recorridos X·Y·Z</div>
+          <div class="spec-v">1000 × 700 × 1000 mm</div>
         </div>
-      </div>
-      <div class="maquina">
-        <div class="maq-badge">3+1 Ejes</div>
-        <div class="maq-name">Mazak VTC-200B</div>
-        <div class="maq-specs">
-          <div><div class="spec-k">Recorridos X·Y·Z</div><div class="spec-v">1120×510×510 mm</div></div>
-          <div><div class="spec-k">Velocidad husillo</div><div class="spec-v big">10.000<em> rpm</em></div></div>
-          <div><div class="spec-k">Unidades</div><div class="spec-v big">2</div></div>
-          <div><div class="spec-k">Materiales</div><div class="spec-v" style="font-size:.8rem;color:var(--dim);">Acero · Aluminio · Resinas</div></div>
+        <div class="spec">
+          <div class="spec-k">Velocidad husillo</div>
+          <div class="spec-v hero-num">18.000<em> rpm</em></div>
+        </div>
+        <div class="spec">
+          <div class="spec-k">Unidades</div>
+          <div class="spec-v hero-num">1</div>
+        </div>
+        <div class="spec">
+          <div class="spec-k">Materiales</div>
+          <div class="spec-v" style="font-size:.85rem;color:var(--dim);">Acero · Aluminio · Composites</div>
         </div>
       </div>
     </div>
-    <div class="sect" data-r>
-      <span class="label">Sectores</span>
-      <div class="sect-tags">
-        <span class="sect-tag">Automoción</span>
-        <span class="sect-tag">Aeronáutico</span>
-        <span class="sect-tag">Ferroviario</span>
-        <span class="sect-tag">Industria general</span>
+    <div class="machine fade-in d1">
+      <div class="machine-badge">3+1 Ejes</div>
+      <div class="machine-name">Mazak VTC-200B</div>
+      <div class="machine-specs">
+        <div class="spec">
+          <div class="spec-k">Recorridos X·Y·Z</div>
+          <div class="spec-v">1120 × 510 × 510 mm</div>
+        </div>
+        <div class="spec">
+          <div class="spec-k">Velocidad husillo</div>
+          <div class="spec-v hero-num">10.000<em> rpm</em></div>
+        </div>
+        <div class="spec">
+          <div class="spec-k">Unidades</div>
+          <div class="spec-v hero-num">2</div>
+        </div>
+        <div class="spec">
+          <div class="spec-k">Materiales</div>
+          <div class="spec-v" style="font-size:.85rem;color:var(--dim);">Acero · Aluminio · Resinas</div>
+        </div>
       </div>
     </div>
   </div>
-</section>
 
-<section id="contacto">
-  <div class="contact-wrap">
-    <div class="cta-left">
-      <h2 class="cta-title">¿HABLA<br/>MOS?</h2>
-      <div class="cta-data">
-        <div><div class="ci-l">Email</div><a href="mailto:comercial@artazumechanics.com" class="ci-v">comercial@artazumechanics.com</a></div>
-        <div><div class="ci-l">Teléfono</div><a href="tel:+34606872175" class="ci-v">606 87 21 75</a></div>
-        <div><div class="ci-l">Web</div><a href="https://www.artazumechanics.com" target="_blank" rel="noopener" class="ci-v">www.artazumechanics.com</a></div>
-      </div>
-    </div>
-    <div class="cta-right">
-      <span class="label" style="color:var(--o);">Solicitar información</span>
-      <form id="cform" novalidate style="margin-top:28px;">
-        <div class="fi-row">
-          <input type="text" class="fi" placeholder="Nombre" required autocomplete="given-name"/>
-          <input type="text" class="fi" placeholder="Empresa" autocomplete="organization"/>
-        </div>
-        <div class="fi-row">
-          <input type="email" class="fi" placeholder="Email" required autocomplete="email"/>
-          <input type="tel" class="fi" placeholder="Teléfono" autocomplete="tel"/>
-        </div>
-        <textarea class="fi" rows="4" placeholder="Tipo de pieza, material, volumen aproximado…" required></textarea>
-        <div style="display:flex;align-items:center;">
-          <button type="submit" class="btn-sub" id="fsub">Enviar consulta</button>
-          <span class="form-ok" id="fok">Recibido — te contactamos pronto.</span>
-        </div>
-      </form>
-    </div>
+  <div class="sectores fade-in d2" style="margin-top:40px;">
+    <div class="sector"><div class="sector-name">Automoción</div></div>
+    <div class="sector"><div class="sector-name">Aeronáutico</div></div>
+    <div class="sector"><div class="sector-name">Ferroviario</div></div>
+    <div class="sector"><div class="sector-name">Industria general</div></div>
   </div>
 </section>
 
-<footer>
+
+<!-- ══ CONTACTO ══════════════════════════════════ -->
+<section id="contacto" class="section">
+  <p class="section-label fade-in">Contacto</p>
+  <h2 class="section-h2">
+    <span class="reveal-wrap"><span class="reveal-line">¿Hablamos</span></span>
+    <span class="reveal-wrap"><span class="reveal-line">de tu <em>proyecto?</em></span></span>
+  </h2>
+
+  <div class="contact-split">
+    <div class="contact-info fade-in d2">
+      <div class="ci">
+        <div class="ci-k">Email</div>
+        <a href="mailto:comercial@artazumechanics.com" class="ci-v">comercial@artazumechanics.com</a>
+      </div>
+      <div class="ci">
+        <div class="ci-k">Teléfono</div>
+        <a href="tel:+34606872175" class="ci-v">606 87 21 75</a>
+      </div>
+      <div class="ci">
+        <div class="ci-k">Web</div>
+        <a href="https://www.artazumechanics.com" target="_blank" rel="noopener" class="ci-v">www.artazumechanics.com</a>
+      </div>
+      <!-- Isotipo decorativo -->
+      <svg style="width:120px;opacity:.12;margin-top:auto;" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+        <path fill="#111" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+        <path fill="#111" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+        <circle fill="#111" cx="1101.91" cy="6341.62" r="1101.91"/>
+      </svg>
+    </div>
+
+    <form id="cform" class="contact-form fade-in d3" novalidate>
+      <div class="form-row">
+        <input type="text" class="fi" placeholder="Nombre" required autocomplete="given-name"/>
+        <input type="text" class="fi" placeholder="Empresa" autocomplete="organization"/>
+      </div>
+      <div class="form-row">
+        <input type="email" class="fi" placeholder="Email" required autocomplete="email"/>
+        <input type="tel" class="fi" placeholder="Teléfono" autocomplete="tel"/>
+      </div>
+      <textarea class="fi" rows="4" placeholder="Tipo de pieza, material, volumen aproximado…" required></textarea>
+      <div style="display:flex;align-items:center;">
+        <button type="submit" class="form-btn" id="fsub">
+          Enviar consulta
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+        </button>
+        <span class="form-ok" id="fok">Recibido — te contactamos pronto.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+<!-- ══ FOOTER ════════════════════════════════════ -->
+<footer id="footer">
   <div class="f-logo">
-    <svg width="16" height="13" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
+    <svg width="18" height="15" viewBox="0 0 8810.4 7443.53" fill="none" aria-hidden="true">
       <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
       <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
       <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
     </svg>
-    <span class="f-name">Artazu Mechanics</span>
+    <span class="f-logo-text">Artazu Mechanics</span>
   </div>
   <nav class="f-nav" aria-label="Footer">
-    <a href="#mecanizado">Mecanizado</a>
-    <a href="#utillajes">Utillajes</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#servicios">Servicios</a>
     <a href="#capacidades">Capacidades</a>
     <a href="#contacto">Contacto</a>
   </nav>
   <span class="f-copy">© 2025 Artazu Mechanics</span>
 </footer>
 
+
 <script>
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -36px 0px' });
-document.querySelectorAll('[data-r]').forEach(el => io.observe(el));
+/* ── Scroll reveal setup ── */
+function initReveals() {
+  // Text line reveals
+  const lines = document.querySelectorAll('.reveal-line');
+  const lineObs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        // stagger siblings
+        const wrap = e.target.closest('.section-h2, h1, h2');
+        const allLines = wrap ? wrap.querySelectorAll('.reveal-line') : [e.target];
+        allLines.forEach((line, idx) => {
+          setTimeout(() => line.classList.add('up'), idx * 90);
+        });
+        lineObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  lines.forEach(l => lineObs.observe(l));
 
-const nav = document.getElementById('topnav');
-window.addEventListener('scroll', () => nav.classList.toggle('bg', window.scrollY > 60), { passive: true });
+  // Fade ins
+  const fades = document.querySelectorAll('.fade-in');
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); fadeObs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  fades.forEach(f => fadeObs.observe(f));
+}
 
-const heroImg = document.getElementById('hero-img');
-window.addEventListener('scroll', () => { heroImg.style.transform = `translateY(${window.scrollY * .28}px)`; }, { passive: true });
+/* ── Hero text immediate ── */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('#hero .reveal-line').forEach((l, i) => {
+      setTimeout(() => l.classList.add('up'), 200 + i * 120);
+    });
+    document.querySelectorAll('#hero .fade-in').forEach((f, i) => {
+      setTimeout(() => f.classList.add('on'), 100 + i * 150);
+    });
+  }, 100);
+  initReveals();
+});
 
+/* ── Nav bg on scroll ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+/* ── Service accordion ── */
+function toggleSvc(id) {
+  const item = document.getElementById(id);
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.svc-item').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('button').setAttribute('aria-expanded', 'false');
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    item.querySelector('button').setAttribute('aria-expanded', 'true');
+  }
+}
+
+/* ── Form ── */
 document.getElementById('cform').addEventListener('submit', function(e) {
   e.preventDefault();
   const btn = document.getElementById('fsub');
   btn.textContent = 'Enviando…'; btn.disabled = true;
-  setTimeout(() => { document.getElementById('fok').style.display = 'inline'; this.reset(); btn.textContent = 'Enviado'; }, 1200);
+  setTimeout(() => {
+    document.getElementById('fok').style.display = 'inline';
+    this.reset(); btn.textContent = 'Enviado';
+  }, 1200);
 });
 </script>
 </body>
