@@ -29,9 +29,19 @@
     .clip-line.on { transform: translateY(0); }
 
     /* ── SCROLL REVEAL ── */
-    .rv { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .rv { opacity: 0; transform: translateY(80px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
     .rv.on { opacity: 1; transform: none; }
-    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+    /* Slide from left */
+    .rv-left { opacity: 0; transform: translateX(-64px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+    .rv-left.on { opacity: 1; transform: none; }
+    /* Scale + rise (cards) */
+    .rv-s { opacity: 0; transform: translateY(50px) scale(0.93); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    .rv-s.on { opacity: 1; transform: none; }
+    /* Scroll-triggered heading clip-reveal */
+    .hl-wrap { display: block; overflow: hidden; padding-bottom: .03em; }
+    .hl { display: block; transform: translateY(110%); transition: transform 1.1s cubic-bezier(.16,1,.3,1); }
+    .rv-h.on .hl { transform: translateY(0); }
+    .d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.48s}.d5{transition-delay:.60s}.d6{transition-delay:.72s}
 
     /* ════════════════════════════════════════
        NAV — Liquid crystal, logo centered
@@ -412,7 +422,7 @@
     @media(max-width: 768px) { footer { flex-direction: column; align-items: flex-start; padding: 24px 20px; gap: 12px; } }
 
     @media(prefers-reduced-motion:reduce) {
-      .clip-line,.rv { opacity:1; transform:none; transition:none; }
+      .clip-line,.rv,.rv-left,.rv-s,.hl { opacity:1; transform:none; transition:none; }
       .ticker-track,.hero-scroll-line { animation:none; }
     }
   </style>
@@ -532,22 +542,26 @@
 <section id="nosotros" class="section section-white">
   <div class="nos-grid">
     <div>
-      <h2 class="nos-h2 rv">Más que un<br/>proveedor,<br/>tu <em>partner.</em></h2>
+      <h2 class="nos-h2 rv-h">
+        <span class="hl-wrap"><span class="hl">Más que un</span></span>
+        <span class="hl-wrap"><span class="hl d1">proveedor,</span></span>
+        <span class="hl-wrap"><span class="hl d2">tu <em>partner.</em></span></span>
+      </h2>
     </div>
     <div>
-      <p class="nos-body rv d1">Nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor que asume la responsabilidad completa del proceso.</p>
-      <div class="nos-list rv d2">
-        <div class="nos-item"><span>Flexibilidad total</span><span class="nos-arrow">→</span></div>
-        <div class="nos-item"><span>Alto nivel técnico</span><span class="nos-arrow">→</span></div>
-        <div class="nos-item"><span>Control de calidad exhaustivo</span><span class="nos-arrow">→</span></div>
-        <div class="nos-item"><span>Plazos garantizados</span><span class="nos-arrow">→</span></div>
+      <p class="nos-body rv-left d3">Nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor que asume la responsabilidad completa del proceso.</p>
+      <div class="nos-list">
+        <div class="nos-item rv d2"><span>Flexibilidad total</span><span class="nos-arrow">→</span></div>
+        <div class="nos-item rv d3"><span>Alto nivel técnico</span><span class="nos-arrow">→</span></div>
+        <div class="nos-item rv d4"><span>Control de calidad exhaustivo</span><span class="nos-arrow">→</span></div>
+        <div class="nos-item rv d5"><span>Plazos garantizados</span><span class="nos-arrow">→</span></div>
       </div>
     </div>
   </div>
 
   <!-- Diff cards — Tenity "The difference" large arc style -->
-  <div class="diff-grid rv d2">
-    <div class="diff-card">
+  <div class="diff-grid">
+    <div class="diff-card rv-s d1">
       <div class="diff-arc-wrap">
         <svg class="diff-arc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
           <path class="diff-arc-path" d="M0,0 Q100,0 100,100"/>
@@ -558,7 +572,7 @@
         <div class="diff-body">Adaptación total al volumen, plazos y especificaciones.</div>
       </div>
     </div>
-    <div class="diff-card">
+    <div class="diff-card rv-s d2">
       <div class="diff-arc-wrap">
         <svg class="diff-arc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
           <path class="diff-arc-path" d="M0,0 Q100,0 100,100"/>
@@ -569,7 +583,7 @@
         <div class="diff-body">Oficina técnica con Siemens NX CAD/CAM. Soporte desde el primer plano.</div>
       </div>
     </div>
-    <div class="diff-card">
+    <div class="diff-card rv-s d3">
       <div class="diff-arc-wrap">
         <svg class="diff-arc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
           <path class="diff-arc-path" d="M0,0 Q100,0 100,100"/>
@@ -580,7 +594,7 @@
         <div class="diff-body">Verificación dimensional integrada en cada fase del proceso.</div>
       </div>
     </div>
-    <div class="diff-card">
+    <div class="diff-card rv-s d4">
       <div class="diff-arc-wrap">
         <svg class="diff-arc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
           <path class="diff-arc-path" d="M0,0 Q100,0 100,100"/>
@@ -597,18 +611,21 @@
 
 <!-- ── STATS ───────────────────────────────────────── -->
 <div class="stats-row section-dark">
-  <div class="stat rv"><div class="stat-n">5<em>ejes</em></div><div class="stat-l">Mecanizado máximo</div></div>
-  <div class="stat rv d1"><div class="stat-n">0,01<em>mm</em></div><div class="stat-l">Tolerancia</div></div>
-  <div class="stat rv d2"><div class="stat-n">360<em>°</em></div><div class="stat-l">Gestión integral</div></div>
-  <div class="stat rv d3"><div class="stat-n">2<em>áreas</em></div><div class="stat-l">Servicios especializados</div></div>
+  <div class="stat rv"><div class="stat-n"><span class="cnt" data-to="5" data-dur="1000">0</span><em>ejes</em></div><div class="stat-l">Mecanizado máximo</div></div>
+  <div class="stat rv d1"><div class="stat-n"><span class="cnt-txt">0,01</span><em>mm</em></div><div class="stat-l">Tolerancia</div></div>
+  <div class="stat rv d2"><div class="stat-n"><span class="cnt" data-to="360" data-dur="1600">0</span><em>°</em></div><div class="stat-l">Gestión integral</div></div>
+  <div class="stat rv d3"><div class="stat-n"><span class="cnt" data-to="2" data-dur="900">0</span><em>áreas</em></div><div class="stat-l">Servicios especializados</div></div>
 </div>
 
 
 <!-- ── SERVICIOS ───────────────────────────────────── -->
 <section id="servicios" class="section section-white">
   <div class="svc-header">
-    <h2 class="svc-h2 rv">Lo que<br/>hacemos.</h2>
-    <p class="svc-intro rv d2">Dos servicios especializados que cubren las necesidades industriales de principio a fin.</p>
+    <h2 class="svc-h2 rv-h">
+      <span class="hl-wrap"><span class="hl">Lo que</span></span>
+      <span class="hl-wrap"><span class="hl d1">hacemos.</span></span>
+    </h2>
+    <p class="svc-intro rv-left d2">Dos servicios especializados que cubren las necesidades industriales de principio a fin.</p>
   </div>
   <div class="svc-accordion rv d1">
     <div class="svc-item open" id="s1">
@@ -657,9 +674,12 @@
 
 <!-- ── CAPACIDADES ─────────────────────────────────── -->
 <section id="capacidades" class="section section-light">
-  <h2 class="svc-h2 rv">Maquinaria<br/>&amp; equipos.</h2>
-  <div class="cap-grid rv d1">
-    <div class="machine">
+  <h2 class="svc-h2 rv-h">
+    <span class="hl-wrap"><span class="hl">Maquinaria</span></span>
+    <span class="hl-wrap"><span class="hl d1">&amp; equipos.</span></span>
+  </h2>
+  <div class="cap-grid">
+    <div class="machine rv-s d2">
       <div class="mach-badge">5 Ejes</div>
       <div class="mach-name">DMU 100 T</div>
       <div class="mach-specs">
@@ -669,7 +689,7 @@
         <div><div class="spec-k">Materiales</div><div class="spec-v" style="font-size:.82rem;color:rgba(17,17,17,.4)">Acero · Aluminio · Composites</div></div>
       </div>
     </div>
-    <div class="machine">
+    <div class="machine rv-s d3">
       <div class="mach-badge">3+1 Ejes</div>
       <div class="mach-name">Mazak VTC-200B</div>
       <div class="mach-specs">
@@ -691,7 +711,10 @@
 
 <!-- ── CONTACTO ────────────────────────────────────── -->
 <section id="contacto" class="section section-white">
-  <h2 class="svc-h2 rv">¿Hablamos<br/>de tu <em style="font-style:normal;color:#ee7419">proyecto?</em></h2>
+  <h2 class="svc-h2 rv-h">
+    <span class="hl-wrap"><span class="hl">¿Hablamos</span></span>
+    <span class="hl-wrap"><span class="hl d1">de tu <em style="font-style:normal;color:#ee7419">proyecto?</em></span></span>
+  </h2>
   <div class="contact-split">
     <div class="rv d1">
       <div class="ci-k">Email</div>
@@ -753,11 +776,28 @@ window.addEventListener('load', () => {
   });
 });
 
+// Count-up animation
+function startCount(el) {
+  const to = +el.dataset.to, dur = +(el.dataset.dur || 1400);
+  const start = performance.now();
+  (function step(now) {
+    const p = Math.min((now - start) / dur, 1);
+    el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * to);
+    if (p < 1) requestAnimationFrame(step);
+  })(start);
+}
+
 // Scroll reveal
 const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.rv').forEach(el => io.observe(el));
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('on');
+      e.target.querySelectorAll('.cnt').forEach(startCount);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.rv, .rv-left, .rv-s, .rv-h').forEach(el => io.observe(el));
 
 // Accordion
 function toggleSvc(id) {
