@@ -398,23 +398,35 @@
     /* ─── ENGINEERING SECTION ─── */
     .tp-eng-section { background: var(--tp-bg); padding: 100px 0 80px; }
     .tp-eng-row { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .tp-eng-title-wrap { line-height: 1; }
+    .tp-eng-title-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
     .tp-eng-word {
       display: block;
       font-size: 96px;
       font-weight: 800;
       letter-spacing: -4px;
       color: var(--tp-dark);
-      line-height: 0.95;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
     }
     .tp-eng-amp {
-      display: block;
-      font-size: 180px;
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      transform: translateY(-50%);
+      font-size: 320px;
       font-weight: 800;
-      letter-spacing: -8px;
+      letter-spacing: -14px;
       color: #C97A35;
-      line-height: 0.75;
-      margin-left: -6px;
+      opacity: 0.5;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
     }
     .tp-eng-list { list-style: none; border-top: 1px solid rgba(0,0,0,0.12); }
     .tp-eng-list li {
@@ -428,12 +440,12 @@
     @media (max-width: 991px) {
       .tp-eng-row { grid-template-columns: 1fr !important; gap: 50px; }
       .tp-eng-word { font-size: 72px; letter-spacing: -3px; }
-      .tp-eng-amp { font-size: 130px; letter-spacing: -5px; }
+      .tp-eng-amp { font-size: 240px; letter-spacing: -10px; }
     }
     @media (max-width: 767px) {
       .tp-eng-section { padding: 60px 0; }
       .tp-eng-word { font-size: 56px; letter-spacing: -2px; }
-      .tp-eng-amp { font-size: 100px; letter-spacing: -4px; }
+      .tp-eng-amp { font-size: 170px; letter-spacing: -7px; }
       .tp-eng-list li { font-size: 16px; padding: 18px 0; }
     }
 
@@ -834,8 +846,8 @@
     <div class="container-1760">
       <div class="tp-eng-row">
         <div class="tp-eng-title-wrap">
+          <span class="tp-eng-amp" aria-hidden="true">&amp;</span>
           <span class="tp-eng-word">Ingeniería</span>
-          <span class="tp-eng-amp">&amp;</span>
           <span class="tp-eng-word">tecnología</span>
         </div>
         <ul class="tp-eng-list">
