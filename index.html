@@ -36,7 +36,7 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       font-family: var(--tp-ff);
@@ -531,7 +531,7 @@
     }
     @media (max-width: 991px) {
       .tp-section-title { font-size: 70px; letter-spacing: -3px; }
-      .tp-hero-area { height: auto; min-height: 100vh; padding-bottom: 80px; }
+      .tp-hero-area { height: auto; min-height: 100vh; padding-bottom: 80px; overflow: hidden; }
       .tp-hero-container { padding-right: 20px; }
       .tp-hero-col-left, .tp-hero-col-right { width: 100%; order: 0 !important; }
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 120px; }
