@@ -36,7 +36,7 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       font-family: var(--tp-ff);
@@ -531,6 +531,8 @@
     }
     @media (max-width: 991px) {
       .tp-section-title { font-size: 70px; letter-spacing: -3px; }
+      .tp-hero-area { height: auto; min-height: 100vh; padding-bottom: 80px; overflow: hidden; }
+      .tp-hero-container { padding-right: 20px; }
       .tp-hero-col-left, .tp-hero-col-right { width: 100%; order: 0 !important; }
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 120px; }
       .tp-hero-text-box { transform: none; }
@@ -550,21 +552,55 @@
       .tp-project-heading-row { grid-template-columns: 1fr !important; }
       .tp-project-btn { text-align: left !important; margin-top: 20px; }
       .tp-project-item { width: 100%; }
+      /* About grid */
+      .tp-about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+      .tp-about-box { padding-bottom: 80px; }
+      /* Team grid */
+      .tp-team-grid { grid-template-columns: 1fr !important; }
+      .tp-team-btn { text-align: left !important; }
+      /* Blog grid — 2 columnas en tablet */
+      .tp-blog-grid { grid-template-columns: 1fr 1fr !important; }
     }
     @media (max-width: 767px) {
       .tp-section-title { font-size: 48px; line-height: 1; letter-spacing: -2px; }
+      .tp-hero-area { padding-bottom: 60px; }
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 90px; }
       .tp-hero-text-2 { margin-left: 0; }
-      .tp-hero-container { padding-top: 120px; }
+      .tp-hero-container { padding-top: 100px; }
+      .tp-hero-thumb-1 img { height: 280px; }
+      .tp-hero-user-content span { font-size: 22px; }
       .tp-project-item-title { font-size: 28px; }
       .tp-project-item-thumb { height: 260px; }
       .tp-testimonial-item-title { font-size: 38px; letter-spacing: -1px; }
       .tp-testimonial-user-title { font-size: 30px; }
       .tp-testimonial-navigation { display: none; }
+      .tp-testimonial-ptb { padding-top: 80px; padding-bottom: 80px; }
+      .tp-testimonial-wrapper { padding-bottom: 60px !important; }
       .tp-blog-item-title { font-size: 26px; }
+      .tp-blog-grid { grid-template-columns: 1fr !important; }
+      .tp-blog-wrap { padding: 0; }
       .tp-service-title { font-size: 36px; }
+      .tp-service-item-thumb { display: none; }
+      .tp-service-ptb { padding-bottom: 80px; }
+      .tp-about-ptb { padding-top: 60px; padding-bottom: 60px; }
+      .tp-about-box { padding-bottom: 40px; }
+      .tp-about-text-1 { font-size: 18px; margin-bottom: 20px; }
+      .tp-about-text-2 { font-size: 16px; margin-bottom: 30px; }
+      .tp-about-wrap img { height: 300px !important; }
+      .tp-team-ptb { padding-top: 60px; padding-bottom: 20px; }
       .tp-btn { font-size: 16px; padding: 16px 40px; }
       .container-1760 { padding: 0 20px; }
+    }
+    @media (max-width: 480px) {
+      .tp-offcanvas-2-bg { width: 100%; }
+      .tp-offcanvas-2-bg.is-right { display: none; }
+      .tp-offcanvas-2-left { width: 100%; padding: 30px 20px 30px 24px; border-right: none; }
+      .tp-offcanvas-2-right { display: none; }
+      .tp-offcanvas-menu a { font-size: 42px; padding: 14px 0; }
+      .tp-hero-container { padding-top: 88px; }
+      .tp-hero-thumb-1 img { height: 240px; }
+      .tp-hero-user-content span { font-size: 19px; }
+      .tp-section-title { font-size: 40px; letter-spacing: -1.5px; }
     }
   </style>
 </head>
@@ -791,7 +827,7 @@
         <h3 class="tp-section-title white titleBurrowing">We help you connect with <br> your customers</h3>
       </div>
       <div class="tp-about-box">
-        <div style="display:grid;grid-template-columns:5fr 7fr;gap:60px;align-items:flex-end;">
+        <div class="tp-about-grid" style="display:grid;grid-template-columns:5fr 7fr;gap:60px;align-items:flex-end;">
           <div class="tp-about-thumb tp_fade_bottom">
             <img src="img/about-1.png" alt="About">
           </div>
@@ -918,7 +954,7 @@
   ══════════════════════════════════ -->
   <section class="tp-team-ptb">
     <div class="container-1760">
-      <div style="display:grid;grid-template-columns:7fr 5fr;align-items:flex-end;">
+      <div class="tp-team-grid" style="display:grid;grid-template-columns:7fr 5fr;align-items:flex-end;">
         <div class="tp-team-heading">
           <h3 class="tp-section-title titleBurrowing">Meet our team <br> member</h3>
         </div>
@@ -996,7 +1032,7 @@
   <section class="tp-blog-ptb">
     <div style="padding: 0 35px;">
       <div class="tp-blog-wrap">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;">
+        <div class="tp-blog-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;">
 
           <div class="tp-blog-item tp_fade_bottom">
             <div class="tp-blog-item-thumb">
