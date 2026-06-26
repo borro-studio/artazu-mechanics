@@ -186,7 +186,8 @@
     /* Scroll indicator — abs bottom-left */
     .tp-hero-down {
       position: absolute;
-      bottom: 30px; left: 20px;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%);
       z-index: 2;
     }
     .tp-hero-down a {
@@ -562,6 +563,7 @@
       .tp-blog-grid { grid-template-columns: 1fr 1fr !important; }
     }
     @media (max-width: 767px) {
+      .tp-hero-down { display: none; }
       .tp-section-title { font-size: 48px; line-height: 1; letter-spacing: -2px; }
       .tp-hero-area { padding-bottom: 60px; }
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 90px; }
