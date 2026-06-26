@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home Creative Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Helvetica vía sistema, sin Google Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { syne: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'] },
+          colors: {
+            dark: '#1a1a1a',
+            'dark-2': '#2b2b2b',
+            light: '#ededed',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --tp-ff: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --tp-dark: #1a1a1a;
+      --tp-light: #ededed;
+      --tp-white: #ffffff;
+      --tp-gray: #4a4a4a;
+      --tp-bg: #ededed;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--tp-ff);
+      background: var(--tp-bg);
+      color: var(--tp-dark);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── CURSOR ─── */
+    #magic-cursor { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+    #ball {
+      position: fixed;
+      width: 14px; height: 14px;
+      background: var(--tp-dark);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.3s, height 0.3s, border-radius 0.3s;
+      pointer-events: none;
+      mix-blend-mode: difference;
+    }
+    body.cursor-hover #ball { width: 60px; height: 60px; }
+
+    /* ─── BACK TO TOP ─── */
+    .back-to-top-wrapper {
+      position: fixed; bottom: 30px; right: 30px; z-index: 100;
+      opacity: 0; visibility: hidden; transition: 0.3s;
+    }
+    .back-to-top-wrapper.show { opacity: 1; visibility: visible; }
+    .back-to-top-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--tp-light); color: var(--tp-dark);
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: 0.3s;
+    }
+    .back-to-top-btn:hover { background: var(--tp-dark); color: var(--tp-light); }
+
+    /* ─── OFFCANVAS ─── */
+    .tp-offcanvas-2-area {
+      position: fixed; inset: 0; z-index: 9998;
+      pointer-events: none;
+    }
+    .tp-offcanvas-2-area.open { pointer-events: all; }
+    .tp-offcanvas-2-bg {
+      position: absolute; top: 0; bottom: 0;
+      width: 50%; background: var(--tp-dark);
+      transform: translateX(-100%); transition: transform 0.6s cubic-bezier(0.76,0,0.24,1);
+    }
+    .tp-offcanvas-2-bg.is-right { left: 50%; transform: translateX(100%); }
+    .tp-offcanvas-2-area.open .tp-offcanvas-2-bg { transform: translateX(0); }
+    .tp-offcanvas-2-wrapper {
+      position: absolute; inset: 0;
+      display: flex;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s 0.4s;
+    }
+    .tp-offcanvas-2-area.open .tp-offcanvas-2-wrapper { opacity: 1; visibility: visible; }
+    .tp-offcanvas-2-left {
+      width: 50%; padding: 35px 0 35px 90px;
+      display: flex; flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .tp-offcanvas-2-right { width: 50%; padding: 30px 90px 35px 90px; }
+    .tp-offcanvas-2-close-btn {
+      background: none; border: none; cursor: pointer; color: var(--tp-light);
+    }
+    .tp-offcanvas-menu { margin-top: 60px; }
+    .tp-offcanvas-menu a {
+      display: block;
+      font-size: 60px; font-weight: 700; color: var(--tp-light);
+      line-height: 1; padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: opacity 0.3s;
+    }
+    .tp-offcanvas-menu a:hover { opacity: 0.5; }
+
+    /* ─── HEADER ─── */
+    #header-sticky {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+      padding: 35px 0;
+      transition: padding 0.3s, background 0.3s, box-shadow 0.3s;
+    }
+    #header-sticky.header-sticky {
+      position: fixed;
+      padding: 18px 0;
+      background: var(--tp-bg);
+      box-shadow: 0 2px 30px rgba(0,0,0,0.08);
+    }
+    .tp-header-main-sticky { width: 100%; }
+    .container-1760 { max-width: 1790px; margin: 0 auto; padding: 0 40px; }
+    .tp-header-1-logo img { height: 36px; width: auto; }
+    .tp-hamburger-btn {
+      background: none; border: none; cursor: pointer; padding: 4px;
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .tp-hamburger-btn span {
+      display: block; width: 28px; height: 1.5px; background: var(--tp-dark);
+      transition: 0.3s;
+    }
+
+    /* ─── SECTION TITLE ─── */
+    .tp-section-title {
+      font-size: 100px;
+      font-weight: 600;
+      line-height: 0.9;
+      letter-spacing: -6px;
+      font-family: var(--tp-ff);
+      color: var(--tp-dark);
+      margin-bottom: 20px;
+    }
+    .tp-section-title.white { color: var(--tp-light); }
+
+    /* ─── HERO ─── */
+    .tp-hero-area {
+      background: var(--tp-bg);
+      position: relative;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* Bootstrap-like hero container: max-width 1320px centrado, padding-top para header */
+    .tp-hero-container {
+      max-width: 1320px;
+      margin: 0;
+      padding: 120px 0 0 20px;
+    }
+
+    /* Row: dos columnas iguales */
+    .tp-hero-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -12px;
+    }
+    .tp-hero-col-left,
+    .tp-hero-col-right {
+      width: 50%;
+      padding: 0 12px;
+    }
+    /* En desktop: imagen a la izquierda (order:0), texto a la derecha (order:1) — el texto rotado se desplaza hacia la izquierda sobre la imagen */
+    .tp-hero-col-left  { order: 0; }
+    .tp-hero-col-right { order: 1; }
+
+    /* Scroll indicator — abs bottom-left */
+    .tp-hero-down {
+      position: absolute;
+      bottom: 30px; left: 20px;
+      z-index: 2;
+    }
+    .tp-hero-down a {
+      display: flex; align-items: center; gap: 10px;
+      color: var(--tp-dark);
+    }
+    .tp-hero-down-icon { margin-right: 4px; }
+    .tp-hero-down-text span {
+      font-size: 16px; font-weight: 400;
+      line-height: 22px; color: var(--tp-dark);
+      letter-spacing: 0.32px;
+    }
+
+    /* Left column content */
+    .tp-hero-leftside { margin-left: 200px; }
+    .tp-hero-thumb-1 { overflow: hidden; margin-bottom: 30px; }
+    .tp-hero-thumb-1 img { width: 100%; display: block; height: 380px; object-fit: cover; object-position: center top; }
+
+    /* User box */
+    .tp-hero-user { margin-left: 0; margin-top: 24px; }
+    .tp-hero-user-thumb {
+      margin-bottom: 14px;
+    }
+    .tp-hero-user-thumb span {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      height: 36px; width: auto;
+    }
+    .tp-hero-user-content span {
+      font-size: 34px; font-weight: 600; line-height: 1;
+      margin-bottom: 6px;
+      display: inline-block;
+      color: var(--tp-dark);
+    }
+    .tp-hero-user-content p {
+      position: relative;
+      font-size: 15px; letter-spacing: 0.15px;
+      color: rgba(26,26,26,0.55);
+      line-height: 1.5;
+      padding-left: 0;
+      margin-left: 90px;
+    }
+    .tp-hero-user-content p::before {
+      content: '';
+      position: absolute;
+      height: 1px; width: 60px;
+      top: 12px; left: -90px;
+      background: rgba(26,26,26,0.4);
+    }
+
+    /* Image reveal animation */
+    .tp_img_reveal { visibility: hidden; overflow: hidden; }
+    .tp_img_reveal img { transform-origin: left; overflow: hidden; }
+
+    /* Right photo — covers right 50% full height */
+    .tp-hero-shape-thumb {
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: 40%;
+      background-size: cover;
+      background-position: center top;
+      z-index: 0;
+    }
+    .tp-hero-shape-thumb img { display: none; }
+    /* Rotated text wrap — anchored at center of section */
+    /* ─── VERTICAL MARQUEE ─── */
+    .tp-hero-text-wrap {
+      position: absolute; top: 0; left: calc(60% - 55px);
+      height: 100%; z-index: 2; pointer-events: none;
+    }
+    /* Wrapper handles the rotation only */
+    .tp-hero-marquee-rotator {
+      transform-origin: 0 0;
+      transform: rotate(-90deg) translateY(-75px);
+    }
+    /* Track is animated by GSAP (translateX only, no CSS animation) */
+    .tp-hero-marquee-track {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 55px;
+      white-space: nowrap;
+      will-change: transform;
+    }
+    .mq-word {
+      font-size: 155px; font-weight: 200;
+      color: var(--tp-dark);
+      text-transform: uppercase;
+      letter-spacing: -4px;
+      line-height: 1;
+      font-family: var(--tp-ff);
+    }
+    .mq-word.outline {
+      color: transparent;
+      -webkit-text-stroke: 1px var(--tp-dark);
+    }
+    .mq-sep {
+      display: inline-flex; align-items: center; flex-shrink: 0;
+    }
+    /* dummy — keep selector alive */
+    .tp-hero-rightside { display: none; }
+    /* padding left col so right photo doesn't overlap content */
+    .tp-hero-col-left { width: 50%; }
+    /* placeholder to keep old selector */
+    .tp-hero-shape-thumb-old {
+      width: auto;
+    }
+
+    /* ─── BUTTONS ─── */
+    .tp-btn {
+      position: relative; overflow: hidden;
+      font-weight: 500; font-size: 20px;
+      border-radius: 100px; display: inline-flex;
+      align-items: center; gap: 12px;
+      padding: 27px 66px;
+      letter-spacing: -0.16px; text-transform: capitalize;
+      z-index: 1;
+      background: transparent;
+      color: var(--tp-dark);
+      font-family: var(--tp-ff);
+      border: 1px solid var(--tp-dark);
+      transition: color 500ms ease;
+    }
+    .tp-btn.white-border {
+      color: var(--tp-light);
+      border-color: rgba(245,247,245,0.3);
+    }
+    .tp-btn.button-style-2::after {
+      content: ''; position: absolute;
+      left: 0; bottom: 0;
+      height: 0; width: 100%; z-index: -1;
+      background: var(--tp-dark);
+      transition: all 0.4s cubic-bezier(0.215,0.61,0.355,1);
+    }
+    .tp-btn.button-style-2.white-fill::after { background: var(--tp-light); }
+    .tp-btn.button-style-2:hover { color: var(--tp-light); }
+    .tp-btn.button-style-2.white-fill:hover { color: var(--tp-dark); }
+    .tp-btn.button-style-2:hover::after { top: 0; bottom: auto; height: 100%; }
+
+    /* ─── PORTFOLIO ─── */
+    .tp-project-ptb { background: #fff; padding-top: 150px; padding-bottom: 40px; }
+    .tp-project-heading { margin-bottom: 70px; }
+    .tp-project-btn { margin-bottom: 70px; }
+    .tp-project-item { margin-bottom: 120px; }
+    .tp-project-item:hover .tp-project-item-thumb img { transform: scale(1.1); }
+    .tp-project-item:hover .tp-project-item-thumb::before { opacity: 1; visibility: visible; }
+    .tp-project-item-thumb {
+      width: 100%; height: 470px; overflow: hidden; position: relative;
+    }
+    .tp-project-item-thumb::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(18,18,18,0.75);
+      opacity: 0; visibility: hidden; z-index: 1;
+      transition: 0.3s ease-out;
+    }
+    .tp-project-item-thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.9s ease;
+    }
+    .tp-project-item-content {
+      margin-top: 40px; padding-top: 30px;
+      border-top: 1px solid var(--tp-dark);
+      display: flex; align-items: flex-start; justify-content: space-between;
+    }
+    .tp-project-item-title {
+      font-size: 50px; font-weight: 700;
+      color: var(--tp-dark); line-height: 1;
+      letter-spacing: -1px;
+    }
+    .tp-project-item-title a {
+      background-image: linear-gradient(#121212,#121212), linear-gradient(#121212,#121212);
+      background-size: 0% 1px, 0 1px;
+      background-position: 100% 100%, 0 100%;
+      background-repeat: no-repeat;
+      transition: background-size 0.3s linear;
+    }
+    .tp-project-item-title a:hover { background-size: 0% 1px, 100% 1px; }
+    .tp-project-item-content-left p {
+      font-size: 18px; line-height: 1.5; font-weight: 500; color: var(--tp-dark);
+      margin-top: 12px;
+    }
+
+    /* ─── ABOUT ─── */
+    .tp-about-ptb { background: var(--tp-dark); padding-top: 100px; padding-bottom: 150px; }
+    .tp-about-heading { margin-bottom: 80px; }
+    .tp-about-box { padding-bottom: 180px; }
+    .tp-about-thumb img { width: 100%; border-radius: 2px; }
+    @keyframes tpupdown { 0% { transform: translateY(0); } 100% { transform: translateY(-15px); } }
+    .tp-about-thumb { animation: tpupdown 2s infinite alternate ease-in-out; }
+    .tp-about-text-1 {
+      font-size: 22px; margin-bottom: 30px;
+      color: var(--tp-light); line-height: 1.6;
+    }
+    .tp-about-text-2 {
+      font-size: 18px; line-height: 1.6;
+      color: var(--tp-light); margin-bottom: 55px;
+    }
+    .tp-about-btn .tp-btn {
+      color: var(--tp-light);
+      border-color: rgba(234,234,235,0.4);
+    }
+    .tp-about-btn .tp-btn.button-style-2::after { background: var(--tp-light); }
+    .tp-about-btn .tp-btn.button-style-2:hover { color: var(--tp-dark); }
+    .tp-about-wrap img { width: 100%; height: 700px; object-fit: cover; }
+
+    /* ─── SERVICES ─── */
+    .tp-service-ptb { background: var(--tp-dark); padding-bottom: 160px; }
+    .tp-service-heading { margin-bottom: 100px; text-align: center; }
+    .tp-service-wrapper { position: relative; }
+    .tp-service-wrapper .active-bg {
+      position: absolute; inset: 0; z-index: -1;
+      background: #1E1E1E;
+      transition: top 0.7s, height 0.7s;
+    }
+    .tp-service-item {
+      padding: 50px 220px;
+      display: flex; align-items: center; justify-content: space-around;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      position: relative; z-index: 1;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .tp-service-item:nth-child(4) { border-bottom: 1px solid rgba(255,255,255,0.2); }
+    .tp-service-item:hover { background: #1E1E1E; }
+    .tp-service-item-thumb { margin-right: 50px; overflow: hidden; flex-shrink: 0; }
+    .tp-service-item-thumb img {
+      width: 220px; height: 110px; object-fit: cover;
+      border-radius: 2px; transition: transform 0.9s ease;
+    }
+    .tp-service-item:hover .tp-service-item-thumb img { transform: scale(1.2); }
+    .tp-service-item-title { flex: 1; padding-right: 200px; }
+    .tp-service-title {
+      font-size: 50px; font-weight: 600;
+      letter-spacing: -1px; color: var(--tp-light);
+      margin: 0; font-family: var(--tp-ff);
+    }
+    .tp-service-item-title-pre { padding-right: 210px; }
+    .tp-service-item-title-pre span {
+      font-size: 26px; font-weight: 400;
+      color: rgba(245,247,245,0.8);
+    }
+    .tp-service-item-btn a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--tp-light);
+      transition: 0.3s;
+    }
+    .tp-service-item:hover .tp-service-item-btn a,
+    .tp-service-item.current .tp-service-item-btn a {
+      background: var(--tp-light); color: var(--tp-dark);
+    }
+
+    /* ─── TEAM ─── */
+    .tp-team-ptb { background: #fff; padding-top: 150px; padding-bottom: 40px; }
+    .tp-team-heading { margin-bottom: 100px; }
+    .tp-team-btn { margin-bottom: 100px; }
+
+    /* ─── TESTIMONIAL ─── */
+    .tp-testimonial-ptb { background: var(--tp-dark); padding-top: 160px; padding-bottom: 160px; }
+    .tp-testimonial-wrapper { position: relative; }
+    .tp-testimonial-item-title {
+      font-size: 65px; font-weight: 600; line-height: 1.31;
+      letter-spacing: -2.6px; color: var(--tp-light);
+      display: block; margin-bottom: 55px;
+    }
+    .tp-testimonial-user { display: flex; align-items: center; gap: 25px; }
+    .tp-testimonial-user-thumb img {
+      width: 130px; height: 130px; border-radius: 50%; object-fit: cover;
+    }
+    .tp-testimonial-user-title {
+      font-size: 45px; font-weight: 500; line-height: 1;
+      letter-spacing: -0.9px; color: var(--tp-light); margin-bottom: 20px;
+    }
+    .tp-testimonial-user-content span {
+      font-size: 26px; font-weight: 400;
+      color: rgba(245,247,245,0.5);
+    }
+    .tp-testimonial-navigation {
+      position: absolute; bottom: 0; right: 0; z-index: 2;
+      display: flex; gap: 20px;
+    }
+    .tp-testimonial-navigation button {
+      width: 90px; height: 90px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: none; cursor: pointer;
+      color: var(--tp-light); display: inline-flex;
+      align-items: center; justify-content: center;
+      transition: 0.3s;
+    }
+    .tp-testimonial-navigation button:hover {
+      background: var(--tp-light); color: var(--tp-dark);
+    }
+    .testimonial-slide { display: none; }
+    .testimonial-slide.active { display: block; }
+
+    /* ─── BLOG ─── */
+    .tp-blog-ptb { background: #fff; padding-top: 150px; padding-bottom: 110px; }
+    .tp-blog-wrap { padding: 0 35px; }
+    .tp-blog-item:hover .tp-blog-item-thumb img { transform: scale(1.1); }
+    .tp-blog-item-thumb { overflow: hidden; margin-bottom: 25px; }
+    .tp-blog-item-thumb img { width: 100%; height: 310px; object-fit: cover; transition: 0.9s; }
+    .tp-blog-item-tag {
+      font-size: 16px; font-weight: 400; color: #5D5D63;
+      display: inline-block; margin-bottom: 8px; text-transform: uppercase;
+    }
+    .tp-blog-item-title {
+      font-size: 32px; font-weight: 600; line-height: 1.1;
+      letter-spacing: -0.62px; color: var(--tp-dark);
+    }
+    .tp-blog-item-title a {
+      background-image: linear-gradient(#121212,#121212), linear-gradient(#121212,#121212);
+      display: inline;
+      background-size: 0% 1px, 0 1px;
+      background-position: 100% 100%, 0 100%;
+      background-repeat: no-repeat;
+      transition: background-size 0.3s linear;
+    }
+    .tp-blog-item-title a:hover { background-size: 0% 1px, 100% 1px; }
+
+    /* ─── FOOTER ─── */
+    .tp-footer-ptb { background: var(--tp-dark); padding-top: 50px; }
+    .tp-footer-copyright { padding: 0 35px 50px; }
+    .tp-footer-copyright-text p {
+      font-size: 16px; color: rgba(245,247,245,0.4); text-align: center;
+    }
+
+    /* ─── SCROLL REVEAL (initial state, GSAP handles transitions) ─── */
+    .tp_fade_bottom { opacity: 0; }
+    .tp_fade_right  { opacity: 0; }
+    .tp_fade_left   { opacity: 0; }
+    /* titleBurrowing chars split inline */
+    .tp-char { display: inline-block; }
+
+    /* ─── GUTTER ─── */
+    .tp-gx-50 { --gutter: 50px; }
+    .tp-gx-50 > [class*="col-"] { padding-left: calc(var(--gutter)/2); padding-right: calc(var(--gutter)/2); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1199px) {
+      .tp-hero-text-1, .tp-hero-text-2 { font-size: 160px; }
+      .tp-hero-text-box { transform: rotate(-90deg) translate(-250px, -125px); }
+    }
+    @media (max-width: 991px) {
+      .tp-section-title { font-size: 70px; letter-spacing: -3px; }
+      .tp-hero-col-left, .tp-hero-col-right { width: 100%; order: 0 !important; }
+      .tp-hero-text-1, .tp-hero-text-2 { font-size: 120px; }
+      .tp-hero-text-box { transform: none; }
+      .tp-hero-leftside { margin-left: 0; }
+      .tp-hero-user { margin-left: 0; }
+      .tp-hero-user-content p { margin-left: 0; }
+      .tp-hero-user-content p::before { display: none; }
+      .tp-hero-shape-thumb { display: none; }
+      .tp-service-item { padding: 40px 30px; flex-wrap: wrap; }
+      .tp-service-item-title { padding-right: 20px; }
+      .tp-service-item-title-pre { padding-right: 20px; }
+      .tp-testimonial-item-title { font-size: 50px; }
+      .tp-testimonial-user-title { font-size: 40px; }
+    }
+    @media (max-width: 767px) {
+      .tp-section-title { font-size: 55px; line-height: 1; letter-spacing: -2px; }
+      .tp-hero-text-1, .tp-hero-text-2 { font-size: 90px; }
+      .tp-hero-text-2 { margin-left: 0; }
+      .tp-hero-container { padding-top: 120px; }
+      .tp-project-item-title { font-size: 35px; }
+      .tp-project-item-thumb { height: 300px; }
+      .tp-testimonial-item-title { font-size: 38px; letter-spacing: -1px; }
+      .tp-testimonial-user-title { font-size: 30px; }
+      .tp-testimonial-navigation { display: none; }
+      .tp-blog-item-title { font-size: 26px; }
+      .tp-service-title { font-size: 36px; }
+      .tp-btn { font-size: 16px; padding: 16px 40px; }
+      .container-1760 { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div id="magic-cursor"><div id="ball"></div></div>
+
+  <!-- Back to top -->
+  <div class="back-to-top-wrapper" id="backToTop">
+    <button class="back-to-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
+        <path d="M11 6L6 1L1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Offcanvas -->
+  <div class="tp-offcanvas-2-area" id="offcanvasArea">
+    <div class="tp-offcanvas-2-bg is-left"></div>
+    <div class="tp-offcanvas-2-bg is-right"></div>
+    <div class="tp-offcanvas-2-wrapper">
+      <div class="tp-offcanvas-2-left">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-right:60px;">
+          <a href="#">
+            <img src="img/logo-black.png" alt="Logo" style="height:30px;filter:invert(1);">
+          </a>
+          <button class="tp-offcanvas-2-close-btn" onclick="closeOffcanvas()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect width="32.621" height="1.00918" transform="matrix(0.704882 0.709325 -0.704882 0.709325 1.0061 0)" fill="currentcolor"/>
+              <rect width="32.621" height="1.00918" transform="matrix(0.704882 -0.709325 0.704882 0.709325 0 23.2842)" fill="currentcolor"/>
+            </svg>
+          </button>
+        </div>
+        <nav class="tp-offcanvas-menu">
+          <a href="#">Home</a>
+          <a href="#">Portfolio</a>
+          <a href="#">About</a>
+          <a href="#">Services</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact</a>
+        </nav>
+      </div>
+      <div class="tp-offcanvas-2-right" style="display:flex;align-items:flex-start;justify-content:flex-end;padding-top:30px;">
+        <button class="tp-offcanvas-2-close-btn" onclick="closeOffcanvas()">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+            <path d="M9.80859 9.80762L28.1934 28.1924" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M9.80859 28.1924L28.1934 9.80761" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       HEADER
+  ══════════════════════════════════ -->
+  <header id="header-sticky" class="tp-header-transparent">
+    <div class="tp-header-main-sticky">
+      <div class="container-1760">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div class="tp-header-1-logo">
+            <a href="#">
+              <img src="img/logo/logo-artazu.svg" alt="Artazu Mechanics" style="height:52px;width:auto;">
+            </a>
+          </div>
+          <div style="display:flex;align-items:center;">
+            <div class="tp-header-hamburger">
+              <button class="tp-hamburger-btn" onclick="openOffcanvas()">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <section class="tp-hero-area tp-btn-trigger">
+
+    <!-- Scroll down indicator — abs. bottom-left -->
+    <div class="tp-hero-down">
+      <a href="#down">
+        <div class="tp-hero-down-icon">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="72" viewBox="0 0 16 72" fill="none">
+              <path d="M16 63C11.578 63 7.99989 66.5781 7.99989 71C7.99989 66.5781 4.42196 63 0 63M7.30078 1H8.80078V71H7.30078V1Z" stroke="#1a1a1a" stroke-width="1.5" stroke-miterlimit="10"/>
+            </svg>
+          </span>
+        </div>
+        <div class="tp-hero-down-text">
+          <span>Para <br> ver más</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Bootstrap-style container -->
+    <div class="tp-hero-container">
+      <div class="tp-hero-row">
+
+        <!-- LEFT COL: image + user tagline  (order-1 on mobile, order-0 on desktop) -->
+        <div class="tp-hero-col-left">
+          <div class="tp-hero-leftside">
+
+            <!-- Main hero image — tp_img_reveal curtain animation -->
+            <div class="tp-hero-thumb-1 fix mb-100">
+              <div class="tp_img_reveal">
+                <img src="img/hero/recurso-main.png" alt="Artazu Mechanics">
+              </div>
+            </div>
+
+            <!-- User tagline box -->
+            <div class="tp-hero-user">
+              <div class="tp-hero-user-thumb">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="44" style="fill:#ee7419;">
+                    <g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g>
+                  </svg>
+                </span>
+              </div>
+              <div class="tp-hero-user-content">
+                <span>De la necesidad a la pieza final</span>
+                <p>Fabricamos según especificaciones de cliente, aportando ingeniería, precisión y gestión completa del proceso.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right side photo — covers right 50% of section -->
+    <div class="tp-hero-shape-thumb anim-zoomin-wrap" style="background-image:url('img/hero/cam-workstation.jpg')">
+      <div class="anim-zoomin">
+        <img src="img/hero/cam-workstation.jpg" alt="Oficina técnica">
+      </div>
+    </div>
+
+    <!-- Vertical marquee — infinite scroll upward -->
+    <div class="tp-hero-text-wrap">
+      <div class="tp-hero-marquee-rotator">
+      <div class="tp-hero-marquee-track">
+        <span class="mq-word">DISEÑO</span>
+        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
+        <span class="mq-word outline">MECANIZADO</span>
+        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
+        <span class="mq-word">MONTAJE</span>
+        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
+        <!-- duplicate for seamless loop -->
+        <span class="mq-word">DISEÑO</span>
+        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
+        <span class="mq-word outline">MECANIZADO</span>
+        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
+        <span class="mq-word">MONTAJE</span>
+        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
+      </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════
+       PORTFOLIO / PROJECTS
+  ══════════════════════════════════ -->
+  <section id="down" class="tp-project-ptb">
+    <div class="container-1760">
+      <div style="display:grid;grid-template-columns:2fr 1fr;align-items:flex-end;">
+        <div class="tp-project-heading">
+          <h3 class="tp-section-title" style="text-align:left;"><span class="titleBurrowing" style="display:block;">Nuestros</span><span class="titleBurrowing" style="display:block;">servicios</span></h3>
+        </div>
+        <div class="tp-project-btn" style="text-align:right;">
+          <a href="#" class="tp-btn button-style-2">
+            Ver todo
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
+                <path d="M0 7.80933H17.6902M10.7188 0C10.7188 4.31672 14.4207 7.80972 18.9956 7.80972C14.4207 7.80972 10.7188 11.3023 10.7188 15.6191" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 50px;">
+
+        <div class="tp-project-item">
+          <div class="tp-project-item-thumb" style="position:relative;">
+            <img src="img/portfolio/p1.webp" alt="Mecanizado bajo plano">
+          </div>
+          <div class="tp-project-item-content">
+            <div class="tp-project-item-content-left">
+              <h3 class="tp-project-item-title"><a href="#">Mecanizado bajo plano con enfoque integral</a></h3>
+              <p>Fabricamos piezas según especificaciones de cliente, aportando ingeniería, precisión y gestión completa del proceso.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tp-project-item">
+          <div class="tp-project-item-thumb" style="position:relative;">
+            <img src="img/portfolio/p2.webp" alt="Utillajes de verificación">
+          </div>
+          <div class="tp-project-item-content">
+            <div class="tp-project-item-content-left">
+              <h3 class="tp-project-item-title"><a href="#">Diseño y fabricación de utillajes de verificación</a></h3>
+              <p>Desarrollamos utillajes a medida para garantizar la conformidad dimensional de las piezas producidas.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       ABOUT
+  ══════════════════════════════════ -->
+  <section class="tp-about-ptb">
+    <div class="container-1760">
+      <div class="tp-about-heading">
+        <h3 class="tp-section-title white titleBurrowing">We help you connect with <br> your customers</h3>
+      </div>
+      <div class="tp-about-box">
+        <div style="display:grid;grid-template-columns:5fr 7fr;gap:60px;align-items:flex-end;">
+          <div class="tp-about-thumb tp_fade_bottom">
+            <img src="img/about-1.png" alt="About">
+          </div>
+          <div class="tp-about-content">
+            <p class="tp-about-text-1 tp_fade_bottom">Growth and operational efficiency. Just as with other business functions, every organization needs to have a considered and well-developed technology plan.</p>
+            <p class="tp-about-text-2 tp_fade_bottom">In this introduction to technology in Orange County and Irvine, CA, you can find strategies in our web design services, ensuring your customers will find you services related to digital marketing and online presence</p>
+            <div class="tp-about-btn tp_fade_bottom">
+              <a class="tp-btn button-style-2" href="#">
+                About Us
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
+                    <path d="M0 7.80933H17.6902M10.7188 0C10.7188 4.31672 14.4207 7.80972 18.9956 7.80972C14.4207 7.80972 10.7188 11.3023 10.7188 15.6191" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Full width image -->
+    <div style="overflow:hidden;">
+      <div class="tp-about-wrap">
+        <img src="img/about-2.png" alt="About full width" style="width:100%;height:700px;object-fit:cover;">
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       SERVICES
+  ══════════════════════════════════ -->
+  <section class="tp-service-ptb">
+    <div class="container-1760">
+      <div class="tp-about-heading tp-service-heading">
+        <h3 class="tp-section-title white titleBurrowing" style="text-align:center;">We offer a wide range <br> of design services.</h3>
+      </div>
+    </div>
+    <div>
+      <div class="tp-service-wrapper" id="serviceWrapper">
+
+        <div class="tp-service-item">
+          <div class="tp-service-item-thumb">
+            <img src="img/service/s1.webp" alt="Email Marketing">
+          </div>
+          <div class="tp-service-item-title">
+            <h3 class="tp-service-title"><a href="#" style="color:inherit;">Email Marketing Campaigns</a></h3>
+          </div>
+          <div class="tp-service-item-title-pre"></div>
+          <div class="tp-service-item-btn">
+            <a href="#">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);color:var(--tp-light);transition:0.3s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
+                  <path d="M0.273438 7.69922H17.7077M10.8244 0C10.8229 4.25506 14.4699 7.69816 18.9786 7.69816M18.9815 7.69922C14.4728 7.69922 10.8232 11.1423 10.8216 15.3974" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="tp-service-item current">
+          <div class="tp-service-item-thumb">
+            <img src="img/service/s2.webp" alt="Content Marketing">
+          </div>
+          <div class="tp-service-item-title">
+            <h3 class="tp-service-title"><a href="#" style="color:inherit;">Content Marketing</a></h3>
+          </div>
+          <div class="tp-service-item-title-pre"></div>
+          <div class="tp-service-item-btn">
+            <a href="#">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:var(--tp-light);color:var(--tp-dark);transition:0.3s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
+                  <path d="M0.273438 7.69922H17.7077M10.8244 0C10.8229 4.25506 14.4699 7.69816 18.9786 7.69816M18.9815 7.69922C14.4728 7.69922 10.8232 11.1423 10.8216 15.3974" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="tp-service-item">
+          <div class="tp-service-item-thumb">
+            <img src="img/service/s3.webp" alt="Social Media Strategy">
+          </div>
+          <div class="tp-service-item-title">
+            <h3 class="tp-service-title"><a href="#" style="color:inherit;">Social Media Strategy</a></h3>
+          </div>
+          <div class="tp-service-item-title-pre"></div>
+          <div class="tp-service-item-btn">
+            <a href="#">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);color:var(--tp-light);transition:0.3s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
+                  <path d="M0.273438 7.69922H17.7077M10.8244 0C10.8229 4.25506 14.4699 7.69816 18.9786 7.69816M18.9815 7.69922C14.4728 7.69922 10.8232 11.1423 10.8216 15.3974" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="tp-service-item">
+          <div class="tp-service-item-thumb">
+            <img src="img/service/s4.webp" alt="Creative Branding">
+          </div>
+          <div class="tp-service-item-title">
+            <h3 class="tp-service-title"><a href="#" style="color:inherit;">Creative Branding</a></h3>
+          </div>
+          <div class="tp-service-item-title-pre"></div>
+          <div class="tp-service-item-btn">
+            <a href="#">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);color:var(--tp-light);transition:0.3s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
+                  <path d="M0.273438 7.69922H17.7077M10.8244 0C10.8229 4.25506 14.4699 7.69816 18.9786 7.69816M18.9815 7.69922C14.4728 7.69922 10.8232 11.1423 10.8216 15.3974" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <span class="active-bg"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       TEAM
+  ══════════════════════════════════ -->
+  <section class="tp-team-ptb">
+    <div class="container-1760">
+      <div style="display:grid;grid-template-columns:7fr 5fr;align-items:flex-end;">
+        <div class="tp-team-heading">
+          <h3 class="tp-section-title titleBurrowing">Meet our team <br> member</h3>
+        </div>
+        <div class="tp-team-btn" style="text-align:right;">
+          <a href="#" class="tp-btn button-style-2">
+            All Members
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" height="16" viewBox="0 0 19 16" fill="none">
+                <path d="M0 7.80933H17.6902M10.7188 0C10.7188 4.31672 14.4207 7.80972 18.9956 7.80972C14.4207 7.80972 10.7188 11.3023 10.7188 15.6191" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       TESTIMONIALS
+  ══════════════════════════════════ -->
+  <section class="tp-testimonial-ptb">
+    <div class="container-1760">
+      <div class="tp-testimonial-wrapper tp_fade_bottom" style="position:relative;padding-bottom:120px;">
+
+        <div class="testimonial-slide active">
+          <div class="tp-testimonial-item">
+            <span class="tp-testimonial-item-title">"This is an agency you can trust to deliver on the promises they make. we were blown away by their expertise."</span>
+            <div class="tp-testimonial-user">
+              <div class="tp-testimonial-user-thumb">
+                <img src="img/t1.png" alt="Esther Howard">
+              </div>
+              <div class="tp-testimonial-user-content">
+                <h5 class="tp-testimonial-user-title">Esther Howard</h5>
+                <span>CEO, Google</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-slide">
+          <div class="tp-testimonial-item">
+            <span class="tp-testimonial-item-title">"You can rely on this agency to follow through on their promises. Their expertise truly exceeded our expectations."</span>
+            <div class="tp-testimonial-user">
+              <div class="tp-testimonial-user-thumb">
+                <img src="img/t2.png" alt="Esther Howard">
+              </div>
+              <div class="tp-testimonial-user-content">
+                <h5 class="tp-testimonial-user-title">Esther Howard</h5>
+                <span>CEO, Google</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tp-testimonial-navigation">
+          <button class="tp-testimonial-prev" onclick="testimonialPrev()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="26" viewBox="0 0 33 26" fill="none">
+              <path d="M33.0019 13H2.2739M14.3769 0C14.3769 7.18558 7.94662 13 0 13C7.94662 13 14.3769 18.8146 14.3769 26.0002" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+            </svg>
+          </button>
+          <button class="tp-testimonial-next" onclick="testimonialNext()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="26" viewBox="0 0 33 26" fill="none">
+              <path d="M0 13H30.728M18.625 0C18.625 7.18558 25.0552 13 33.0019 13C25.0552 13 18.625 18.8146 18.625 26.0002" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BLOG
+  ══════════════════════════════════ -->
+  <section class="tp-blog-ptb">
+    <div style="padding: 0 35px;">
+      <div class="tp-blog-wrap">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;">
+
+          <div class="tp-blog-item tp_fade_bottom">
+            <div class="tp-blog-item-thumb">
+              <a href="#">
+                <img src="img/blog/b2.jpg" alt="Blog post" style="height:310px;object-fit:cover;width:100%;">
+              </a>
+            </div>
+            <div class="tp-blog-item-content">
+              <span class="tp-blog-item-tag">abril 3. 2025</span>
+              <h3 class="tp-blog-item-title">
+                <a href="#">Capturing Elegance: Mastering the Art of Fashion</a>
+              </h3>
+            </div>
+          </div>
+
+          <div class="tp-blog-item tp_fade_bottom" style="transition-delay:0.1s;">
+            <div class="tp-blog-item-thumb">
+              <a href="#">
+                <img src="img/blog/b2.jpg" alt="Blog post" style="height:310px;object-fit:cover;width:100%;">
+              </a>
+            </div>
+            <div class="tp-blog-item-content">
+              <span class="tp-blog-item-tag">mayo 14. 2025</span>
+              <h3 class="tp-blog-item-title">
+                <a href="#">The digital experiences, we offer end-to-end</a>
+              </h3>
+            </div>
+          </div>
+
+          <div class="tp-blog-item tp_fade_bottom" style="transition-delay:0.2s;">
+            <div class="tp-blog-item-thumb">
+              <a href="#">
+                <img src="img/blog/b3.webp" alt="Blog post" style="height:310px;object-fit:cover;width:100%;">
+              </a>
+            </div>
+            <div class="tp-blog-item-content">
+              <span class="tp-blog-item-tag">noviembre 7. 2025</span>
+              <h3 class="tp-blog-item-title">
+                <a href="#">Seamless user interfaces, crafted with intent.</a>
+              </h3>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <footer class="tp-footer-ptb">
+    <div style="max-width:100%;padding:0 35px 50px;">
+      <div class="tp-footer-copyright">
+        <p style="font-size:16px;color:rgba(245,247,245,0.4);text-align:center;">©2025- All Rights Reserved</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ─── CURSOR ───
+    const ball = document.getElementById('ball');
+    let mx = 0, my = 0, bx = 0, by = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function animCursor() {
+      bx += (mx - bx) * 0.12;
+      by += (my - by) * 0.12;
+      ball.style.left = bx + 'px';
+      ball.style.top  = by + 'px';
+      requestAnimationFrame(animCursor);
+    })();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    // ─── STICKY HEADER ───
+    const header = document.getElementById('header-sticky');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('header-sticky', window.scrollY > 80);
+      document.getElementById('backToTop').classList.toggle('show', window.scrollY > 400);
+    });
+
+    // ─── OFFCANVAS ───
+    function openOffcanvas() {
+      document.getElementById('offcanvasArea').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeOffcanvas() {
+      document.getElementById('offcanvasArea').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ─── TESTIMONIAL SLIDER ───
+    const slides = document.querySelectorAll('.testimonial-slide');
+    let current = 0;
+    function showSlide(n) {
+      const prev = slides[current];
+      current = (n + slides.length) % slides.length;
+      gsap.to(prev, { opacity: 0, y: 20, duration: 0.4, ease: 'power2.in', onComplete: () => { prev.style.display = 'none'; } });
+      slides[current].style.display = 'block';
+      gsap.fromTo(slides[current], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
+    }
+    function testimonialNext() { showSlide(current + 1); }
+    function testimonialPrev() { showSlide(current - 1); }
+    // Autoplay
+    setInterval(() => testimonialNext(), 5000);
+
+    // ─── SERVICE HOVER ───
+    document.querySelectorAll('.tp-service-item').forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        document.querySelectorAll('.tp-service-item').forEach(i => i.classList.remove('current'));
+        item.classList.add('current');
+      });
+      item.addEventListener('mouseleave', () => item.classList.remove('current'));
+    });
+
+    // ─── TITLE BURROWING — per-character GSAP animation (replicates SplitText behaviour) ───
+    document.querySelectorAll('.titleBurrowing').forEach(el => {
+      if (el.dataset.split) return; // guard against re-splitting
+      el.dataset.split = '1';
+
+      // Walk text nodes only, preserving BR elements
+      function splitNode(node) {
+        if (node.nodeType === 3) { // text node
+          const frag = document.createDocumentFragment();
+          Array.from(node.textContent).forEach(ch => {
+            const span = document.createElement('span');
+            span.className = 'tp-char';
+            span.style.display = 'inline-block';
+            span.textContent = ch === ' ' ? ' ' : ch;
+            frag.appendChild(span);
+          });
+          node.parentNode.replaceChild(frag, node);
+        } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+          Array.from(node.childNodes).forEach(splitNode);
+        }
+      }
+      Array.from(el.childNodes).forEach(splitNode);
+
+      const chars = el.querySelectorAll('.tp-char');
+      gsap.from(chars, {
+        duration: 0.8,
+        opacity: 0,
+        y: 10,
+        ease: 'circ.out',
+        stagger: 0.02,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 75%',
+          end: 'bottom center',
+          scrub: 1,
+        }
+      });
+    });
+
+    // ─── tp_fade_bottom — y:100, opacity:0, power2.out, 1.5s, trigger: top center+400 ───
+    gsap.utils.toArray('.tp_fade_bottom').forEach(item => {
+      gsap.fromTo(item,
+        { y: 100, opacity: 0 },
+        {
+          y: 0, opacity: 1,
+          ease: 'power2.out',
+          duration: 1.5,
+          scrollTrigger: {
+            trigger: item,
+            start: 'top center+=400',
+          }
+        }
+      );
+    });
+
+    // ─── tp_fade_left — exact match main.js (gsap.set + gsap.to) ───
+    gsap.set('.tp_fade_left', { x: -100, opacity: 0 });
+    gsap.utils.toArray('.tp_fade_left').forEach(item => {
+      let tl = gsap.timeline({ scrollTrigger: { trigger: item, start: 'top center+=100' } });
+      tl.to(item, { x: 0, opacity: 1, ease: 'power2.out', duration: 2.5 });
+    });
+
+    // ─── tp_fade_right — exact match main.js ───
+    gsap.set('.tp_fade_right', { x: 100, opacity: 0 });
+    gsap.utils.toArray('.tp_fade_right').forEach(item => {
+      let tl = gsap.timeline({ scrollTrigger: { trigger: item, start: 'top center+=100' } });
+      tl.to(item, { x: 0, opacity: 1, ease: 'power2.out', duration: 2.5 });
+    });
+
+    // ─── tp_img_reveal — curtain reveal (from main.js) ───
+    document.querySelectorAll('.tp_img_reveal').forEach(img_reveal => {
+      const image = img_reveal.querySelector('img');
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: img_reveal, start: 'top 70%' }
+      });
+      tl.set(img_reveal, { autoAlpha: 1 });
+      tl.from(img_reveal, { duration: 1.5, xPercent: -100, ease: 'power2.out' });
+      tl.from(image, { duration: 1.5, xPercent: 100, scale: 1.5, ease: 'power2.out' }, '-=1.5');
+    });
+
+    // ─── anim-zoomin — scale reveal for shape (from main.js) ───
+    document.querySelectorAll('.anim-zoomin').forEach(el => {
+      const wrap = el.closest('.anim-zoomin-wrap');
+      if (wrap) wrap.style.overflow = 'hidden';
+      gsap.timeline({ scrollTrigger: { trigger: wrap || el, start: 'top 100%' } })
+        .from(el, { duration: 1.5, autoAlpha: 0, scale: 1.2, ease: 'power2.out', clearProps: 'all' });
+    });
+
+    // ─── tp-btn-bounce — bounce.out from top ───
+    gsap.set('.tp-btn-bounce', { y: -100, opacity: 0 });
+    gsap.utils.toArray('.tp-btn-bounce').forEach(btn => {
+      gsap.to(btn, {
+        scrollTrigger: { trigger: btn.closest('.tp-btn-trigger'), start: 'top center' },
+        duration: 1, ease: 'bounce.out', y: 0, opacity: 1,
+      });
+    });
+
+    // ─── HERO LOAD ANIMATIONS (fire on page load, not scroll) ───
+    const heroTl = gsap.timeline({ delay: 0.2 });
+    heroTl
+      .fromTo('.tp_img_reveal', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'power3.inOut', visibility: 'visible' }, 0)
+      .fromTo('.tp_img_reveal img', { scale: 1.15 }, { scale: 1, duration: 1.4, ease: 'power3.out' }, 0)
+      .fromTo('.tp-hero-shape-thumb', { clipPath: 'inset(0 0% 0 100%)' }, { clipPath: 'inset(0 0% 0 0%)', duration: 1.4, ease: 'power3.inOut' }, 0.1)
+      .from('.tp-hero-user-thumb', { scale: 0.8, opacity: 0, duration: 0.8, ease: 'back.out(1.7)' }, 0.8)
+      .from('.tp-hero-user-content span', { y: 30, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+      .from('.tp-hero-user-content p', { y: 20, opacity: 0, duration: 0.7, ease: 'power2.out' }, '-=0.5')
+      .from('.tp-hero-text-1', { x: 80, opacity: 0, duration: 1.4, ease: 'power2.out' }, 0.1)
+      .from('.tp-hero-text-2', { x: -80, opacity: 0, duration: 1.4, ease: 'power2.out' }, 0.2)
+      .from('.tp-hero-down', { y: 30, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.5');
+
+    // ─── VERTICAL MARQUEE — infinite GSAP loop ───
+    const marqueeTrack = document.querySelector('.tp-hero-marquee-track');
+    if (marqueeTrack) {
+      const totalWidth = marqueeTrack.scrollWidth;
+      gsap.to(marqueeTrack, {
+        x: () => -(totalWidth / 2),
+        duration: 18,
+        ease: 'none',
+        repeat: -1,
+        modifiers: {
+          x: gsap.utils.unitize(x => parseFloat(x) % (totalWidth / 2))
+        }
+      });
+    }
+
+    // ─── PORTFOLIO ITEMS — staggered on scroll ───
+    gsap.utils.toArray('.tp-project-item').forEach((item, i) => {
+      gsap.fromTo(item,
+        { y: 80, opacity: 0 },
+        {
+          y: 0, opacity: 1,
+          ease: 'power2.out',
+          duration: 1.2,
+          delay: (i % 2) * 0.15,
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 85%',
+          }
+        }
+      );
+    });
+
+    // ─── BLOG ITEMS — staggered ───
+    gsap.from('.tp-blog-item', {
+      y: 60, opacity: 0,
+      ease: 'power2.out',
+      duration: 1,
+      stagger: 0.15,
+      scrollTrigger: {
+        trigger: '.tp-blog-ptb',
+        start: 'top 80%',
+      }
+    });
+
+    // ─── SERVICE ITEMS — staggered slide-in ───
+    gsap.from('.tp-service-item', {
+      y: 40, opacity: 0,
+      ease: 'power2.out',
+      duration: 0.8,
+      stagger: 0.12,
+      scrollTrigger: {
+        trigger: '.tp-service-wrapper',
+        start: 'top 75%',
+      }
+    });
+
+    // ─── ABOUT SECTION ───
+    gsap.from('.tp-about-text-1, .tp-about-text-2, .tp-about-btn', {
+      y: 40, opacity: 0,
+      ease: 'power2.out',
+      duration: 1,
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: '.tp-about-ptb',
+        start: 'top 70%',
+      }
+    });
+    gsap.from('.tp-about-wrap img', {
+      scale: 1.05, opacity: 0,
+      ease: 'power2.out',
+      duration: 1.5,
+      scrollTrigger: {
+        trigger: '.tp-about-wrap',
+        start: 'top 80%',
+      }
+    });
+
+    // ─── BACK TO TOP ───
+    document.getElementById('backToTop').querySelector('button').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
