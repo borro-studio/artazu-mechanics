@@ -395,6 +395,48 @@
     .tp-about-btn .tp-btn.button-style-2:hover { color: var(--tp-dark); }
     .tp-about-wrap img { width: 100%; height: 700px; object-fit: cover; }
 
+    /* ─── ENGINEERING SECTION ─── */
+    .tp-eng-section { background: var(--tp-bg); padding: 100px 0 80px; }
+    .tp-eng-row { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .tp-eng-title-wrap { line-height: 1; }
+    .tp-eng-word {
+      display: block;
+      font-size: 96px;
+      font-weight: 800;
+      letter-spacing: -4px;
+      color: var(--tp-dark);
+      line-height: 0.95;
+    }
+    .tp-eng-amp {
+      display: block;
+      font-size: 180px;
+      font-weight: 800;
+      letter-spacing: -8px;
+      color: #C97A35;
+      line-height: 0.75;
+      margin-left: -6px;
+    }
+    .tp-eng-list { list-style: none; border-top: 1px solid rgba(0,0,0,0.12); }
+    .tp-eng-list li {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--tp-dark);
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.12);
+      line-height: 1.4;
+    }
+    @media (max-width: 991px) {
+      .tp-eng-row { grid-template-columns: 1fr !important; gap: 50px; }
+      .tp-eng-word { font-size: 72px; letter-spacing: -3px; }
+      .tp-eng-amp { font-size: 130px; letter-spacing: -5px; }
+    }
+    @media (max-width: 767px) {
+      .tp-eng-section { padding: 60px 0; }
+      .tp-eng-word { font-size: 56px; letter-spacing: -2px; }
+      .tp-eng-amp { font-size: 100px; letter-spacing: -4px; }
+      .tp-eng-list li { font-size: 16px; padding: 18px 0; }
+    }
+
     /* ─── SERVICES ─── */
     .tp-service-ptb { background: var(--tp-dark); padding-bottom: 160px; }
     .tp-service-heading { margin-bottom: 100px; text-align: center; }
@@ -783,6 +825,27 @@
       </div>
     </div>
 
+  </section>
+
+  <!-- ══════════════════════════════════
+       INGENIERÍA & TECNOLOGÍA
+  ══════════════════════════════════ -->
+  <section class="tp-eng-section">
+    <div class="container-1760">
+      <div class="tp-eng-row">
+        <div class="tp-eng-title-wrap">
+          <span class="tp-eng-word">Ingeniería</span>
+          <span class="tp-eng-amp">&amp;</span>
+          <span class="tp-eng-word">tecnología</span>
+        </div>
+        <ul class="tp-eng-list">
+          <li>Oficina técnica propia.</li>
+          <li>Diseño CAD 3D.</li>
+          <li>Soporte en desarrollo y mejora de piezas.</li>
+          <li>Análisis de viabilidad y optimización de fabricación.</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <!-- ══════════════════════════════════
