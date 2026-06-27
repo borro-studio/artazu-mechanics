@@ -583,6 +583,30 @@
     .tp-gx-50 > [class*="col-"] { padding-left: calc(var(--gutter)/2); padding-right: calc(var(--gutter)/2); }
 
     /* ─── RESPONSIVE ─── */
+    .tp-service-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--tp-dark);
+      border: 1px solid var(--tp-dark);
+      padding: 12px 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .tp-service-more-btn:hover { background: var(--tp-dark); color: var(--tp-light); }
+    .tp-service-more-icon {
+      width: 26px; height: 26px;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; line-height: 1;
+      flex-shrink: 0;
+    }
+
     @media (max-width: 1199px) {
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 160px; }
       .tp-hero-text-box { transform: rotate(-90deg) translate(-250px, -125px); }
@@ -883,6 +907,10 @@
               <p>Fabricamos piezas según especificaciones de cliente, aportando ingeniería, precisión y gestión completa del proceso.</p>
             </div>
           </div>
+          <a href="#" class="tp-service-more-btn">
+            <span class="tp-service-more-icon">+</span>
+            <span>Ver más</span>
+          </a>
         </div>
 
         <div class="tp-project-item">
@@ -895,6 +923,10 @@
               <p>Desarrollamos utillajes a medida para garantizar la conformidad dimensional de las piezas producidas.</p>
             </div>
           </div>
+          <a href="#" class="tp-service-more-btn">
+            <span class="tp-service-more-icon">+</span>
+            <span>Ver más</span>
+          </a>
         </div>
 
       </div>
