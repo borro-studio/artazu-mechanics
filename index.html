@@ -107,7 +107,7 @@
     .tp-offcanvas-2-close-btn {
       background: none; border: none; cursor: pointer; color: var(--tp-light);
     }
-    .tp-offcanvas-menu { margin-top: 60px; }
+    .tp-offcanvas-menu { margin-top: 60px; text-align: center; }
     .tp-offcanvas-menu > a,
     .tp-offcanvas-menu-item {
       display: block;
@@ -120,29 +120,38 @@
     }
     .tp-offcanvas-menu > a:hover { opacity: 0.5; }
     .tp-offcanvas-menu-toggle {
-      display: flex; align-items: center; gap: 16px;
+      display: flex; align-items: center; justify-content: center; gap: 20px;
       width: 100%; background: none; border: none; cursor: pointer;
       font-size: 60px; font-weight: 700; color: var(--tp-light);
       font-family: var(--tp-ff);
       line-height: 1; padding: 18px 0;
       transition: opacity 0.3s;
-      text-align: left;
+      text-align: center;
     }
     .tp-offcanvas-menu-toggle:hover { opacity: 0.5; }
-    .tp-sub-arrow { transition: transform 0.3s; flex-shrink: 0; }
+    .tp-sub-arrow {
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+      flex-shrink: 0;
+    }
     .tp-offcanvas-menu-item.open .tp-sub-arrow { transform: rotate(180deg); }
     .tp-offcanvas-submenu {
-      display: none;
-      padding: 8px 0 20px 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;
+      opacity: 0;
     }
-    .tp-offcanvas-menu-item.open .tp-offcanvas-submenu { display: block; }
+    .tp-offcanvas-menu-item.open .tp-offcanvas-submenu {
+      max-height: 200px;
+      opacity: 1;
+    }
     .tp-offcanvas-submenu a {
       display: block;
-      font-size: 22px; font-weight: 400; color: rgba(255,255,255,0.55);
+      font-size: 20px; font-weight: 400; color: rgba(255,255,255,0.5);
       padding: 10px 0;
       border-bottom: none;
       transition: color 0.2s;
     }
+    .tp-offcanvas-submenu a:last-child { padding-bottom: 20px; }
     .tp-offcanvas-submenu a:hover { color: #ee7419; opacity: 1; }
 
     /* ─── HEADER ─── */
@@ -828,7 +837,7 @@
           <div class="tp-offcanvas-menu-item has-sub">
             <button class="tp-offcanvas-menu-toggle" onclick="toggleSubmenu(this)">
               Servicios
-              <svg class="tp-sub-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="tp-sub-arrow" width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M5 9l7 7 7-7" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
             <div class="tp-offcanvas-submenu">
               <a href="#">Mecanizado bajo plano</a>
