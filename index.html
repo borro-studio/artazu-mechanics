@@ -190,7 +190,7 @@
       gap: 32px;
     }
     .tp-hero-headline h1 {
-      font-size: clamp(64px, 8.5vw, 140px);
+      font-size: clamp(52px, 6.5vw, 100px);
       font-weight: 600;
       line-height: 1;
       letter-spacing: -3px;
@@ -1422,18 +1422,14 @@
         gsap.set(shape, { clipPath: 'inset(0 0 100% 0)' });
         tl.to(shape, { clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power3.inOut' }, 0.2);
       }
-
-      // Title: letter by letter
+      // Title: letter by letter fade + rise
       function splitChars(node) {
         if (node.nodeType === 3) {
           const frag = document.createDocumentFragment();
           Array.from(node.textContent).forEach(ch => {
             const s = document.createElement('span');
-            s.style.cssText = 'display:inline-block;overflow:hidden;vertical-align:bottom;';
-            const inner = document.createElement('span');
-            inner.style.display = 'inline-block';
-            inner.textContent = ch === ' ' ? ' ' : ch;
-            s.appendChild(inner);
+            s.style.display = 'inline-block';
+            s.textContent = ch === ' ' ? '\u00a0' : ch;
             frag.appendChild(s);
           });
           node.parentNode.replaceChild(frag, node);
@@ -1442,9 +1438,9 @@
         }
       }
       Array.from(h1.childNodes).forEach(splitChars);
-      const chars = h1.querySelectorAll('span > span');
-      gsap.set(chars, { y: '110%' });
-      tl.to(chars, { y: '0%', duration: 0.7, stagger: 0.025, ease: 'power3.out' }, 0.2);
+      const chars = h1.querySelectorAll('span');
+      gsap.set(chars, { opacity: 0, y: 30 });
+      tl.to(chars, { opacity: 1, y: 0, duration: 0.5, stagger: 0.035, ease: 'power3.out' }, 0.3);
 
       // Left block fade in
       if (tagline) {
