@@ -245,6 +245,7 @@
       z-index: 1;
       width: 50vw;
       max-width: 700px;
+      clip-path: inset(0 0 100% 0);
     }
     .tp-hero-center-img img {
       width: 100%;
@@ -1507,6 +1508,9 @@
     // ─── HERO LOAD ANIMATIONS (fire on page load, not scroll) ───
     const heroTl = gsap.timeline({ delay: 0.2 });
     heroTl
+      .fromTo('.tp-hero-center-img',
+        { clipPath: 'inset(0 0 100% 0)' },
+        { clipPath: 'inset(0 0 0% 0)', duration: 1.4, ease: 'power3.inOut' }, 0.3)
       .fromTo('.tp_img_reveal', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'power3.inOut', visibility: 'visible' }, 0)
       .fromTo('.tp_img_reveal img', { scale: 1.15 }, { scale: 1, duration: 1.4, ease: 'power3.out' }, 0)
       .fromTo('.tp-hero-shape-thumb', { clipPath: 'inset(0 0% 0 100%)' }, { clipPath: 'inset(0 0% 0 0%)', duration: 1.4, ease: 'power3.inOut' }, 0.1)
