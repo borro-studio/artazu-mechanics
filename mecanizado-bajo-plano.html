@@ -809,21 +809,22 @@
     #page-transition-overlay {
       position: fixed; inset: 0; z-index: 999998;
       background: var(--tp-dark);
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
     }
   </style>
+</head>
 
   <style>
+    @keyframes pageReveal { from { opacity:0; } to { opacity:1; } }
+    #page-content { animation: pageReveal 0.7s ease forwards; }
     #page-transition-overlay {
       position: fixed; inset: 0; z-index: 999998;
       background: #1a1a1a;
-      opacity: 1;
-      transition: none;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
     }
-    #page-content { opacity: 0; }
   </style>
-</head>
 <body>
 
   <!-- Custom Cursor -->
@@ -921,6 +922,7 @@
           </div>
         </div>
       </div>
+    </div>
 
 
   <div id="page-transition-overlay"></div>
@@ -932,7 +934,7 @@
         <h1 style="font-size:clamp(64px,8vw,120px);font-weight:600;line-height:1;letter-spacing:-3px;color:#1a1a1a;margin-bottom:48px;white-space:pre-line;">Mecanizado bajo plano
 con enfoque integral</h1>
         <p style="font-size:20px;color:rgba(26,26,26,0.5);max-width:600px;line-height:1.6;">Contenido próximamente.</p>
-        <a href="index.html" class="tp-nav-link" style="margin-top:60px;display:inline-flex;align-items:center;gap:10px;font-size:15px;letter-spacing:1px;text-decoration:none;color:#1a1a1a;opacity:0.6;">
+        <a href="index.html" class="tp-nav-link" style="margin-top:60px;display:inline-flex;align-items:center;gap:10px;font-size:15px;letter-spacing:1px;text-decoration:none;color:#1a1a1a;opacity:0.5;">
           ← Volver
         </a>
       </div>
@@ -947,7 +949,6 @@ con enfoque integral</h1>
   <div id="magic-cursor"><div id="ball"></div></div>
 
   <script>
-    gsap.registerPlugin(ScrollTrigger);
     const ball = document.getElementById('ball');
     let mx=0,my=0,bx=0,by=0;
     document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
@@ -965,23 +966,16 @@ con enfoque integral</h1>
     function closeOffcanvas(){document.getElementById('offcanvasArea').classList.remove('open');document.body.style.overflow='';document.body.classList.remove('menu-open');}
     function toggleSubmenu(btn){btn.closest('.tp-offcanvas-menu-item').classList.toggle('open');}
 
-    // Entrada: overlay oscuro se desvanece, contenido aparece
-    const overlay = document.getElementById('page-transition-overlay');
-    const content = document.getElementById('page-content');
-    const tl = gsap.timeline();
-    tl.to(overlay, { opacity: 0, duration: 0.6, ease: 'power2.inOut',
-        onComplete: () => { overlay.style.pointerEvents = 'none'; } })
-      .to(content, { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.2');
-
-    // Salida
+    // Salida: fade a negro, luego navega
     document.querySelectorAll('a.tp-nav-link').forEach(link => {
       link.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         if (!href || href.startsWith('#')) return;
         e.preventDefault();
+        const overlay = document.getElementById('page-transition-overlay');
         overlay.style.pointerEvents = 'all';
-        gsap.to(overlay, { opacity: 1, duration: 0.4, ease: 'power2.inOut',
-          onComplete: () => { window.location.href = href; } });
+        overlay.style.opacity = '1';
+        setTimeout(() => { window.location.href = href; }, 420);
       });
     });
   </script>

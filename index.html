@@ -809,8 +809,8 @@
     #page-transition-overlay {
       position: fixed; inset: 0; z-index: 999998;
       background: var(--tp-dark);
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
     }
   </style>
 </head>
@@ -1571,10 +1571,8 @@
         e.preventDefault();
         const overlay = document.getElementById('page-transition-overlay');
         overlay.style.pointerEvents = 'all';
-        gsap.to(overlay, {
-          opacity: 1, duration: 0.4, ease: 'power2.inOut',
-          onComplete: () => { window.location.href = href; }
-        });
+        overlay.style.opacity = '1';
+        setTimeout(() => { window.location.href = href; }, 420);
       });
     });
   </script>
