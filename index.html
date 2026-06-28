@@ -1608,9 +1608,8 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // ─── MAQUINARIA MOBILE CARD — SVG orange border drawn once on scroll ───
+    // ─── MAQUINARIA CARD — SVG orange border drawn once on scroll ───
     function initMaqCards() {
-      if (window.innerWidth > 767) return;
       const svgNS = 'http://www.w3.org/2000/svg';
       document.querySelectorAll('.tp-maquinaria-item').forEach(item => {
         const w = item.offsetWidth;
