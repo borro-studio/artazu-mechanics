@@ -1326,9 +1326,9 @@
 
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      // Image: fade + scale up from slightly below
-      gsap.set(img, { opacity: 0, y: 30, scale: 0.96 });
-      tl.to(img, { opacity: 1, y: 0, scale: 1, duration: 1.2 });
+      // Image: slide up from below screen
+      gsap.set(img, { y: '60vh', opacity: 0 });
+      tl.to(img, { y: 0, opacity: 1, duration: 1.4, ease: 'power4.out' });
 
       // Text: letters slide up one by one
       gsap.set(chars, { y: '100%', opacity: 0 });
