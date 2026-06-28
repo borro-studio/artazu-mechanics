@@ -185,7 +185,7 @@
       z-index: 2;
     }
     .tp-hero-headline h1 {
-      font-size: clamp(28px, 3.5vw, 56px);
+      font-size: clamp(36px, 4.5vw, 72px);
       font-weight: 600;
       line-height: 0.9;
       letter-spacing: -2px;
@@ -814,7 +814,7 @@
 
     <!-- Titular top-left -->
     <div class="tp-hero-headline">
-      <h1>De la necesidad<br>a la pieza final.</h1>
+      <h1 id="heroTitle">De la necesidad<br>a la pieza final.</h1>
     </div>
 
     <!-- Imagen central flotando -->
@@ -1296,6 +1296,50 @@
       document.getElementById('offcanvasArea').classList.remove('open');
       document.body.style.overflow = '';
     }
+
+    // ─── HERO ENTRANCE ───
+    (function heroEntrance() {
+      const h1 = document.getElementById('heroTitle');
+      const img = document.querySelector('.tp-hero-center-img');
+      const tagline = document.querySelector('.tp-hero-tagline');
+
+      // Split h1 into character spans, preserving <br>
+      function splitChars(node) {
+        if (node.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          Array.from(node.textContent).forEach(ch => {
+            const s = document.createElement('span');
+            s.style.cssText = 'display:inline-block;overflow:hidden;';
+            const inner = document.createElement('span');
+            inner.style.display = 'inline-block';
+            inner.textContent = ch === ' ' ? ' ' : ch;
+            s.appendChild(inner);
+            frag.appendChild(s);
+          });
+          node.parentNode.replaceChild(frag, node);
+        } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+          Array.from(node.childNodes).forEach(splitChars);
+        }
+      }
+      Array.from(h1.childNodes).forEach(splitChars);
+      const chars = h1.querySelectorAll('span > span');
+
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      // Image: fade + scale up from slightly below
+      gsap.set(img, { opacity: 0, y: 30, scale: 0.96 });
+      tl.to(img, { opacity: 1, y: 0, scale: 1, duration: 1.2 });
+
+      // Text: letters slide up one by one
+      gsap.set(chars, { y: '100%', opacity: 0 });
+      tl.to(chars, { y: '0%', opacity: 1, duration: 0.6, stagger: 0.03 }, '-=0.7');
+
+      // Tagline fade in
+      if (tagline) {
+        gsap.set(tagline, { opacity: 0, y: 10 });
+        tl.to(tagline, { opacity: 1, y: 0, duration: 0.8 }, '-=0.2');
+      }
+    })();
 
     // ─── TESTIMONIAL SLIDER ───
     const slides = document.querySelectorAll('.testimonial-slide');
