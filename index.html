@@ -63,6 +63,7 @@
       mix-blend-mode: difference;
     }
     body.cursor-hover #ball { width: 60px; height: 60px; }
+    body.menu-open #ball { background: #ee7419; mix-blend-mode: normal; }
 
     /* ─── BACK TO TOP ─── */
     .back-to-top-wrapper {
@@ -111,20 +112,20 @@
     .tp-offcanvas-menu > a,
     .tp-offcanvas-menu-item {
       display: block;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: none;
     }
     .tp-offcanvas-menu > a {
-      font-size: 60px; font-weight: 700; color: var(--tp-light);
-      line-height: 1; padding: 18px 0;
+      font-size: 72px; font-weight: 700; color: var(--tp-light);
+      line-height: 1; padding: 14px 0;
       transition: opacity 0.3s;
     }
     .tp-offcanvas-menu > a:hover { opacity: 0.5; }
     .tp-offcanvas-menu-toggle {
       display: flex; align-items: center; justify-content: flex-start; gap: 20px;
       width: 100%; background: none; border: none; cursor: pointer;
-      font-size: 60px; font-weight: 700; color: var(--tp-light);
+      font-size: 72px; font-weight: 700; color: var(--tp-light);
       font-family: var(--tp-ff);
-      line-height: 1; padding: 18px 0;
+      line-height: 1; padding: 14px 0;
       transition: opacity 0.3s;
       text-align: left;
     }
@@ -1218,10 +1219,12 @@
     function openOffcanvas() {
       document.getElementById('offcanvasArea').classList.add('open');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('menu-open');
     }
     function closeOffcanvas() {
       document.getElementById('offcanvasArea').classList.remove('open');
       document.body.style.overflow = '';
+      document.body.classList.remove('menu-open');
     }
     function toggleSubmenu(btn) {
       btn.closest('.tp-offcanvas-menu-item').classList.toggle('open');
