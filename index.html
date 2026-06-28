@@ -410,12 +410,17 @@
       justify-content: center;
       height: 320px;
       margin-bottom: 32px;
+      background: #ffffff;
+      border-top: 3px solid #ee7419;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+      padding: 28px;
+      isolation: isolate;
     }
     .tp-maquinaria-img img {
       max-height: 100%;
-      width: auto;
+      width: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 16px 40px rgba(0,0,0,0.5));
+      mix-blend-mode: multiply;
     }
     .tp-maquinaria-name {
       font-size: 22px;
@@ -456,7 +461,7 @@
     @media (max-width: 767px) {
       .tp-maquinaria-title { font-size: 52px; letter-spacing: -3px; }
       .tp-maquinaria-grid { grid-template-columns: 1fr; gap: 60px 0; }
-      .tp-maquinaria-img { height: 240px; padding: 20px; }
+      .tp-maquinaria-img { height: 240px; padding: 16px; }
       .tp-spec-col { padding: 14px 10px; }
       .tp-spec-value { font-size: 13px; }
     }
@@ -1033,8 +1038,8 @@
 
       <div class="tp-maquinaria-header">
         <h2 class="tp-section-title white">
-          <span style="display:block;">Capacidades técnicas</span>
-          <span style="display:block;">y maquinaria</span>
+          <span class="titleBurrowing" style="display:block;">Capacidades técnicas</span>
+          <span class="titleBurrowing" style="display:block;">y maquinaria</span>
         </h2>
       </div>
 
@@ -1043,7 +1048,7 @@
         <!-- DMU 100 T -->
         <div class="tp-maquinaria-item">
           <div class="tp-maquinaria-img">
-            <img src="img/maquinas/dmu-100t-nobg.png" alt="DMU 100 T">
+            <img src="img/maquinas/dmu-100t.png" alt="DMU 100 T">
           </div>
           <h3 class="tp-maquinaria-name">DMU 100 T</h3>
           <div class="tp-maquinaria-specs">
@@ -1073,7 +1078,7 @@
         <!-- MAZAK VTC-200B -->
         <div class="tp-maquinaria-item">
           <div class="tp-maquinaria-img">
-            <img src="img/maquinas/mazak-vtc200b-nobg.png" alt="MAZAK VTC-200B">
+            <img src="img/maquinas/mazak-vtc200b.png" alt="MAZAK VTC-200B">
           </div>
           <h3 class="tp-maquinaria-name">MAZAK VTC-200B</h3>
           <div class="tp-maquinaria-specs">
