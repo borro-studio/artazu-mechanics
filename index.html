@@ -184,7 +184,7 @@
       top: 50%; left: 40px;
       transform: translateY(-50%);
       z-index: 2;
-      max-width: 48vw;
+      max-width: 44vw;
       display: flex;
       flex-direction: column;
       gap: 32px;
@@ -202,9 +202,9 @@
       gap: 14px;
     }
     .tp-hero-isotipo {
-      width: 28px;
+      width: 40px;
       flex-shrink: 0;
-      margin-top: 2px;
+      margin-top: 4px;
     }
 
     /* Logo watermark */
@@ -223,11 +223,12 @@
       display: block;
     }
 
+    .tp-hero-tagline-mobile { display: none; }
     .tp-hero-tagline p {
-      font-size: 14px;
-      line-height: 1.7;
+      font-size: 17px;
+      line-height: 1.6;
       color: rgba(26,26,26,0.55);
-      max-width: 320px;
+      max-width: 340px;
     }
 
     /* Scroll indicator bottom-left */
@@ -737,8 +738,11 @@
       .tp-hero-center-img { width: 92vw; max-width: 92vw; right: auto; left: 50%; top: 58%; transform: translate(-50%, -50%); }
       .tp-hero-left { top: 100px; left: 24px; transform: none; max-width: 90vw; gap: 20px; }
       .tp-hero-headline h1 { font-size: 38px; letter-spacing: -1.5px; }
-      .tp-hero-tagline p { font-size: 12px; }
-      .tp-hero-isotipo { width: 20px; }
+      .tp-hero-left .tp-hero-tagline { display: none; }
+      .tp-hero-tagline-mobile { display: block; position: absolute; bottom: 40px; left: 24px; right: 24px; z-index: 2; }
+      .tp-hero-tagline-mobile .tp-hero-tagline-inner { display: flex; align-items: flex-start; gap: 12px; }
+      .tp-hero-tagline-mobile p { font-size: 12px; line-height: 1.6; color: rgba(26,26,26,0.55); }
+      .tp-hero-tagline-mobile .tp-hero-isotipo { width: 18px; margin-top: 2px; flex-shrink: 0; }
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 90px; }
       .tp-hero-text-2 { margin-left: 0; }
       .tp-hero-container { padding-top: 120px; }
@@ -911,6 +915,18 @@
       <img src="img/hero/hero-1.png" alt="Pieza mecanizada Artazu Mechanics">
     </div>
 
+
+    <!-- Tagline solo móvil — debajo de la imagen -->
+    <div class="tp-hero-tagline-mobile">
+      <div class="tp-hero-tagline-inner">
+        <svg class="tp-hero-isotipo" viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+          <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+          <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+        </svg>
+        <p>Mecanizado de precisión bajo plano, con ingeniería, tecnología y enfoque integral desde el diseño hasta la entrega.</p>
+      </div>
+    </div>
 
     <!-- Scroll down bottom-left -->
     <div class="tp-hero-down">
