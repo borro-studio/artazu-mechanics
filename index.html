@@ -132,9 +132,19 @@
     .tp-header-main-sticky { width: 100%; }
     .container-1760 { max-width: 1790px; margin: 0 auto; padding: 0 40px; }
     .tp-header-1-logo img { height: 36px; width: auto; }
-    .tp-header-row { display: flex; justify-content: space-between; align-items: center; }
-    .tp-header-linkedin { display: none; }
-    .tp-header-right { display: flex; align-items: center; }
+    .tp-header-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+    .tp-header-linkedin {
+      display: flex;
+      align-items: center;
+    }
+    .tp-header-linkedin a { color: var(--tp-dark); opacity: 0.7; transition: opacity 0.2s; }
+    .tp-header-linkedin a:hover { opacity: 1; }
+    .tp-header-1-logo { text-align: center; }
+    .tp-header-right { display: flex; align-items: center; justify-content: flex-end; }
     .tp-hamburger-btn {
       background: none; border: none; cursor: pointer; padding: 4px;
       display: flex; flex-direction: column; gap: 7px;
@@ -162,140 +172,71 @@
       position: relative;
       overflow: hidden;
       height: 100vh;
-    }
-
-    /* Bootstrap-like hero container: max-width 1320px centrado, padding-top para header */
-    .tp-hero-container {
-      max-width: 1320px;
-      margin: 0;
-      padding: 120px 0 0 20px;
-    }
-
-    /* Row: dos columnas iguales */
-    .tp-hero-row {
       display: flex;
-      flex-wrap: wrap;
-      margin: 0 -12px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    .tp-hero-col-left,
-    .tp-hero-col-right {
-      width: 50%;
-      padding: 0 12px;
-    }
-    /* En desktop: imagen a la izquierda (order:0), texto a la derecha (order:1) — el texto rotado se desplaza hacia la izquierda sobre la imagen */
-    .tp-hero-col-left  { order: 0; }
-    .tp-hero-col-right { order: 1; }
 
-    /* Scroll indicator — abs bottom-left */
+    /* Headline top-left */
+    .tp-hero-headline {
+      position: absolute;
+      top: 120px; left: 40px;
+      z-index: 2;
+    }
+    .tp-hero-headline h1 {
+      font-size: clamp(42px, 5.5vw, 88px);
+      font-weight: 600;
+      line-height: 0.9;
+      letter-spacing: -4px;
+      color: var(--tp-dark);
+    }
+
+    /* Tagline bottom-right */
+    .tp-hero-tagline {
+      position: absolute;
+      bottom: 40px; right: 40px;
+      z-index: 2;
+      text-align: right;
+      max-width: 260px;
+    }
+    .tp-hero-tagline p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(26,26,26,0.55);
+    }
+
+    /* Scroll indicator bottom-left */
     .tp-hero-down {
       position: absolute;
-      bottom: 30px; left: 50%;
-      transform: translateX(-50%);
+      bottom: 40px; left: 40px;
       z-index: 2;
     }
     .tp-hero-down a {
       display: flex; align-items: center; gap: 10px;
       color: var(--tp-dark);
     }
-    .tp-hero-down-icon { margin-right: 4px; }
     .tp-hero-down-text span {
-      font-size: 16px; font-weight: 400;
-      line-height: 22px; color: var(--tp-dark);
-      letter-spacing: 0.32px;
+      font-size: 12px; font-weight: 400; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--tp-dark);
     }
 
-    /* Left column content */
-    .tp-hero-leftside { margin-left: 200px; }
-    .tp-hero-thumb-1 { overflow: hidden; margin-bottom: 0; }
-    .tp-hero-thumb-1 img { width: 100%; display: block; height: 620px; object-fit: cover; object-position: center center; }
-
-    /* User box */
-    .tp-hero-user { margin-left: 0; margin-top: -26px; position: relative; z-index: 1; }
-    .tp-hero-user-thumb {
-      margin-bottom: 14px;
-    }
-    .tp-hero-user-thumb span {
-      display: inline-flex;
-      align-items: center; justify-content: center;
-      height: 36px; width: auto;
-    }
-    .tp-hero-user-content span {
-      font-size: 34px; font-weight: 600; line-height: 1;
-      margin-bottom: 6px;
-      display: inline-block;
-      color: var(--tp-dark);
-    }
-    .tp-hero-user-content p {
+    /* Central floating image */
+    .tp-hero-center-img {
       position: relative;
-      font-size: 15px; letter-spacing: 0.15px;
-      color: rgba(26,26,26,0.55);
-      line-height: 1.5;
-      padding-left: 0;
-      margin-left: 90px;
+      z-index: 1;
+      width: 55vw;
+      max-width: 780px;
+      animation: heroFloat 6s ease-in-out infinite;
     }
-    .tp-hero-user-content p::before {
-      content: '';
-      position: absolute;
-      height: 1px; width: 60px;
-      top: 12px; left: -90px;
-      background: rgba(26,26,26,0.4);
+    .tp-hero-center-img img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
-
-    /* Image reveal animation */
-    .tp_img_reveal { visibility: hidden; overflow: hidden; }
-    .tp_img_reveal img { transform-origin: left; overflow: hidden; }
-
-    /* Right photo — covers right 50% full height */
-    .tp-hero-shape-thumb {
-      position: absolute; top: 0; right: 0; bottom: 0;
-      width: 40%;
-      background-size: cover;
-      background-position: center top;
-      z-index: 0;
-    }
-    .tp-hero-shape-thumb img { display: none; }
-    /* Rotated text wrap — anchored at center of section */
-    /* ─── VERTICAL MARQUEE ─── */
-    .tp-hero-text-wrap {
-      position: absolute; top: 0; left: calc(60% - 55px);
-      height: 100%; z-index: 2; pointer-events: none;
-    }
-    /* Wrapper handles the rotation only */
-    .tp-hero-marquee-rotator {
-      transform-origin: 0 0;
-      transform: rotate(-90deg) translateY(-75px);
-    }
-    /* Track is animated by GSAP (translateX only, no CSS animation) */
-    .tp-hero-marquee-track {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 55px;
-      white-space: nowrap;
-      will-change: transform;
-    }
-    .mq-word {
-      font-size: 155px; font-weight: 200;
-      color: var(--tp-dark);
-      text-transform: uppercase;
-      letter-spacing: -4px;
-      line-height: 1;
-      font-family: var(--tp-ff);
-    }
-    .mq-word.outline {
-      color: transparent;
-      -webkit-text-stroke: 1px var(--tp-dark);
-    }
-    .mq-sep {
-      display: inline-flex; align-items: center; flex-shrink: 0;
-    }
-    /* dummy — keep selector alive */
-    .tp-hero-rightside { display: none; }
-    /* padding left col so right photo doesn't overlap content */
-    .tp-hero-col-left { width: 50%; }
-    /* placeholder to keep old selector */
-    .tp-hero-shape-thumb-old {
-      width: auto;
+    @keyframes heroFloat {
+      0%, 100% { transform: translateY(0px) rotate(-1deg); }
+      50%       { transform: translateY(-18px) rotate(1deg); }
     }
 
     /* ─── BUTTONS ─── */
@@ -868,86 +809,30 @@
   <!-- ══════════════════════════════════
        HERO
   ══════════════════════════════════ -->
-  <section class="tp-hero-area tp-btn-trigger">
+  <section class="tp-hero-area">
 
-    <!-- Scroll down indicator — abs. bottom-left -->
+    <!-- Titular top-left -->
+    <div class="tp-hero-headline">
+      <h1>De la necesidad<br>a la pieza final.</h1>
+    </div>
+
+    <!-- Imagen central flotando -->
+    <div class="tp-hero-center-img">
+      <img src="img/hero/pieza-plano.png" alt="Pieza mecanizada Artazu Mechanics">
+    </div>
+
+    <!-- Tagline bottom-right -->
+    <div class="tp-hero-tagline">
+      <p>Mecanizado de precisión bajo plano, con ingeniería, tecnología y enfoque integral desde el diseño hasta la entrega.</p>
+    </div>
+
+    <!-- Scroll down bottom-left -->
     <div class="tp-hero-down">
       <a href="#down">
-        <div class="tp-hero-down-icon">
-          <span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="72" viewBox="0 0 16 72" fill="none">
-              <path d="M16 63C11.578 63 7.99989 66.5781 7.99989 71C7.99989 66.5781 4.42196 63 0 63M7.30078 1H8.80078V71H7.30078V1Z" stroke="#1a1a1a" stroke-width="1.5" stroke-miterlimit="10"/>
-            </svg>
-          </span>
-        </div>
         <div class="tp-hero-down-text">
-          <span>Para <br> ver más</span>
+          <span>Scroll</span>
         </div>
       </a>
-    </div>
-
-    <!-- Bootstrap-style container -->
-    <div class="tp-hero-container">
-      <div class="tp-hero-row">
-
-        <!-- LEFT COL: image + user tagline  (order-1 on mobile, order-0 on desktop) -->
-        <div class="tp-hero-col-left">
-          <div class="tp-hero-leftside">
-
-            <!-- Main hero image — tp_img_reveal curtain animation -->
-            <div class="tp-hero-thumb-1 fix mb-100">
-              <div class="tp_img_reveal">
-                <img src="img/hero/cnc-mecanizado.jpg" alt="CNC Mecanizado - Artazu Mechanics">
-              </div>
-            </div>
-
-            <!-- User tagline box -->
-            <div class="tp-hero-user">
-              <div class="tp-hero-user-thumb">
-                <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="44" style="fill:#ee7419;">
-                    <g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g>
-                  </svg>
-                </span>
-              </div>
-              <div class="tp-hero-user-content">
-                <span>De la necesidad a la pieza final</span>
-                <p>Fabricamos según especificaciones de cliente, aportando ingeniería, precisión y gestión completa del proceso.</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Right side photo — covers right 50% of section -->
-    <div class="tp-hero-shape-thumb anim-zoomin-wrap" style="background-image:url('img/hero/cam-workstation.jpg')">
-      <div class="anim-zoomin">
-        <img src="img/hero/cam-workstation.jpg" alt="Oficina técnica">
-      </div>
-    </div>
-
-    <!-- Vertical marquee — infinite scroll upward -->
-    <div class="tp-hero-text-wrap">
-      <div class="tp-hero-marquee-rotator">
-      <div class="tp-hero-marquee-track">
-        <span class="mq-word">DISEÑO</span>
-        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
-        <span class="mq-word outline">MECANIZADO</span>
-        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
-        <span class="mq-word">MONTAJE</span>
-        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
-        <!-- duplicate for seamless loop -->
-        <span class="mq-word">DISEÑO</span>
-        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
-        <span class="mq-word outline">MECANIZADO</span>
-        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
-        <span class="mq-word">MONTAJE</span>
-        <span class="mq-sep"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8810.4 7443.53" height="28" style="fill:#ee7419;"><g><g><path d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/><path d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/></g><circle cx="1101.91" cy="6341.62" r="1101.91"/></g></svg></span>
-      </div>
-      </div>
     </div>
 
   </section>
