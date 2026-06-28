@@ -1406,10 +1406,15 @@
       const shape = document.querySelector('.tp-hero-shape');
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      // Shape + Image: slide up together from below
+      // Image: slide up from below
       gsap.set(img, { y: '60vh', opacity: 0 });
-      if (shape) gsap.set(shape, { y: '60vh', opacity: 0 });
-      tl.to([img, shape].filter(Boolean), { y: 0, opacity: 1, duration: 1.4, ease: 'power4.out' });
+      tl.to(img, { y: 0, opacity: 1, duration: 1.4, ease: 'power4.out' });
+
+      // Shape: clip-path reveal top to bottom
+      if (shape) {
+        gsap.set(shape, { clipPath: 'inset(0 0 100% 0)' });
+        tl.to(shape, { clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power3.inOut' }, 0.2);
+      }
 
       // Text: letters slide up one by one
       gsap.set(chars, { y: '100%', opacity: 0 });
