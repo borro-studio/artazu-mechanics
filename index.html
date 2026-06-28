@@ -209,18 +209,19 @@
       display: block;
     }
 
-    /* Tagline bottom-right */
+    /* Tagline below title */
     .tp-hero-tagline {
       position: absolute;
-      bottom: 40px; right: 40px;
+      top: 140px; left: 40px;
+      margin-top: calc(clamp(52px, 7vw, 120px) * 2.1);
       z-index: 2;
-      text-align: right;
-      max-width: 220px;
+      text-align: left;
+      max-width: 380px;
     }
     .tp-hero-tagline p {
-      font-size: 12px;
-      line-height: 1.7;
-      color: rgba(26,26,26,0.5);
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(26,26,26,0.55);
     }
 
     /* Scroll indicator bottom-left */
@@ -717,7 +718,8 @@
       .tp-hero-center-img { width: 92vw; max-width: 92vw; right: auto; left: 50%; transform: translate(-50%, -50%); }
       .tp-hero-headline { top: 140px; left: 24px; bottom: auto; max-width: 90vw; }
       .tp-hero-headline h1 { font-size: 38px; letter-spacing: -1.5px; }
-      .tp-hero-tagline { bottom: 90px; right: 24px; }
+      .tp-hero-tagline { top: auto; bottom: 90px; right: 24px; left: auto; margin-top: 0; max-width: 220px; text-align: right; }
+      .tp-hero-tagline p { font-size: 12px; }
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 90px; }
       .tp-hero-text-2 { margin-left: 0; }
       .tp-hero-container { padding-top: 120px; }
