@@ -1406,7 +1406,7 @@
     window.addEventListener('load', function heroEntrance() {
       const h1 = document.getElementById('heroTitle');
       const img = document.querySelector('.tp-hero-center-img');
-      const tagline = document.querySelector('.tp-hero-left');
+      const subtitle = document.querySelector('.tp-hero-tagline');
       if (img) img.style.visibility = 'visible';
 
       const shape = document.querySelector('.tp-hero-shape');
@@ -1422,7 +1422,8 @@
         gsap.set(shape, { clipPath: 'inset(0 0 100% 0)' });
         tl.to(shape, { clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power3.inOut' }, 0.2);
       }
-      // Title: letter by letter fade + rise
+
+      // Title: letter by letter \u2014 split each char into its own span
       function splitChars(node) {
         if (node.nodeType === 3) {
           const frag = document.createDocumentFragment();
@@ -1439,13 +1440,13 @@
       }
       Array.from(h1.childNodes).forEach(splitChars);
       const chars = h1.querySelectorAll('span');
-      gsap.set(chars, { opacity: 0, y: 30 });
-      tl.to(chars, { opacity: 1, y: 0, duration: 0.5, stagger: 0.035, ease: 'power3.out' }, 0.3);
+      gsap.set(chars, { opacity: 0, y: 24 });
+      tl.to(chars, { opacity: 1, y: 0, duration: 0.5, stagger: 0.04, ease: 'power3.out' }, 0.4);
 
-      // Left block fade in
-      if (tagline) {
-        gsap.set(tagline, { opacity: 0 });
-        tl.to(tagline, { opacity: 1, duration: 0.8 }, '-=0.3');
+      // Subtitle fade in
+      if (subtitle) {
+        gsap.set(subtitle, { opacity: 0, y: 10 });
+        tl.to(subtitle, { opacity: 1, y: 0, duration: 0.8 }, '-=0.2');
       }
 
       // Mobile tagline fade in
