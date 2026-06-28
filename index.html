@@ -223,18 +223,20 @@
 
     /* Central image */
     .tp-hero-center-img {
-      position: relative;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -46%);
       z-index: 1;
-      width: 55vw;
-      max-width: 780px;
+      width: 58vw;
+      max-width: 820px;
     }
     .tp-hero-center-img img {
       width: 100%;
       height: auto;
       display: block;
       mix-blend-mode: multiply;
-      -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 72%);
-      mask-image: linear-gradient(to bottom, black 45%, transparent 72%);
+      -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 75%);
+      mask-image: linear-gradient(to bottom, black 50%, transparent 75%);
     }
 
     /* ─── BUTTONS ─── */
