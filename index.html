@@ -790,9 +790,12 @@
     @media (max-width: 480px) {
       .tp-offcanvas-2-bg { width: 100%; }
       .tp-offcanvas-2-bg.is-right { display: none; }
-      .tp-offcanvas-2-left { width: 100%; padding: 30px 20px 30px 24px; border-right: none; }
+      .tp-offcanvas-2-left { width: 100%; padding: 30px 24px; border-right: none; justify-content: center; }
       .tp-offcanvas-2-right { display: none; }
-      .tp-offcanvas-menu a { font-size: 42px; padding: 14px 0; }
+      .tp-offcanvas-menu > a { font-size: 42px; padding: 14px 0; }
+      .tp-offcanvas-menu-toggle { font-size: 42px; padding: 14px 0; }
+      .tp-offcanvas-submenu a { font-size: 18px; }
+      .tp-offcanvas-2-left [style*="position:absolute"] img { height: 42px !important; }
       .tp-hero-container { padding-top: 120px; }
       .tp-hero-thumb-1 img { width: 100%; height: 380px; }
       .tp-hero-user-content span { font-size: 19px; }
