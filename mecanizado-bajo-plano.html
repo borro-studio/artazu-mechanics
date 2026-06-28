@@ -809,13 +809,20 @@
     #page-transition-overlay {
       position: fixed; inset: 0; z-index: 999998;
       background: var(--tp-dark);
-      clip-path: inset(0 100% 0 0);
+      opacity: 0;
       pointer-events: none;
     }
   </style>
 
-  <div id="page-transition-overlay" style="clip-path:inset(0 0% 0 0);pointer-events:none;"></div>
-
+  <style>
+    #page-transition-overlay {
+      position: fixed; inset: 0; z-index: 999998;
+      background: #1a1a1a;
+      opacity: 1;
+      transition: none;
+    }
+    #page-content { opacity: 0; }
+  </style>
 </head>
 <body>
 
@@ -916,15 +923,17 @@
       </div>
 
 
+  <div id="page-transition-overlay"></div>
+
   <div id="page-content">
-    <section style="min-height:100vh;display:flex;align-items:center;padding:160px 40px 80px;">
-      <div style="max-width:900px;">
-        <p style="font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#ee7419;margin-bottom:24px;">Servicios</p>
-        <h1 style="font-size:clamp(48px,6vw,96px);font-weight:600;line-height:1;letter-spacing:-2px;color:#1a1a1a;margin-bottom:40px;">Mecanizado bajo plano
+    <section style="min-height:100vh;display:flex;align-items:flex-start;padding:180px 40px 80px;">
+      <div style="max-width:1000px;">
+        <p style="font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#ee7419;margin-bottom:32px;">Servicios</p>
+        <h1 style="font-size:clamp(64px,8vw,120px);font-weight:600;line-height:1;letter-spacing:-3px;color:#1a1a1a;margin-bottom:48px;white-space:pre-line;">Mecanizado bajo plano
 con enfoque integral</h1>
         <p style="font-size:20px;color:rgba(26,26,26,0.5);max-width:600px;line-height:1.6;">Contenido próximamente.</p>
-        <a href="index.html" class="tp-nav-link" style="margin-top:60px;display:inline-flex;align-items:center;gap:12px;font-size:16px;text-decoration:none;color:#1a1a1a;">
-          <span>← Volver</span>
+        <a href="index.html" class="tp-nav-link" style="margin-top:60px;display:inline-flex;align-items:center;gap:10px;font-size:15px;letter-spacing:1px;text-decoration:none;color:#1a1a1a;opacity:0.6;">
+          ← Volver
         </a>
       </div>
     </section>
@@ -932,9 +941,7 @@ con enfoque integral</h1>
 
   <div class="back-to-top-wrapper" id="backToTop">
     <button class="back-to-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-      <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
-        <path d="M11 6L6 1L1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <svg width="12" height="7" viewBox="0 0 12 7" fill="none"><path d="M11 6L6 1L1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
   <div id="magic-cursor"><div id="ball"></div></div>
@@ -958,21 +965,23 @@ con enfoque integral</h1>
     function closeOffcanvas(){document.getElementById('offcanvasArea').classList.remove('open');document.body.style.overflow='';document.body.classList.remove('menu-open');}
     function toggleSubmenu(btn){btn.closest('.tp-offcanvas-menu-item').classList.toggle('open');}
 
-    // Entrada: cortina se retira hacia la derecha
+    // Entrada: overlay oscuro se desvanece, contenido aparece
     const overlay = document.getElementById('page-transition-overlay');
-    gsap.to(overlay, { clipPath: 'inset(0 100% 0 0)', duration: 0.6, ease: 'power3.inOut', delay: 0.05 });
+    const content = document.getElementById('page-content');
+    const tl = gsap.timeline();
+    tl.to(overlay, { opacity: 0, duration: 0.6, ease: 'power2.inOut',
+        onComplete: () => { overlay.style.pointerEvents = 'none'; } })
+      .to(content, { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.2');
 
-    // Salida: cortina entra desde la izquierda
+    // Salida
     document.querySelectorAll('a.tp-nav-link').forEach(link => {
       link.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         if (!href || href.startsWith('#')) return;
         e.preventDefault();
-        gsap.to(overlay, {
-          clipPath: 'inset(0 0% 0 0)',
-          duration: 0.55, ease: 'power3.inOut',
-          onComplete: () => { window.location.href = href; }
-        });
+        overlay.style.pointerEvents = 'all';
+        gsap.to(overlay, { opacity: 1, duration: 0.4, ease: 'power2.inOut',
+          onComplete: () => { window.location.href = href; } });
       });
     });
   </script>

@@ -809,7 +809,7 @@
     #page-transition-overlay {
       position: fixed; inset: 0; z-index: 999998;
       background: var(--tp-dark);
-      clip-path: inset(0 100% 0 0);
+      opacity: 0;
       pointer-events: none;
     }
   </style>
@@ -1570,9 +1570,9 @@
         if (!href || href.startsWith('#')) return;
         e.preventDefault();
         const overlay = document.getElementById('page-transition-overlay');
+        overlay.style.pointerEvents = 'all';
         gsap.to(overlay, {
-          clipPath: 'inset(0 0% 0 0)',
-          duration: 0.55, ease: 'power3.inOut',
+          opacity: 1, duration: 0.4, ease: 'power2.inOut',
           onComplete: () => { window.location.href = href; }
         });
       });
