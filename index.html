@@ -809,8 +809,7 @@
     #page-transition-overlay {
       position: fixed; inset: 0; z-index: 999998;
       background: var(--tp-dark);
-      transform: scaleX(0);
-      transform-origin: left center;
+      clip-path: inset(0 100% 0 0);
       pointer-events: none;
     }
   </style>
@@ -1564,7 +1563,7 @@
 
     window.addEventListener('load', initMaqCards);
 
-    // ─── TRANSICIÓN DE PÁGINA (salida hacia izquierda) ───
+    // ─── TRANSICIÓN DE PÁGINA ───
     document.querySelectorAll('a.tp-nav-link').forEach(link => {
       link.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
@@ -1572,7 +1571,7 @@
         e.preventDefault();
         const overlay = document.getElementById('page-transition-overlay');
         gsap.to(overlay, {
-          scaleX: 1, transformOrigin: 'left center',
+          clipPath: 'inset(0 0% 0 0)',
           duration: 0.55, ease: 'power3.inOut',
           onComplete: () => { window.location.href = href; }
         });
