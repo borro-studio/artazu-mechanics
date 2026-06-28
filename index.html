@@ -366,8 +366,6 @@
       justify-content: center;
       height: 320px;
       margin-bottom: 32px;
-      position: relative;
-      z-index: 2;
     }
     .tp-maquinaria-img img {
       max-height: 100%;
@@ -414,12 +412,15 @@
     }
     @media (max-width: 767px) {
       .tp-maquinaria-title { font-size: 52px; letter-spacing: -3px; }
-      .tp-maquinaria-grid { grid-template-columns: 1fr; gap: 56px 0; max-width: 360px; margin-left: auto; margin-right: auto; }
-      .tp-maquinaria-item { padding: 24px 20px 20px; border-top: none; }
-      .tp-maquinaria-img { height: 200px; align-items: center; margin-bottom: 20px; }
-      .tp-maquinaria-img img { max-height: 160px; }
-      .tp-spec-col { padding: 14px 10px; }
-      .tp-spec-value { font-size: 13px; }
+      .tp-maquinaria-ptb { padding: 80px 0; }
+      .tp-maquinaria-grid { grid-template-columns: 1fr; gap: 48px 0; max-width: 340px; margin-left: auto; margin-right: auto; }
+      .tp-maquinaria-item { padding: 20px 20px 20px; border-top: none; }
+      .tp-maquinaria-img { height: 220px; align-items: center; margin-bottom: 16px; }
+      .tp-maquinaria-img img { max-height: 190px; filter: none; }
+      .tp-maquinaria-name { font-size: 18px; margin-bottom: 16px; text-align: center; }
+      .tp-spec-col { padding: 12px 8px; }
+      .tp-spec-value { font-size: 12px; }
+      .tp-spec-label { font-size: 9px; }
     }
 
     /* ─── ABOUT ─── */
@@ -1609,7 +1610,7 @@
         const svg = document.createElementNS(svgNS, 'svg');
         svg.setAttribute('width', w);
         svg.setAttribute('height', h);
-        svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;overflow:visible;';
+        svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;overflow:visible;';
 
         const borderRect = document.createElementNS(svgNS, 'rect');
         borderRect.setAttribute('x', '1');
@@ -1624,7 +1625,7 @@
         borderRect.setAttribute('stroke-dashoffset', perim);
 
         svg.appendChild(borderRect);
-        item.appendChild(svg);
+        item.prepend(svg); // primero en DOM → queda detrás del contenido sin z-index
 
         // se dibuja una sola vez cuando entra en pantalla y se queda
         gsap.to(borderRect, {
