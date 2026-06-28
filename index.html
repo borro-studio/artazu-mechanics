@@ -453,11 +453,77 @@
       color: var(--tp-dark);
       line-height: 1.3;
     }
+    .tp-card-svg { display: none; }
+
     @media (max-width: 767px) {
       .tp-maquinaria-title { font-size: 52px; letter-spacing: -3px; }
-      .tp-maquinaria-grid { grid-template-columns: 1fr; gap: 60px 0; }
-      .tp-maquinaria-img { height: 240px; }
-      .tp-spec-col { padding: 14px 10px; }
+      .tp-maquinaria-grid { grid-template-columns: 1fr; gap: 0; }
+      /* ── Mobile card layout ── */
+      .tp-maquinaria-item {
+        border-top: none;
+        position: relative;
+        padding: 110px 28px 44px;
+        margin: 0 0 70px;
+        text-align: center;
+        overflow: visible;
+      }
+      /* Orange border SVG — drawn on scroll */
+      .tp-card-svg {
+        display: block;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 72px);
+        pointer-events: none;
+        overflow: visible;
+        z-index: 0;
+      }
+      .tp-card-svg rect {
+        fill: none;
+        stroke: #ee7419;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      /* Machine image floats above card */
+      .tp-maquinaria-img {
+        position: absolute;
+        top: 0;
+        left: 0; right: 0;
+        height: 155px;
+        z-index: 3;
+        margin: 0;
+        padding: 0 20px;
+        justify-content: center;
+        align-items: flex-end;
+      }
+      .tp-maquinaria-img img {
+        max-height: 200px;
+        width: auto;
+        position: relative;
+        z-index: 3;
+      }
+      .tp-maquinaria-name { margin-bottom: 20px; text-align: center; position: relative; z-index: 1; }
+      /* 2-col spec grid inside card */
+      .tp-maquinaria-specs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-top: 0.5px solid rgba(0,0,0,0.12);
+        border-bottom: none;
+        position: relative;
+        z-index: 1;
+      }
+      .tp-spec-col {
+        padding: 14px 10px;
+        border-right: 0.5px solid rgba(0,0,0,0.12);
+        border-bottom: 0.5px solid rgba(0,0,0,0.12);
+        text-align: center;
+        flex: none;
+      }
+      .tp-spec-col:nth-child(even) { border-right: none; }
+      .tp-spec-col:last-child { grid-column: 1 / -1; border-bottom: none; }
+      .tp-spec-col:nth-last-child(2):nth-child(odd) { border-bottom: none; }
       .tp-spec-value { font-size: 13px; }
     }
 
@@ -1042,6 +1108,7 @@
 
         <!-- DMU 100 T -->
         <div class="tp-maquinaria-item">
+          <svg class="tp-card-svg" aria-hidden="true"><rect class="tp-card-rect"/></svg>
           <div class="tp-maquinaria-img">
             <img src="img/maquinas/dmu-100t.png" alt="DMU 100 T">
           </div>
@@ -1072,6 +1139,7 @@
 
         <!-- MAZAK VTC-200B -->
         <div class="tp-maquinaria-item">
+          <svg class="tp-card-svg" aria-hidden="true"><rect class="tp-card-rect"/></svg>
           <div class="tp-maquinaria-img">
             <img src="img/maquinas/mazak-vtc200b.png" alt="MAZAK VTC-200B">
           </div>
@@ -1629,6 +1697,44 @@
     document.getElementById('backToTop').querySelector('button').addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // ─── MAQUINARIA CARD BORDER (mobile only) ───
+    if (window.innerWidth <= 767) {
+      document.querySelectorAll('.tp-maquinaria-item').forEach(item => {
+        const svg  = item.querySelector('.tp-card-svg');
+        const rect = svg && svg.querySelector('.tp-card-rect');
+        if (!svg || !rect) return;
+
+        // Set rect dimensions after layout
+        const setDims = () => {
+          const w = svg.offsetWidth;
+          const h = svg.offsetHeight;
+          const rx = 18;
+          rect.setAttribute('x', '1');
+          rect.setAttribute('y', '1');
+          rect.setAttribute('width',  Math.max(0, w - 2));
+          rect.setAttribute('height', Math.max(0, h - 2));
+          rect.setAttribute('rx', rx);
+          rect.setAttribute('ry', rx);
+          const perimeter = 2 * (w + h);
+          rect.style.strokeDasharray  = perimeter;
+          rect.style.strokeDashoffset = perimeter;
+        };
+
+        setDims();
+
+        gsap.to(rect, {
+          strokeDashoffset: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%',
+            end:   'top 15%',
+            scrub: 1.5
+          }
+        });
+      });
+    }
   </script>
 </body>
 </html>
