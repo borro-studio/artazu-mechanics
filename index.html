@@ -1108,7 +1108,7 @@
 
         <!-- DMU 100 T -->
         <div class="tp-maquinaria-item">
-          <svg class="tp-card-svg" aria-hidden="true"><rect class="tp-card-rect"/></svg>
+          <svg class="tp-card-svg" width="100%" height="100%" aria-hidden="true" style="overflow:visible"><rect class="tp-card-rect"/></svg>
           <div class="tp-maquinaria-img">
             <img src="img/maquinas/dmu-100t.png" alt="DMU 100 T">
           </div>
@@ -1139,7 +1139,7 @@
 
         <!-- MAZAK VTC-200B -->
         <div class="tp-maquinaria-item">
-          <svg class="tp-card-svg" aria-hidden="true"><rect class="tp-card-rect"/></svg>
+          <svg class="tp-card-svg" width="100%" height="100%" aria-hidden="true" style="overflow:visible"><rect class="tp-card-rect"/></svg>
           <div class="tp-maquinaria-img">
             <img src="img/maquinas/mazak-vtc200b.png" alt="MAZAK VTC-200B">
           </div>
@@ -1699,42 +1699,46 @@
     });
 
     // ─── MAQUINARIA CARD BORDER (mobile only) ───
-    if (window.innerWidth <= 767) {
+    function initMaqCards() {
+      if (window.innerWidth > 767) return;
+
       document.querySelectorAll('.tp-maquinaria-item').forEach(item => {
-        const svg  = item.querySelector('.tp-card-svg');
-        const rect = svg && svg.querySelector('.tp-card-rect');
-        if (!svg || !rect) return;
+        const svg     = item.querySelector('.tp-card-svg');
+        const svgRect = svg && svg.querySelector('.tp-card-rect');
+        if (!svg || !svgRect) return;
 
-        // Set rect dimensions after layout
-        const setDims = () => {
-          const w = svg.offsetWidth;
-          const h = svg.offsetHeight;
-          const rx = 18;
-          rect.setAttribute('x', '1');
-          rect.setAttribute('y', '1');
-          rect.setAttribute('width',  Math.max(0, w - 2));
-          rect.setAttribute('height', Math.max(0, h - 2));
-          rect.setAttribute('rx', rx);
-          rect.setAttribute('ry', rx);
-          const perimeter = 2 * (w + h);
-          rect.style.strokeDasharray  = perimeter;
-          rect.style.strokeDashoffset = perimeter;
-        };
+        const bcr = svg.getBoundingClientRect();
+        const w   = bcr.width;
+        const h   = bcr.height;
+        if (!w || !h) return;
 
-        setDims();
+        const rx = 18;
+        svgRect.setAttribute('x',      '1');
+        svgRect.setAttribute('y',      '1');
+        svgRect.setAttribute('width',  w - 2);
+        svgRect.setAttribute('height', h - 2);
+        svgRect.setAttribute('rx',     rx);
+        svgRect.setAttribute('ry',     rx);
 
-        gsap.to(rect, {
+        const perimeter = 2 * (w + h);
+        svgRect.style.strokeDasharray  = perimeter;
+        svgRect.style.strokeDashoffset = perimeter;
+
+        gsap.to(svgRect, {
           strokeDashoffset: 0,
           ease: 'none',
           scrollTrigger: {
             trigger: item,
             start: 'top 80%',
-            end:   'top 15%',
+            end:   'top 20%',
             scrub: 1.5
           }
         });
       });
     }
+
+    // Defer until fonts + images are loaded so layout is final
+    window.addEventListener('load', initMaqCards);
   </script>
 </body>
 </html>
