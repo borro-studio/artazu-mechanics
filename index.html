@@ -883,8 +883,8 @@
 
     <!-- Forma angular naranja detrás de la imagen -->
     <div class="tp-hero-shape">
-      <svg viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="80,0 520,40 480,390 380,560 0,480 20,120" fill="#ee7419"/>
+      <svg viewBox="0 0 500 580" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="140,0 500,0 500,420 360,580 0,580 0,140" fill="#ee7419"/>
       </svg>
     </div>
 
@@ -1402,11 +1402,13 @@
       Array.from(h1.childNodes).forEach(splitChars);
       const chars = h1.querySelectorAll('span > span');
 
+      const shape = document.querySelector('.tp-hero-shape');
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      // Image: slide up from below screen
+      // Shape + Image: slide up together from below
       gsap.set(img, { y: '60vh', opacity: 0 });
-      tl.to(img, { y: 0, opacity: 1, duration: 1.4, ease: 'power4.out' });
+      if (shape) gsap.set(shape, { y: '60vh', opacity: 0 });
+      tl.to([img, shape].filter(Boolean), { y: 0, opacity: 1, duration: 1.4, ease: 'power4.out' });
 
       // Text: letters slide up one by one
       gsap.set(chars, { y: '100%', opacity: 0 });
