@@ -221,22 +221,20 @@
       text-transform: uppercase; color: var(--tp-dark);
     }
 
-    /* Central floating image */
+    /* Central image */
     .tp-hero-center-img {
       position: relative;
       z-index: 1;
       width: 55vw;
       max-width: 780px;
-      animation: heroFloat 6s ease-in-out infinite;
     }
     .tp-hero-center-img img {
       width: 100%;
       height: auto;
       display: block;
-    }
-    @keyframes heroFloat {
-      0%, 100% { transform: translateY(0px) rotate(-1deg); }
-      50%       { transform: translateY(-18px) rotate(1deg); }
+      mix-blend-mode: multiply;
+      -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 72%);
+      mask-image: linear-gradient(to bottom, black 45%, transparent 72%);
     }
 
     /* ─── BUTTONS ─── */
