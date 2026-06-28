@@ -738,13 +738,13 @@
       .tp-section-title { font-size: 48px; line-height: 1; letter-spacing: -2px; }
       .tp-hero-area { padding-bottom: 60px; }
       .tp-hero-center-img { width: 92vw; max-width: 92vw; right: auto; left: 50%; top: 58%; transform: translate(-50%, -50%); }
-      .tp-hero-left { top: 100px; left: 24px; transform: none; max-width: none; gap: 20px; }
-      .tp-hero-headline h1 { font-size: 38px; letter-spacing: -1.5px; white-space: nowrap; }
+      .tp-hero-left { top: 90px; left: 24px; transform: none; max-width: none; gap: 24px; }
+      .tp-hero-headline h1 { font-size: 10.5vw; letter-spacing: -1px; white-space: nowrap; line-height: 1; }
       .tp-hero-left .tp-hero-tagline { display: none; }
       .tp-hero-tagline-mobile { display: block; position: absolute; bottom: 40px; left: 24px; right: 24px; z-index: 2; }
-      .tp-hero-tagline-mobile .tp-hero-tagline-inner { display: flex; align-items: flex-start; gap: 12px; }
+      .tp-hero-tagline-mobile .tp-hero-tagline-inner { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
       .tp-hero-tagline-mobile p { font-size: 15px; line-height: 1.6; color: rgba(26,26,26,0.55); }
-      .tp-hero-tagline-mobile .tp-hero-isotipo { width: 18px; margin-top: 2px; flex-shrink: 0; }
+      .tp-hero-tagline-mobile .tp-hero-isotipo { width: 24px; }
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 90px; }
       .tp-hero-text-2 { margin-left: 0; }
       .tp-hero-container { padding-top: 120px; }
@@ -1413,50 +1413,35 @@
       const tagline = document.querySelector('.tp-hero-left');
       if (img) img.style.visibility = 'visible';
 
-      // Split h1 into character spans, preserving <br>
-      function splitChars(node) {
-        if (node.nodeType === 3) {
-          const frag = document.createDocumentFragment();
-          Array.from(node.textContent).forEach(ch => {
-            const s = document.createElement('span');
-            s.style.cssText = 'display:inline-block;overflow:hidden;';
-            const inner = document.createElement('span');
-            inner.style.display = 'inline-block';
-            inner.textContent = ch === ' ' ? ' ' : ch;
-            s.appendChild(inner);
-            frag.appendChild(s);
-          });
-          node.parentNode.replaceChild(frag, node);
-        } else if (node.nodeType === 1 && node.tagName !== 'BR') {
-          Array.from(node.childNodes).forEach(splitChars);
-        }
-      }
-      Array.from(h1.childNodes).forEach(splitChars);
-      const chars = h1.querySelectorAll('span > span');
-
       const shape = document.querySelector('.tp-hero-shape');
+      const taglineMobile = document.querySelector('.tp-hero-tagline-mobile');
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       // Image: slide up from below
       gsap.set(img, { y: '60vh', opacity: 0 });
       tl.to(img, { y: 0, opacity: 1, duration: 1.4, ease: 'power4.out' });
 
-      // Shape: clip-path reveal top to bottom
+      // Shape: clip-path reveal (desktop only)
       if (shape) {
         gsap.set(shape, { clipPath: 'inset(0 0 100% 0)' });
         tl.to(shape, { clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power3.inOut' }, 0.2);
       }
 
-      // Text: letters slide up one by one
-      gsap.set(chars, { y: '100%', opacity: 0 });
-      tl.to(chars, { y: '0%', opacity: 1, duration: 0.6, stagger: 0.03 }, '-=0.7');
+      // Title: clip-path reveal top to bottom
+      gsap.set(h1, { clipPath: 'inset(0 0 100% 0)' });
+      tl.to(h1, { clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power3.inOut' }, 0.3);
 
-      // Tagline fade in
+      // Left block fade in
       if (tagline) {
-        gsap.set(tagline, { opacity: 0, y: 10 });
-        tl.to(tagline, { opacity: 1, y: 0, duration: 0.8 }, '-=0.2');
+        gsap.set(tagline, { opacity: 0 });
+        tl.to(tagline, { opacity: 1, duration: 0.8 }, '-=0.3');
       }
-    });
+
+      // Mobile tagline fade in
+      if (taglineMobile) {
+        gsap.set(taglineMobile, { opacity: 0, y: 12 });
+        tl.to(taglineMobile, { opacity: 1, y: 0, duration: 0.8 }, '-=0.3');
+      }
 
     // ─── TESTIMONIAL SLIDER ───
     const slides = document.querySelectorAll('.testimonial-slide');
