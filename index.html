@@ -235,6 +235,13 @@
       height: auto;
       display: block;
       mix-blend-mode: multiply;
+      animation: heroRock 6s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+    @keyframes heroRock {
+      0%   { transform: perspective(1200px) rotateY(-12deg) rotateX(3deg); }
+      50%  { transform: perspective(1200px) rotateY(12deg)  rotateX(-3deg); }
+      100% { transform: perspective(1200px) rotateY(-12deg) rotateX(3deg); }
     }
 
     /* ─── BUTTONS ─── */
