@@ -108,14 +108,42 @@
       background: none; border: none; cursor: pointer; color: var(--tp-light);
     }
     .tp-offcanvas-menu { margin-top: 60px; }
-    .tp-offcanvas-menu a {
+    .tp-offcanvas-menu > a,
+    .tp-offcanvas-menu-item {
       display: block;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .tp-offcanvas-menu > a {
       font-size: 60px; font-weight: 700; color: var(--tp-light);
       line-height: 1; padding: 18px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
       transition: opacity 0.3s;
     }
-    .tp-offcanvas-menu a:hover { opacity: 0.5; }
+    .tp-offcanvas-menu > a:hover { opacity: 0.5; }
+    .tp-offcanvas-menu-toggle {
+      display: flex; align-items: center; gap: 16px;
+      width: 100%; background: none; border: none; cursor: pointer;
+      font-size: 60px; font-weight: 700; color: var(--tp-light);
+      font-family: var(--tp-ff);
+      line-height: 1; padding: 18px 0;
+      transition: opacity 0.3s;
+      text-align: left;
+    }
+    .tp-offcanvas-menu-toggle:hover { opacity: 0.5; }
+    .tp-sub-arrow { transition: transform 0.3s; flex-shrink: 0; }
+    .tp-offcanvas-menu-item.open .tp-sub-arrow { transform: rotate(180deg); }
+    .tp-offcanvas-submenu {
+      display: none;
+      padding: 8px 0 20px 0;
+    }
+    .tp-offcanvas-menu-item.open .tp-offcanvas-submenu { display: block; }
+    .tp-offcanvas-submenu a {
+      display: block;
+      font-size: 22px; font-weight: 400; color: rgba(255,255,255,0.55);
+      padding: 10px 0;
+      border-bottom: none;
+      transition: color 0.2s;
+    }
+    .tp-offcanvas-submenu a:hover { color: #ee7419; opacity: 1; }
 
     /* ─── HEADER ─── */
     #header-sticky {
@@ -796,12 +824,19 @@
           </button>
         </div>
         <nav class="tp-offcanvas-menu">
-          <a href="#">Home</a>
-          <a href="#">Portfolio</a>
-          <a href="#">About</a>
-          <a href="#">Services</a>
-          <a href="#">Blog</a>
-          <a href="#">Contact</a>
+          <a href="#">Inicio</a>
+          <div class="tp-offcanvas-menu-item has-sub">
+            <button class="tp-offcanvas-menu-toggle" onclick="toggleSubmenu(this)">
+              Servicios
+              <svg class="tp-sub-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="tp-offcanvas-submenu">
+              <a href="#">Mecanizado bajo plano</a>
+              <a href="#">Diseño de utillajes de verificación</a>
+            </div>
+          </div>
+          <a href="#down">Maquinaria</a>
+          <a href="#contacto">Contacto</a>
         </nav>
       </div>
       <div class="tp-offcanvas-2-right" style="display:flex;align-items:flex-start;justify-content:flex-end;padding-top:30px;">
@@ -1071,7 +1106,7 @@
   <!-- ══════════════════════════════════
        CONTACTO
   ══════════════════════════════════ -->
-  <section class="tp-contact-ptb">
+  <section class="tp-contact-ptb" id="contacto">
     <div class="tp-contact-inner">
 
       <!-- Columna izquierda -->
@@ -1166,6 +1201,9 @@
     function closeOffcanvas() {
       document.getElementById('offcanvasArea').classList.remove('open');
       document.body.style.overflow = '';
+    }
+    function toggleSubmenu(btn) {
+      btn.closest('.tp-offcanvas-menu-item').classList.toggle('open');
     }
 
     // ─── HERO ENTRANCE ───
