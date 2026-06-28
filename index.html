@@ -188,7 +188,7 @@
       font-size: clamp(42px, 5.5vw, 88px);
       font-weight: 600;
       line-height: 0.9;
-      letter-spacing: 0px;
+      letter-spacing: -2px;
       color: var(--tp-dark);
     }
 
@@ -224,7 +224,7 @@
     /* Central image */
     .tp-hero-center-img {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 55%; left: 50%;
       transform: translate(-50%, -50%);
       z-index: 1;
       width: 50vw;
@@ -235,13 +235,6 @@
       height: auto;
       display: block;
       mix-blend-mode: multiply;
-      animation: heroRock 6s ease-in-out infinite;
-      transform-style: preserve-3d;
-    }
-    @keyframes heroRock {
-      0%   { transform: perspective(1200px) rotateY(-12deg) rotateX(3deg); }
-      50%  { transform: perspective(1200px) rotateY(12deg)  rotateX(-3deg); }
-      100% { transform: perspective(1200px) rotateY(-12deg) rotateX(3deg); }
     }
 
     /* ─── BUTTONS ─── */
