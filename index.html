@@ -190,7 +190,7 @@
       gap: 32px;
     }
     .tp-hero-headline h1 {
-      font-size: clamp(52px, 7vw, 120px);
+      font-size: clamp(64px, 8.5vw, 140px);
       font-weight: 600;
       line-height: 1;
       letter-spacing: -3px;
@@ -1423,9 +1423,28 @@
         tl.to(shape, { clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power3.inOut' }, 0.2);
       }
 
-      // Title: clip-path reveal top to bottom
-      gsap.set(h1, { clipPath: 'inset(0 0 100% 0)' });
-      tl.to(h1, { clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power3.inOut' }, 0.3);
+      // Title: letter by letter
+      function splitChars(node) {
+        if (node.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          Array.from(node.textContent).forEach(ch => {
+            const s = document.createElement('span');
+            s.style.cssText = 'display:inline-block;overflow:hidden;vertical-align:bottom;';
+            const inner = document.createElement('span');
+            inner.style.display = 'inline-block';
+            inner.textContent = ch === ' ' ? ' ' : ch;
+            s.appendChild(inner);
+            frag.appendChild(s);
+          });
+          node.parentNode.replaceChild(frag, node);
+        } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+          Array.from(node.childNodes).forEach(splitChars);
+        }
+      }
+      Array.from(h1.childNodes).forEach(splitChars);
+      const chars = h1.querySelectorAll('span > span');
+      gsap.set(chars, { y: '110%' });
+      tl.to(chars, { y: '0%', duration: 0.7, stagger: 0.025, ease: 'power3.out' }, 0.2);
 
       // Left block fade in
       if (tagline) {
