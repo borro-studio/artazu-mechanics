@@ -100,14 +100,14 @@
     .tp-offcanvas-2-area.open .tp-offcanvas-2-wrapper { opacity: 1; visibility: visible; }
     .tp-offcanvas-2-left {
       width: 50%; padding: 35px 0 35px 90px;
-      display: flex; flex-direction: column;
+      display: flex; flex-direction: column; justify-content: center;
       border-right: 1px solid rgba(255,255,255,0.08);
     }
     .tp-offcanvas-2-right { width: 50%; padding: 30px 90px 35px 90px; }
     .tp-offcanvas-2-close-btn {
       background: none; border: none; cursor: pointer; color: var(--tp-light);
     }
-    .tp-offcanvas-menu { margin-top: 60px; text-align: center; }
+    .tp-offcanvas-menu { margin-top: 0; text-align: left; }
     .tp-offcanvas-menu > a,
     .tp-offcanvas-menu-item {
       display: block;
@@ -120,13 +120,13 @@
     }
     .tp-offcanvas-menu > a:hover { opacity: 0.5; }
     .tp-offcanvas-menu-toggle {
-      display: flex; align-items: center; justify-content: center; gap: 20px;
+      display: flex; align-items: center; justify-content: flex-start; gap: 20px;
       width: 100%; background: none; border: none; cursor: pointer;
       font-size: 60px; font-weight: 700; color: var(--tp-light);
       font-family: var(--tp-ff);
       line-height: 1; padding: 18px 0;
       transition: opacity 0.3s;
-      text-align: center;
+      text-align: left;
     }
     .tp-offcanvas-menu-toggle:hover { opacity: 0.5; }
     .tp-sub-arrow {
