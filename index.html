@@ -179,12 +179,15 @@
     }
 
     /* Headline top-left */
-    .tp-hero-headline {
+    .tp-hero-left {
       position: absolute;
       top: 50%; left: 40px;
       transform: translateY(-50%);
       z-index: 2;
-      max-width: 52vw;
+      max-width: 48vw;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
     }
     .tp-hero-headline h1 {
       font-size: clamp(52px, 7vw, 120px);
@@ -192,6 +195,16 @@
       line-height: 0.88;
       letter-spacing: -3px;
       color: var(--tp-dark);
+    }
+    .tp-hero-tagline-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .tp-hero-isotipo {
+      width: 28px;
+      flex-shrink: 0;
+      margin-top: 2px;
     }
 
     /* Logo watermark */
@@ -210,19 +223,11 @@
       display: block;
     }
 
-    /* Tagline below title */
-    .tp-hero-tagline {
-      position: absolute;
-      top: 140px; left: 40px;
-      margin-top: calc(clamp(52px, 7vw, 120px) * 2.1);
-      z-index: 2;
-      text-align: left;
-      max-width: 380px;
-    }
     .tp-hero-tagline p {
-      font-size: 16px;
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.7;
       color: rgba(26,26,26,0.55);
+      max-width: 320px;
     }
 
     /* Scroll indicator bottom-left */
@@ -730,10 +735,10 @@
       .tp-section-title { font-size: 48px; line-height: 1; letter-spacing: -2px; }
       .tp-hero-area { padding-bottom: 60px; }
       .tp-hero-center-img { width: 92vw; max-width: 92vw; right: auto; left: 50%; top: 58%; transform: translate(-50%, -50%); }
-      .tp-hero-headline { top: 140px; left: 24px; bottom: auto; max-width: 90vw; }
+      .tp-hero-left { top: 100px; left: 24px; transform: none; max-width: 90vw; gap: 20px; }
       .tp-hero-headline h1 { font-size: 38px; letter-spacing: -1.5px; }
-      .tp-hero-tagline { top: auto; bottom: 90px; right: 24px; left: auto; margin-top: 0; max-width: 220px; text-align: right; }
       .tp-hero-tagline p { font-size: 12px; }
+      .tp-hero-isotipo { width: 20px; }
       .tp-hero-text-1, .tp-hero-text-2 { font-size: 90px; }
       .tp-hero-text-2 { margin-left: 0; }
       .tp-hero-container { padding-top: 120px; }
@@ -877,9 +882,21 @@
       </svg>
     </div>
 
-    <!-- Titular top-left -->
-    <div class="tp-hero-headline">
-      <h1 id="heroTitle">De la necesidad<br>a la pieza final.</h1>
+    <!-- Bloque izquierdo: título + tagline + isotipo -->
+    <div class="tp-hero-left">
+      <div class="tp-hero-headline">
+        <h1 id="heroTitle">De la necesidad<br>a la pieza final.</h1>
+      </div>
+      <div class="tp-hero-tagline">
+        <div class="tp-hero-tagline-inner">
+          <svg class="tp-hero-isotipo" viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+            <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+            <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+          </svg>
+          <p>Mecanizado de precisión bajo plano, con ingeniería, tecnología y enfoque integral desde el diseño hasta la entrega.</p>
+        </div>
+      </div>
     </div>
 
     <!-- Forma angular naranja detrás de la imagen -->
@@ -894,10 +911,6 @@
       <img src="img/hero/hero-1.png" alt="Pieza mecanizada Artazu Mechanics">
     </div>
 
-    <!-- Tagline bottom-right -->
-    <div class="tp-hero-tagline">
-      <p>Mecanizado de precisión bajo plano, con ingeniería, tecnología y enfoque integral desde el diseño hasta la entrega.</p>
-    </div>
 
     <!-- Scroll down bottom-left -->
     <div class="tp-hero-down">
@@ -1379,7 +1392,7 @@
     window.addEventListener('load', function heroEntrance() {
       const h1 = document.getElementById('heroTitle');
       const img = document.querySelector('.tp-hero-center-img');
-      const tagline = document.querySelector('.tp-hero-tagline');
+      const tagline = document.querySelector('.tp-hero-left');
       if (img) img.style.visibility = 'visible';
 
       // Split h1 into character spans, preserving <br>
