@@ -462,28 +462,28 @@
       .tp-maquinaria-item {
         border-top: none;
         position: relative;
-        padding: 260px 28px 44px;
+        padding: 248px 28px 44px;
         margin: 0 0 70px;
         text-align: center;
         overflow: visible;
       }
-      /* Machine name sits above the image */
+      /* Machine name — left-aligned, above the image */
       .tp-maquinaria-name {
         position: absolute;
         top: 14px;
         left: 28px; right: 28px;
         margin: 0;
-        text-align: center;
+        text-align: left;
         z-index: 4;
       }
       /* Orange border SVG — drawn on scroll */
       .tp-card-svg {
         display: block;
         position: absolute;
-        top: 168px;
+        top: 152px;
         left: 0;
         width: 100%;
-        height: calc(100% - 168px);
+        height: calc(100% - 152px);
         pointer-events: none;
         overflow: visible;
         z-index: 0;
@@ -495,20 +495,20 @@
         stroke-linecap: round;
         stroke-linejoin: round;
       }
-      /* Machine image floats above card, below name */
+      /* Machine image: starts below name, overflows above card border */
       .tp-maquinaria-img {
         position: absolute;
-        top: 56px;
+        top: 52px;
         left: 0; right: 0;
-        height: 180px;
+        height: 160px;
         z-index: 3;
         margin: 0;
         padding: 0 20px;
         justify-content: center;
-        align-items: flex-end;
+        align-items: flex-start;
       }
       .tp-maquinaria-img img {
-        max-height: 210px;
+        max-height: 160px;
         width: auto;
         position: relative;
         z-index: 3;
