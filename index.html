@@ -422,9 +422,13 @@
       .tp-maquinaria-img { height: 220px; align-items: center; margin-bottom: 16px; }
       .tp-maquinaria-img img { max-height: 200px; max-width: 100%; }
       .tp-maquinaria-name { font-size: 16px; margin-bottom: 12px; text-align: center; }
-      .tp-spec-col { padding: 10px 6px; text-align: center; }
-      .tp-spec-value { font-size: 11px; }
-      .tp-spec-label { font-size: 8px; }
+      .tp-maquinaria-specs { display: grid; grid-template-columns: 1fr 1fr; border-top: 0.5px solid rgba(0,0,0,0.12); }
+      .tp-spec-col { flex: unset; min-width: unset; padding: 14px 12px; text-align: center; border-right: 0.5px solid rgba(0,0,0,0.12); border-bottom: 0.5px solid rgba(0,0,0,0.12); }
+      .tp-spec-col:nth-child(even) { border-right: none; }
+      .tp-spec-col:nth-child(3), .tp-spec-col:nth-child(4) { border-bottom: none; }
+      .tp-spec-col:nth-child(5) { grid-column: 1 / -1; border-right: none; border-bottom: none; }
+      .tp-spec-value { font-size: 14px; }
+      .tp-spec-label { font-size: 10px; }
     }
 
     /* ─── ABOUT ─── */
