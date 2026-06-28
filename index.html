@@ -454,6 +454,99 @@
     }
 
     /* ─── ABOUT ─── */
+    /* ── CONTACTO ── */
+    .tp-contact-ptb {
+      background: var(--tp-dark);
+      padding: 120px 40px;
+    }
+    .tp-contact-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .tp-contact-label {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ee7419;
+      margin-bottom: 24px;
+    }
+    .tp-contact-title {
+      font-size: clamp(48px, 5vw, 80px);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--tp-light);
+      margin-bottom: 60px;
+    }
+    .tp-contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .tp-contact-link {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-decoration: none;
+      color: var(--tp-light);
+      transition: opacity 0.2s;
+    }
+    a.tp-contact-link:hover { opacity: 0.6; }
+    .tp-contact-info-label {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .tp-contact-link span:last-child {
+      font-size: 18px;
+    }
+    .tp-contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .tp-contact-field {
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .tp-contact-field input,
+    .tp-contact-field textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--tp-light);
+      font-family: var(--tp-ff);
+      font-size: 17px;
+      padding: 22px 0;
+      resize: none;
+    }
+    .tp-contact-field input::placeholder,
+    .tp-contact-field textarea::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+    .tp-contact-btn {
+      margin-top: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #ee7419;
+      color: #fff;
+      border: none;
+      font-family: var(--tp-ff);
+      font-size: 16px;
+      font-weight: 500;
+      padding: 18px 36px;
+      cursor: pointer;
+      transition: background 0.2s;
+      align-self: flex-start;
+    }
+    .tp-contact-btn:hover { background: #d4661a; }
+
     .tp-about-ptb { background: var(--tp-dark); padding-top: 100px; padding-bottom: 150px; }
     .tp-about-heading { margin-bottom: 80px; }
     .tp-about-box { padding-bottom: 180px; }
@@ -760,6 +853,9 @@
       .tp-service-item-thumb { display: none; }
       .tp-service-ptb { padding-bottom: 80px; }
       .tp-project-item { margin-bottom: 0; }
+      .tp-contact-ptb { padding: 80px 24px; }
+      .tp-contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      .tp-contact-title { font-size: 48px; margin-bottom: 40px; }
       .tp-about-ptb { padding-top: 60px; padding-bottom: 60px; }
       .tp-about-box { padding-bottom: 40px; }
       .tp-about-text-1 { font-size: 18px; margin-bottom: 20px; }
@@ -1083,6 +1179,57 @@
         </div>
 
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       CONTACTO
+  ══════════════════════════════════ -->
+  <section class="tp-contact-ptb">
+    <div class="tp-contact-inner">
+
+      <!-- Columna izquierda -->
+      <div class="tp-contact-left">
+        <p class="tp-contact-label">Contacto</p>
+        <h2 class="tp-contact-title">Cuéntanos<br>tu proyecto.</h2>
+        <div class="tp-contact-info">
+          <a href="mailto:info@artazumechanics.com" class="tp-contact-link">
+            <span class="tp-contact-info-label">Email</span>
+            <span>info@artazumechanics.com</span>
+          </a>
+          <a href="tel:+34000000000" class="tp-contact-link">
+            <span class="tp-contact-info-label">Teléfono</span>
+            <span>+34 000 000 000</span>
+          </a>
+          <div class="tp-contact-link">
+            <span class="tp-contact-info-label">Ubicación</span>
+            <span>País Vasco, España</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna derecha: formulario -->
+      <div class="tp-contact-right">
+        <form class="tp-contact-form" onsubmit="return false;">
+          <div class="tp-contact-field">
+            <input type="text" placeholder="Nombre" required>
+          </div>
+          <div class="tp-contact-field">
+            <input type="email" placeholder="Email" required>
+          </div>
+          <div class="tp-contact-field">
+            <input type="text" placeholder="Empresa (opcional)">
+          </div>
+          <div class="tp-contact-field">
+            <textarea rows="5" placeholder="Cuéntanos tu proyecto..." required></textarea>
+          </div>
+          <button type="submit" class="tp-contact-btn">
+            <span>Enviar mensaje</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+      </div>
+
     </div>
   </section>
 
