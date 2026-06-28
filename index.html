@@ -374,6 +374,7 @@
       width: auto;
       object-fit: contain;
       filter: drop-shadow(0 12px 28px rgba(0,0,0,0.18));
+      mix-blend-mode: multiply;
     }
     .tp-maquinaria-name {
       font-size: 22px;
@@ -413,9 +414,9 @@
     }
     @media (max-width: 767px) {
       .tp-maquinaria-title { font-size: 52px; letter-spacing: -3px; }
-      .tp-maquinaria-grid { grid-template-columns: 1fr; gap: 80px 0; }
+      .tp-maquinaria-grid { grid-template-columns: 1fr; gap: 56px 0; max-width: 360px; margin-left: auto; margin-right: auto; }
       .tp-maquinaria-item { padding: 24px 20px 20px; border-top: none; }
-      .tp-maquinaria-img { height: 200px; align-items: flex-start; margin-bottom: 20px; }
+      .tp-maquinaria-img { height: 200px; align-items: center; margin-bottom: 20px; }
       .tp-maquinaria-img img { max-height: 160px; }
       .tp-spec-col { padding: 14px 10px; }
       .tp-spec-value { font-size: 13px; }
@@ -1594,7 +1595,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // ─── MAQUINARIA MOBILE CARD — SVG orange border drawn on scroll ───
+    // ─── MAQUINARIA MOBILE CARD — SVG orange border drawn once on scroll ───
     function initMaqCards() {
       if (window.innerWidth > 767) return;
       const svgNS = 'http://www.w3.org/2000/svg';
@@ -1602,37 +1603,38 @@
         const bcr = item.getBoundingClientRect();
         const w = bcr.width;
         const h = bcr.height;
-        const r = 14;
+        const r = 16;
         const perim = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 2 * Math.PI * r;
 
         const svg = document.createElementNS(svgNS, 'svg');
         svg.setAttribute('width', w);
         svg.setAttribute('height', h);
-        svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:1;overflow:visible;';
+        svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;overflow:visible;';
 
-        const rect = document.createElementNS(svgNS, 'rect');
-        rect.setAttribute('x', '1');
-        rect.setAttribute('y', '1');
-        rect.setAttribute('width', w - 2);
-        rect.setAttribute('height', h - 2);
-        rect.setAttribute('rx', r);
-        rect.setAttribute('fill', 'none');
-        rect.setAttribute('stroke', '#ee7419');
-        rect.setAttribute('stroke-width', '1.5');
-        rect.setAttribute('stroke-dasharray', perim);
-        rect.setAttribute('stroke-dashoffset', perim);
+        const borderRect = document.createElementNS(svgNS, 'rect');
+        borderRect.setAttribute('x', '1');
+        borderRect.setAttribute('y', '1');
+        borderRect.setAttribute('width', w - 2);
+        borderRect.setAttribute('height', h - 2);
+        borderRect.setAttribute('rx', r);
+        borderRect.setAttribute('fill', 'none');
+        borderRect.setAttribute('stroke', '#ee7419');
+        borderRect.setAttribute('stroke-width', '1.5');
+        borderRect.setAttribute('stroke-dasharray', perim);
+        borderRect.setAttribute('stroke-dashoffset', perim);
 
-        svg.appendChild(rect);
+        svg.appendChild(borderRect);
         item.appendChild(svg);
 
-        gsap.to(rect, {
+        // se dibuja una sola vez cuando entra en pantalla y se queda
+        gsap.to(borderRect, {
           strokeDashoffset: 0,
-          ease: 'none',
+          duration: 1.4,
+          ease: 'power2.inOut',
           scrollTrigger: {
             trigger: item,
-            start: 'top 92%',
-            end: 'top 20%',
-            scrub: 1,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
           }
         });
       });
