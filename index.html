@@ -552,6 +552,32 @@
     }
 
     /* ─── ABOUT ─── */
+    /* ── PARALLAX BANNER ── */
+    .tp-parallax-banner {
+      position: relative;
+      height: 80vh;
+      overflow: hidden;
+    }
+    .tp-parallax-img {
+      position: absolute;
+      inset: -20%;
+      background: url('img/oficina.jpg') center center / cover no-repeat;
+      will-change: transform;
+    }
+    .tp-parallax-logo {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .tp-parallax-logo img {
+      width: clamp(200px, 30vw, 420px);
+      filter: invert(1) brightness(10);
+      will-change: opacity;
+    }
+
     /* ── CONTACTO ── */
     .tp-contact-ptb {
       background: var(--tp-dark);
@@ -1063,6 +1089,16 @@
           <li class="tp_fade_bottom">Análisis de viabilidad y optimización de fabricación.</li>
         </ul>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       PARALLAX BANNER
+  ══════════════════════════════════ -->
+  <section class="tp-parallax-banner">
+    <div class="tp-parallax-img" id="parallaxImg"></div>
+    <div class="tp-parallax-logo" id="parallaxLogo">
+      <img src="img/logo/logo-artazu.svg" alt="Artazu Mechanics">
     </div>
   </section>
 
@@ -1616,6 +1652,45 @@
         onEnter: () => animateCount(el, target, 1200)
       });
     });
+
+    // ─── PARALLAX BANNER ───
+    const parallaxImg = document.getElementById('parallaxImg');
+    const parallaxLogo = document.getElementById('parallaxLogo');
+    if (parallaxImg) {
+      gsap.to(parallaxImg, {
+        yPercent: 25,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.tp-parallax-banner',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+      gsap.fromTo(parallaxLogo,
+        { opacity: 0, scale: 0.92 },
+        {
+          opacity: 1, scale: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.tp-parallax-banner',
+            start: 'top 80%',
+            end: 'center center',
+            scrub: true
+          }
+        }
+      );
+      gsap.to(parallaxLogo, {
+        opacity: 0, scale: 1.05,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.tp-parallax-banner',
+          start: 'center center',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+    }
 
     // ─── TRANSICIÓN DE PÁGINA ───
     document.querySelectorAll('a.tp-nav-link').forEach(link => {
