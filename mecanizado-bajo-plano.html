@@ -921,13 +921,13 @@
 
   <style>
     /* ── SERVICE PAGE ── */
-    .sp-hero { min-height: 100vh; display: flex; flex-direction: row; align-items: center; gap: 0; padding: 140px 40px 80px; background: var(--tp-bg); position: relative; overflow: hidden; }
+    .sp-hero { min-height: 100vh; display: flex; flex-direction: row; align-items: center; gap: 0; padding: 140px 40px 80px; background: var(--tp-bg); position: relative; overflow: visible; z-index: 1; }
     .sp-hero-content { flex: 0 0 52%; position: relative; z-index: 2; }
     .sp-hero-drawing-wrap { flex: 1; display: flex; align-items: center; justify-content: flex-end; position: relative; z-index: 2; padding-left: 40px; }
-    .sp-hero-drawing-wrap { flex: 1; display: flex; align-items: center; justify-content: flex-end; position: relative; z-index: 2; padding-left: 60px; }
-    .sp-hero-img-wrap { position: relative; width: 100%; max-width: 560px; }
+    .sp-hero-drawing-wrap { flex: 1; display: flex; align-items: flex-end; justify-content: flex-end; position: relative; z-index: 2; padding-left: 40px; overflow: visible; }
+    .sp-hero-img-wrap { position: relative; width: 100%; max-width: 680px; }
     .sp-hero-drawing-img { width: 100%; height: auto; position: relative; z-index: 2; clip-path: inset(0 100% 0 0); }
-    .sp-hero-img-shape { position: absolute; top: 50%; right: -4%; transform: translateY(-50%) rotate(-15deg); width: 52%; z-index: 1; mix-blend-mode: multiply; clip-path: inset(0 0 100% 0); pointer-events: none; }
+    .sp-hero-img-shape { position: absolute; top: 30%; left: 50%; transform: translateX(-50%) rotate(-15deg); width: 65%; z-index: 1; mix-blend-mode: multiply; clip-path: inset(0 0 100% 0); pointer-events: none; }
       position: absolute; right: -4vw; bottom: -6vw;
       font-size: 28vw; font-weight: 800; letter-spacing: -10px;
       color: rgba(0,0,0,0.04); line-height: 1; pointer-events: none;
@@ -1092,7 +1092,7 @@
         <div>
           <div class="sp-que-title-row">
             <h2 class="sp-que-title titleBurrowing">Un único<br>proveedor.</h2>
-            <h2 class="sp-que-title titleBurrowing sp-que-title-right">Máxima<br>eficiencia.</h2>
+            <h2 class="sp-que-title titleBurrowing sp-que-title-right" style="color:#ee7419;">Máxima<br>eficiencia.</h2>
           </div>
         </div>
         <div>
