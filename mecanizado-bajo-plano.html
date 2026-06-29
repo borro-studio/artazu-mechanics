@@ -970,13 +970,20 @@
     .sp-360-label { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #ee7419; margin-bottom: 16px; }
     .sp-360-title { font-size: clamp(48px, 5vw, 80px); font-weight: 700; letter-spacing: -3px; line-height: 1; color: var(--tp-dark); }
     .sp-360-steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; position: relative; }
+    .sp-360-line-track { position: absolute; top: 20px; left: calc(100%/12); right: calc(100%/12); height: 1px; background: rgba(26,26,26,0.12); z-index: 0; }
+    .sp-360-line-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: #ee7419; transition: none; }
     .sp-360-steps::before {
       content: ''; position: absolute;
       top: 22px; left: calc(100%/12); right: calc(100%/12);
       height: 1px; background: rgba(0,0,0,0.15);
     }
     .sp-360-step { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; padding: 0 16px; }
-    .sp-360-dot {
+    .sp-360-dot { opacity: 0.25; transition: opacity 0.3s, background 0.4s, border-color 0.4s, color 0.4s;
+    }
+    .sp-360-dot.active {  opacity: 1; background: #ee7419; border-color: #ee7419; color: #fff; }
+    .sp-360-step-text { opacity: 0; transform: translateY(10px); transition: opacity 0.4s, transform 0.4s; }
+    .sp-360-step-text.active { opacity: 1; transform: translateY(0); }
+    .sp-360-dot-orig {
       width: 44px; height: 44px; border-radius: 50%;
       border: 1px solid rgba(0,0,0,0.2); background: var(--tp-bg);
       display: flex; align-items: center; justify-content: center;
@@ -1119,28 +1126,29 @@
             <span class="titleBurrowing" style="display:block;">de todo el proceso</span>
           </h2>
         </div>
-        <div class="sp-360-steps">
-          <div class="sp-360-step tp_fade_bottom">
+        <div class="sp-360-steps" id="processSteps">
+          <div class="sp-360-line-track"><div class="sp-360-line-fill" id="processLine"></div></div>
+          <div class="sp-360-step">
             <div class="sp-360-dot">01</div>
             <p class="sp-360-step-text">Aprovisionamiento de materiales</p>
           </div>
-          <div class="sp-360-step tp_fade_bottom">
+          <div class="sp-360-step">
             <div class="sp-360-dot">02</div>
             <p class="sp-360-step-text">Mecanizado y procesos intermedios</p>
           </div>
-          <div class="sp-360-step tp_fade_bottom">
+          <div class="sp-360-step">
             <div class="sp-360-dot">03</div>
             <p class="sp-360-step-text">Tratamientos térmicos y superficiales</p>
           </div>
-          <div class="sp-360-step tp_fade_bottom">
+          <div class="sp-360-step">
             <div class="sp-360-dot">04</div>
             <p class="sp-360-step-text">Montaje de subconjuntos</p>
           </div>
-          <div class="sp-360-step tp_fade_bottom">
+          <div class="sp-360-step">
             <div class="sp-360-dot">05</div>
             <p class="sp-360-step-text">Verificación y control final</p>
           </div>
-          <div class="sp-360-step tp_fade_bottom">
+          <div class="sp-360-step">
             <div class="sp-360-dot" style="background:#ee7419;border-color:#ee7419;color:#fff;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
@@ -1246,6 +1254,38 @@
       });
     });
     setTimeout(() => ScrollTrigger.refresh(), 200);
+
+    // ─── PROCESO — animación punto a punto ───
+    (function() {
+      const steps = document.querySelectorAll('#processSteps .sp-360-step');
+      const line = document.getElementById('processLine');
+      if (!steps.length || !line) return;
+
+      const total = steps.length;
+
+      ScrollTrigger.create({
+        trigger: '#processSteps',
+        start: 'top 75%',
+        once: true,
+        onEnter: function() {
+          steps.forEach((step, i) => {
+            const dot = step.querySelector('.sp-360-dot');
+            const text = step.querySelector('.sp-360-step-text');
+            const delay = i * 0.38;
+
+            // Activar dot
+            setTimeout(() => {
+              if (dot) dot.classList.add('active');
+              if (text) text.classList.add('active');
+              // Avanzar línea
+              const pct = ((i) / (total - 1)) * 100;
+              line.style.transition = 'width 0.35s ease';
+              line.style.width = pct + '%';
+            }, delay * 1000 + 200);
+          });
+        }
+      });
+    })();
 
     // ─── CURSOR NARANJA + HEADER EN SECCIONES OSCURAS ───
     document.addEventListener('mousemove', function(e) {
