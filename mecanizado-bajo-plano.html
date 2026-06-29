@@ -1048,15 +1048,63 @@
       .sp-cta { flex-direction: column; align-items: flex-start; }
     }
     @media (max-width: 767px) {
-      .sp-hero { padding: 0 24px 80px; }
+      /* Hero */
+      .sp-hero { padding: 160px 24px 0; flex-direction: column; }
+      .sp-hero-title { letter-spacing: -2px !important; }
+      /* Botón volver: más pequeño */
+      .sp-hero-content > a.tp-btn {
+        font-size: 10px !important;
+        padding: 9px 16px !important;
+        margin-bottom: 40px !important;
+        letter-spacing: 1.5px !important;
+      }
+      /* Texto descripción: más pequeño */
+      .sp-hero-content > div p { font-size: 14px !important; line-height: 1.65 !important; }
+      /* Force hero content visible — bypass GSAP load animation on mobile */
+      .sp-hero .tp_fade_bottom { opacity: 1 !important; transform: none !important; }
+      /* Show product image stacked below hero text */
+      .sp-hero-drawing-wrap {
+        display: flex !important;
+        margin-top: 40px;
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+        overflow: hidden;
+        max-height: 260px;
+      }
+      .sp-hero-img-wrap { max-width: 280px; }
+      /* Bypass clip-path animation — show image directly on mobile */
+      .sp-hero-drawing-img { clip-path: none !important; }
+      .sp-hero-img-shape { clip-path: none !important; display: none; }
+
+      /* Sections */
       .sp-que, .sp-360, .sp-sv, .sp-cap { padding: 80px 0; }
       .sp-que-inner, .sp-sv-inner, .sp-360-inner, .sp-cap-inner { padding: 0 24px; }
-      .sp-360-steps { grid-template-columns: 1fr 1fr; }
+      .sp-que-title-right { text-align: left; }
+
+      /* 360° — vertical list, always legible */
+      .sp-360-watermark { font-size: 55vw; }
+      .sp-360-header { margin-bottom: 40px; }
+      .sp-360-steps { display: flex; flex-direction: column; gap: 0; }
+      .sp-360-step {
+        flex-direction: row; align-items: center;
+        gap: 20px; text-align: left;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+      }
+      .sp-360-step:last-child { border-bottom: none; }
+      .sp-360-step-text { opacity: 1 !important; transform: none !important; transition: none; }
+      .sp-360-line-track { display: none; }
+
+      /* Capacidades */
       .sp-cap-grid { grid-template-columns: 1fr; }
       .sp-cap-item { border-right: none !important; }
       .sp-cap-item:nth-last-child(-n+3) { border-bottom: 1px solid rgba(0,0,0,0.08); }
       .sp-cap-item:last-child { border-bottom: none; }
-      .sp-cta { padding: 80px 24px; }
+
+      /* CTA */
+      .sp-cta { padding: 80px 24px; flex-direction: column; align-items: flex-start; gap: 32px; }
+      .sp-cta-title { font-size: clamp(32px, 9vw, 48px) !important; }
     }
   </style>
 
