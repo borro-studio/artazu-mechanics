@@ -1048,28 +1048,30 @@
       .sp-cta { flex-direction: column; align-items: flex-start; }
     }
     @media (max-width: 767px) {
-      /* Hero — orden: botón > título > imagen+forma naranja > descripción */
-      .sp-hero { padding: 160px 24px 0; flex-direction: column; }
-      /* display:contents hace que los hijos sean flex items directos de .sp-hero */
-      .sp-hero-content { display: contents; }
+      /* Hero — imagen arriba-derecha, título encima */
+      .sp-hero { padding: 120px 24px 80px; flex-direction: column; position: relative; overflow: visible; }
+      .sp-hero-content { display: block; position: relative; z-index: 2; }
       .sp-hero-content > a.tp-btn {
-        order: 1;
         font-size: 10px !important; padding: 9px 16px !important;
-        margin-bottom: 28px !important; letter-spacing: 1.5px !important;
+        margin-bottom: 20px !important; letter-spacing: 1.5px !important;
       }
-      .sp-hero-title { order: 2; letter-spacing: -2px !important; margin-bottom: 20px !important; }
+      /* Título a ancho completo, encima de la imagen */
+      .sp-hero-title { letter-spacing: -2px !important; margin-bottom: 0 !important; position: relative; z-index: 2; }
+      /* Imagen: absoluta arriba-derecha, detrás del título */
       .sp-hero-drawing-wrap {
-        order: 3;
-        display: flex !important; justify-content: center;
-        width: 100%; margin: 0 0 36px; max-height: 300px;
+        position: absolute !important;
+        top: 100px; right: 0;
+        width: 56%; max-width: none; max-height: none;
+        margin: 0; z-index: 1;
+        display: flex !important; justify-content: flex-end;
         overflow: visible; margin-left: 0;
       }
-      .sp-hero .tp_fade_bottom { order: 4; opacity: 1 !important; transform: none !important; }
-      .sp-hero-img-wrap { max-width: 300px; position: relative; }
-      /* Sin clip-path en mobile — imagen y forma naranja visibles directamente */
+      .sp-hero-img-wrap { width: 100%; max-width: 100%; }
       .sp-hero-drawing-img { clip-path: none !important; }
-      .sp-hero-img-shape { clip-path: none !important; display: block !important; }
-      /* Texto descripción: más pequeño */
+      /* Forma naranja más pequeña */
+      .sp-hero-img-shape { clip-path: none !important; display: block !important; width: 42% !important; }
+      /* Descripción: empuja por debajo de la imagen */
+      .sp-hero .tp_fade_bottom { opacity: 1 !important; transform: none !important; margin-top: 72px; position: relative; z-index: 2; }
       .sp-hero-content > div p { font-size: 14px !important; line-height: 1.65 !important; }
 
       /* Sections */
