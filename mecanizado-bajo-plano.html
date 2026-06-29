@@ -921,6 +921,7 @@
 
   <style>
     .sp-br-mobile { display: none; }
+    .sp-hero-vline { display: none; }
 
     /* ── SERVICE PAGE ── */
     .sp-hero { min-height: 100vh; display: flex; flex-direction: row; align-items: center; gap: 0; padding: 140px 40px 80px; background: #ffffff; position: relative; overflow: hidden; }
@@ -1053,7 +1054,16 @@
       .sp-br-mobile { display: block; }
 
       /* Hero — botón > título > imagen (derecha) > descripción */
-      .sp-hero { padding: 120px 24px 80px; flex-direction: column; overflow: hidden; }
+      .sp-hero { padding: 120px 24px 80px; flex-direction: column; overflow: hidden; position: relative; }
+      .sp-hero-vline {
+        display: block;
+        position: absolute;
+        left: 26px;
+        top: 393px;
+        width: 1px;
+        height: 268px;
+        background: #1a1a1a;
+      }
       .sp-hero-content { display: contents; }
       .sp-hero-content > a.tp-btn {
         order: 1;
@@ -1112,6 +1122,7 @@
           ← Volver
         </a>
         <h1 class="sp-hero-title" style="font-size:clamp(52px,13vw,64px);font-weight:700;line-height:1.05;letter-spacing:-2px;color:#1a1a1a;margin-bottom:48px;">Mecanizado<br>bajo plano<br>con enfoque integral</h1>
+        <div class="sp-hero-vline" aria-hidden="true"></div>
         <div class="tp_fade_bottom" style="display:flex;flex-direction:column;gap:20px;max-width:560px;">
           <svg width="52" height="44" viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg">
             <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
