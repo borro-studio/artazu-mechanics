@@ -1233,6 +1233,39 @@
     function closeOffcanvas(){document.getElementById('offcanvasArea').classList.remove('open');document.body.style.overflow='';document.body.classList.remove('menu-open');}
     function toggleSubmenu(btn){btn.closest('.tp-offcanvas-menu-item').classList.toggle('open');}
 
+    // ─── GSAP SCROLL ANIMATIONS ───
+    gsap.registerPlugin(ScrollTrigger);
+
+    // tp_fade_bottom
+    gsap.utils.toArray('.tp_fade_bottom').forEach(el => {
+      gsap.fromTo(el, { opacity: 0, y: 30 }, {
+        opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      });
+    });
+
+    // titleBurrowing — split por palabras
+    document.querySelectorAll('.titleBurrowing').forEach(el => {
+      const words = el.innerHTML.split(/(<br\s*\/?>|\n)/).filter(Boolean);
+      el.innerHTML = words.map(w =>
+        (w.match(/<br/i)) ? w : w.split(' ').map(word =>
+          `<span class="tp-word-wrap" style="display:inline-block;overflow:hidden;vertical-align:bottom;"><span class="tp-char" style="display:inline-block;">${word}</span></span> `
+        ).join('')
+      ).join('');
+      const chars = el.querySelectorAll('.tp-char');
+      gsap.fromTo(chars, { y: '100%' }, {
+        y: '0%', duration: 0.7, ease: 'power3.out', stagger: 0.06,
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      });
+    });
+
+    // ─── CURSOR NARANJA EN SECCIONES OSCURAS ───
+    document.addEventListener('mousemove', function(e) {
+      const els = document.elementsFromPoint(e.clientX, e.clientY);
+      const isDark = els.some(el => el.matches && el.matches('.sp-que, .sp-sv, .sp-cta'));
+      document.body.classList.toggle('on-dark-section', isDark);
+    });
+
     // Salida: fade a negro, luego navega
     document.querySelectorAll('a.tp-nav-link').forEach(link => {
       link.addEventListener('click', function(e) {
