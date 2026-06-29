@@ -365,6 +365,11 @@
 
     /* ─── PORTFOLIO ─── */
     .tp-project-ptb { background: var(--tp-dark); padding-top: 80px; padding-bottom: 40px; }
+    .tp-services-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
     .tp-services-title-full {
       font-size: 8.6vw;
       font-weight: 700;
@@ -373,6 +378,7 @@
       color: #fff;
       white-space: nowrap;
     }
+    .tp-services-isotipo-mobile { display: none; }
 
     .tp-services-desc {
       font-size: 16px;
@@ -831,6 +837,10 @@
       .tp-testimonial-user-title { font-size: 40px; }
       .tp-project-ptb { padding-top: 80px; }
       .tp-project-grid-mobile { grid-template-columns: 1fr !important; gap: 48px 0 !important; }
+      .tp-services-title-full { font-size: 14vw; white-space: normal; }
+      .tp-services-isotipo-mobile { display: block; }
+      .tp-services-isotipo-desktop { display: none; }
+      .tp-services-meta p { text-align: left; }
       .tp-project-heading-row { grid-template-columns: 1fr !important; }
       .tp-project-btn { text-align: left !important; margin-top: 20px; }
       .tp-project-item { width: 100%; }
@@ -1123,14 +1133,21 @@
   ══════════════════════════════════ -->
   <section id="down" class="tp-project-ptb">
     <div class="container-1760">
-      <!-- Título full-width arriba -->
-      <h3 class="tp-services-title-full" style="margin-bottom:40px;">
-        <span class="titleBurrowing">Nuestros servicios</span>
-      </h3>
+      <!-- Título + isotipo móvil en la misma fila -->
+      <div class="tp-services-header-row" style="margin-bottom:40px;">
+        <h3 class="tp-services-title-full">
+          <span class="titleBurrowing">Nuestros servicios</span>
+        </h3>
+        <svg class="tp-services-isotipo-mobile" width="32" height="32" viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+          <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+          <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+          <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+        </svg>
+      </div>
 
-      <!-- Isotipo + descriptor alineado a la izquierda -->
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:48px;">
-        <svg width="28" height="28" viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg" class="tp_fade_bottom" style="flex-shrink:0;">
+      <!-- Isotipo + descriptor (desktop) -->
+      <div class="tp-services-meta" style="display:flex;align-items:center;gap:16px;margin-bottom:48px;">
+        <svg class="tp-services-isotipo-desktop" width="28" height="28" viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg" class="tp_fade_bottom" style="flex-shrink:0;">
           <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
           <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
           <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
