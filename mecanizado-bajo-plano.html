@@ -1052,14 +1052,14 @@
         <a href="index.html" class="tp-btn button-style-2 tp-nav-link" style="margin-bottom:60px;font-size:13px;padding:14px 28px;letter-spacing:1.5px;text-transform:uppercase;display:inline-flex;">
           ← Volver
         </a>
-        <h1 class="titleBurrowing" style="font-size:clamp(64px,8vw,120px);font-weight:700;line-height:1;letter-spacing:-4px;color:#1a1a1a;margin-bottom:48px;display:block;">Mecanizado<br>bajo plano</h1>
-        <div style="display:flex;align-items:flex-start;gap:16px;" class="tp_fade_bottom">
-          <svg width="28" height="28" viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-top:4px;">
+        <h1 class="sp-hero-title" style="font-size:clamp(64px,8vw,120px);font-weight:700;line-height:1;letter-spacing:-4px;color:#1a1a1a;margin-bottom:48px;">Mecanizado<br>bajo plano</h1>
+        <div class="tp_fade_bottom" style="display:flex;flex-direction:column;gap:20px;max-width:560px;">
+          <svg width="52" height="44" viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg">
             <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
             <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
             <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
           </svg>
-          <p style="font-size:20px;color:rgba(26,26,26,0.5);max-width:560px;line-height:1.6;">En Artazu Mechanics nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor.</p>
+          <p style="font-size:20px;color:rgba(26,26,26,0.5);line-height:1.6;">En Artazu Mechanics nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor.</p>
         </div>
       </div>
     </section>
@@ -1068,10 +1068,7 @@
     <section class="sp-que">
       <div class="sp-que-inner">
         <div>
-          <h2 class="sp-que-title">
-            <span class="titleBurrowing" style="display:block;">Un único</span>
-            <span class="titleBurrowing" style="display:block;">interlocutor</span>
-          </h2>
+          <h2 class="sp-que-title titleBurrowing">Un único interlocutor.<br>Máxima eficiencia.</h2>
         </div>
         <div>
           <ul class="sp-que-list">
@@ -1209,17 +1206,10 @@
       });
     });
 
-    // titleBurrowing — split por palabras
+    // Títulos — fade + slide simple, sin split (evita cortes)
     document.querySelectorAll('.titleBurrowing').forEach(el => {
-      const words = el.innerHTML.split(/(<br\s*\/?>|\n)/).filter(Boolean);
-      el.innerHTML = words.map(w =>
-        (w.match(/<br/i)) ? w : w.split(' ').map(word =>
-          `<span class="tp-word-wrap" style="display:inline-block;overflow:hidden;vertical-align:bottom;padding-top:0.15em;"><span class="tp-char" style="display:inline-block;">${word}</span></span> `
-        ).join('')
-      ).join('');
-      const chars = el.querySelectorAll('.tp-char');
-      gsap.fromTo(chars, { y: '110%' }, {
-        y: '0%', duration: 0.8, ease: 'power3.out', stagger: 0.07,
+      gsap.fromTo(el, { opacity: 0, y: 40 }, {
+        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 92%', once: true }
       });
     });
