@@ -564,6 +564,12 @@
       background: url('img/oficina.jpg') center center / cover no-repeat;
       will-change: transform;
     }
+    .tp-parallax-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+    }
     .tp-parallax-logo {
       position: absolute;
       inset: 0;
@@ -571,10 +577,11 @@
       align-items: center;
       justify-content: center;
       z-index: 2;
+      opacity: 0;
     }
     .tp-parallax-logo img {
       width: clamp(200px, 30vw, 420px);
-      filter: invert(1) brightness(10);
+      filter: invert(1) sepia(1) saturate(0) brightness(0.88);
       will-change: opacity;
     }
 
@@ -1668,26 +1675,26 @@
         }
       });
       gsap.fromTo(parallaxLogo,
-        { opacity: 0, scale: 0.92 },
+        { opacity: 0 },
         {
-          opacity: 1, scale: 1,
+          opacity: 1,
           ease: 'none',
           scrollTrigger: {
             trigger: '.tp-parallax-banner',
-            start: 'top 80%',
-            end: 'center center',
-            scrub: true
+            start: 'top 60%',
+            end: 'top 20%',
+            scrub: 2
           }
         }
       );
       gsap.to(parallaxLogo, {
-        opacity: 0, scale: 1.05,
+        opacity: 0,
         ease: 'none',
         scrollTrigger: {
           trigger: '.tp-parallax-banner',
-          start: 'center center',
-          end: 'bottom top',
-          scrub: true
+          start: 'bottom 60%',
+          end: 'bottom 10%',
+          scrub: 2
         }
       });
     }
