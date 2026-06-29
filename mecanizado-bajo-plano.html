@@ -63,7 +63,12 @@
       mix-blend-mode: difference;
     }
     body.cursor-hover #ball { width: 60px; height: 60px; }
-    body.menu-open #ball { background: #ee7419; mix-blend-mode: normal; }
+    body.menu-open #ball,
+    body.on-dark-section #ball { background: #ee7419; mix-blend-mode: normal; }
+    body.header-on-dark #header-sticky { background: transparent; box-shadow: none; }
+    body.header-on-dark .tp-header-1-logo img { filter: invert(1); }
+    body.header-on-dark .tp-hamburger-btn span { background: #fff; }
+    body.header-on-dark .tp-header-linkedin a { color: #fff; }
 
     /* ─── BACK TO TOP ─── */
     .back-to-top-wrapper {
@@ -1249,22 +1254,33 @@
       const words = el.innerHTML.split(/(<br\s*\/?>|\n)/).filter(Boolean);
       el.innerHTML = words.map(w =>
         (w.match(/<br/i)) ? w : w.split(' ').map(word =>
-          `<span class="tp-word-wrap" style="display:inline-block;overflow:hidden;vertical-align:bottom;"><span class="tp-char" style="display:inline-block;">${word}</span></span> `
+          `<span class="tp-word-wrap" style="display:inline-block;overflow:hidden;vertical-align:bottom;padding-top:0.15em;"><span class="tp-char" style="display:inline-block;">${word}</span></span> `
         ).join('')
       ).join('');
       const chars = el.querySelectorAll('.tp-char');
-      gsap.fromTo(chars, { y: '100%' }, {
-        y: '0%', duration: 0.7, ease: 'power3.out', stagger: 0.06,
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      gsap.fromTo(chars, { y: '110%' }, {
+        y: '0%', duration: 0.8, ease: 'power3.out', stagger: 0.07,
+        scrollTrigger: { trigger: el, start: 'top 92%', once: true }
       });
     });
+    setTimeout(() => ScrollTrigger.refresh(), 200);
 
-    // ─── CURSOR NARANJA EN SECCIONES OSCURAS ───
+    // ─── CURSOR NARANJA + HEADER EN SECCIONES OSCURAS ───
     document.addEventListener('mousemove', function(e) {
       const els = document.elementsFromPoint(e.clientX, e.clientY);
       const isDark = els.some(el => el.matches && el.matches('.sp-que, .sp-sv, .sp-cta'));
       document.body.classList.toggle('on-dark-section', isDark);
     });
+    window.addEventListener('scroll', function() {
+      const darkSections = document.querySelectorAll('.sp-que, .sp-sv, .sp-cta');
+      const headerBottom = 90;
+      let onDark = false;
+      darkSections.forEach(s => {
+        const r = s.getBoundingClientRect();
+        if (r.top < headerBottom && r.bottom > 0) onDark = true;
+      });
+      document.body.classList.toggle('header-on-dark', onDark);
+    }, { passive: true });
 
     // Salida: fade a negro, luego navega
     document.querySelectorAll('a.tp-nav-link').forEach(link => {
