@@ -927,16 +927,285 @@
 
   <div id="page-transition-overlay"></div>
 
+  <style>
+    /* ── SERVICE PAGE ── */
+    .sp-hero { min-height: 100vh; display: flex; align-items: flex-end; padding: 0 40px 100px; background: var(--tp-bg); position: relative; overflow: hidden; }
+    .sp-hero-content { max-width: 760px; position: relative; z-index: 2; }
+    .sp-hero-watermark {
+      position: absolute; right: -4vw; bottom: -6vw;
+      font-size: 28vw; font-weight: 800; letter-spacing: -10px;
+      color: rgba(0,0,0,0.04); line-height: 1; pointer-events: none;
+      user-select: none; white-space: nowrap;
+    }
+
+    /* ── QUÉ HACEMOS ── */
+    .sp-que { background: var(--tp-dark); padding: 120px 0; }
+    .sp-que-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; align-items: start; padding: 0 40px; }
+    .sp-que-title { font-size: clamp(60px, 6vw, 100px); font-weight: 700; letter-spacing: -4px; line-height: 0.95; color: var(--tp-light); }
+    .sp-que-subtitle { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #ee7419; margin-bottom: 24px; }
+    .sp-que-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
+    .sp-que-list li {
+      font-size: clamp(16px, 1.4vw, 20px); font-weight: 400;
+      color: rgba(237,237,237,0.7); padding: 22px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; gap: 16px;
+      transition: color 0.3s;
+    }
+    .sp-que-list li:hover { color: #fff; }
+    .sp-que-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #ee7419; flex-shrink: 0; }
+
+    /* ── 360 ── */
+    .sp-360 { background: var(--tp-bg); padding: 120px 0; position: relative; overflow: hidden; }
+    .sp-360-watermark {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 32vw; font-weight: 800; letter-spacing: -10px;
+      color: rgba(0,0,0,0.04); line-height: 1; pointer-events: none;
+      user-select: none; white-space: nowrap;
+    }
+    .sp-360-inner { padding: 0 40px; position: relative; z-index: 2; }
+    .sp-360-header { margin-bottom: 80px; }
+    .sp-360-label { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #ee7419; margin-bottom: 16px; }
+    .sp-360-title { font-size: clamp(48px, 5vw, 80px); font-weight: 700; letter-spacing: -3px; line-height: 1; color: var(--tp-dark); }
+    .sp-360-steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; position: relative; }
+    .sp-360-steps::before {
+      content: ''; position: absolute;
+      top: 22px; left: calc(100%/12); right: calc(100%/12);
+      height: 1px; background: rgba(0,0,0,0.15);
+    }
+    .sp-360-step { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; padding: 0 16px; }
+    .sp-360-dot {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.2); background: var(--tp-bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; letter-spacing: 0; color: #ee7419;
+      position: relative; z-index: 1; flex-shrink: 0;
+    }
+    .sp-360-step-text { font-size: 14px; font-weight: 500; color: var(--tp-dark); line-height: 1.4; }
+
+    /* ── SECTORES + VALOR ── */
+    .sp-sv { background: var(--tp-dark); padding: 120px 0; }
+    .sp-sv-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; padding: 0 40px; align-items: start; }
+    .sp-sv-col-title { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #ee7419; margin-bottom: 48px; }
+    .sp-sector-tags { display: flex; flex-wrap: wrap; gap: 12px; }
+    .sp-sector-tag {
+      border: 1px solid rgba(255,255,255,0.2); padding: 12px 24px;
+      border-radius: 100px; font-size: 14px; font-weight: 400;
+      color: rgba(255,255,255,0.7); transition: border-color 0.3s, color 0.3s;
+    }
+    .sp-sector-tag:hover { border-color: #ee7419; color: #ee7419; }
+    .sp-valor-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
+    .sp-valor-item {
+      display: flex; align-items: flex-start; gap: 24px;
+      padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .sp-valor-num { font-size: 11px; font-weight: 500; color: #ee7419; letter-spacing: 1px; flex-shrink: 0; margin-top: 3px; }
+    .sp-valor-text { font-size: 18px; font-weight: 400; color: rgba(237,237,237,0.8); line-height: 1.4; }
+
+    /* ── CAPACIDADES ── */
+    .sp-cap { background: var(--tp-bg); padding: 120px 0; }
+    .sp-cap-inner { padding: 0 40px; }
+    .sp-cap-header { display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 40px; margin-bottom: 80px; }
+    .sp-cap-title { font-size: clamp(48px, 5vw, 80px); font-weight: 700; letter-spacing: -3px; line-height: 1; color: var(--tp-dark); }
+    .sp-cap-desc { font-size: 16px; color: rgba(26,26,26,0.5); max-width: 320px; line-height: 1.6; text-align: right; }
+    .sp-cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(0,0,0,0.08); }
+    .sp-cap-item { padding: 48px 40px; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .sp-cap-item:nth-child(3n) { border-right: none; }
+    .sp-cap-item:nth-last-child(-n+3) { border-bottom: none; }
+    .sp-cap-value { font-size: clamp(36px, 3.5vw, 56px); font-weight: 700; letter-spacing: -2px; color: var(--tp-dark); line-height: 1; margin-bottom: 16px; }
+    .sp-cap-value span { color: #ee7419; }
+    .sp-cap-label { font-size: 15px; color: rgba(26,26,26,0.5); line-height: 1.5; }
+
+    /* ── CTA ── */
+    .sp-cta { background: #ee7419; padding: 120px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+    .sp-cta-title { font-size: clamp(36px, 4vw, 64px); font-weight: 700; letter-spacing: -2px; color: #fff; line-height: 1; }
+    .sp-cta-btn {
+      flex-shrink: 0; display: inline-flex; align-items: center; gap: 16px;
+      border: 1.5px solid rgba(255,255,255,0.5); border-radius: 100px;
+      padding: 22px 48px; color: #fff; font-size: 15px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase; text-decoration: none;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .sp-cta-btn:hover { background: rgba(255,255,255,0.15); border-color: #fff; }
+
+    @media (max-width: 991px) {
+      .sp-que-inner, .sp-sv-inner { grid-template-columns: 1fr; gap: 60px; }
+      .sp-360-steps { grid-template-columns: repeat(3, 1fr); gap: 40px 0; }
+      .sp-360-steps::before { display: none; }
+      .sp-cap-grid { grid-template-columns: 1fr 1fr; }
+      .sp-cap-item:nth-child(3n) { border-right: 1px solid rgba(0,0,0,0.08); }
+      .sp-cap-item:nth-child(2n) { border-right: none; }
+      .sp-cap-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .sp-cap-desc { text-align: left; }
+      .sp-cta { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 767px) {
+      .sp-hero { padding: 0 24px 80px; }
+      .sp-que, .sp-360, .sp-sv, .sp-cap { padding: 80px 0; }
+      .sp-que-inner, .sp-sv-inner, .sp-360-inner, .sp-cap-inner { padding: 0 24px; }
+      .sp-360-steps { grid-template-columns: 1fr 1fr; }
+      .sp-cap-grid { grid-template-columns: 1fr; }
+      .sp-cap-item { border-right: none !important; }
+      .sp-cap-item:nth-last-child(-n+3) { border-bottom: 1px solid rgba(0,0,0,0.08); }
+      .sp-cap-item:last-child { border-bottom: none; }
+      .sp-cta { padding: 80px 24px; }
+    }
+  </style>
+
   <div id="page-content">
-    <section style="min-height:100vh;display:flex;align-items:flex-start;padding:180px 40px 80px;">
-      <div style="max-width:1000px;">
-        <a href="index.html" class="tp-btn button-style-2 tp-nav-link" style="margin-bottom:48px;font-size:14px;padding:16px 32px;letter-spacing:1.5px;text-transform:uppercase;">
+
+    <!-- HERO -->
+    <section class="sp-hero">
+      <div class="sp-hero-watermark">360°</div>
+      <div class="sp-hero-content">
+        <a href="index.html" class="tp-btn button-style-2 tp-nav-link" style="margin-bottom:60px;font-size:13px;padding:14px 28px;letter-spacing:1.5px;text-transform:uppercase;display:inline-flex;">
           ← Volver
         </a>
-        <h1 style="font-size:clamp(64px,8vw,120px);font-weight:600;line-height:1;letter-spacing:-3px;color:#1a1a1a;margin-bottom:48px;">Mecanizado<br>bajo plano</h1>
-        <p style="font-size:20px;color:rgba(26,26,26,0.5);max-width:560px;line-height:1.6;">En Artazu Mechanics nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor.</p>
+        <h1 class="titleBurrowing" style="font-size:clamp(64px,8vw,120px);font-weight:700;line-height:1;letter-spacing:-4px;color:#1a1a1a;margin-bottom:48px;display:block;">Mecanizado<br>bajo plano</h1>
+        <p class="tp_fade_bottom" style="font-size:20px;color:rgba(26,26,26,0.5);max-width:560px;line-height:1.6;">En Artazu Mechanics nos posicionamos como partner industrial para empresas que necesitan fabricar piezas bajo plano con garantías técnicas, plazos controlados y un único interlocutor.</p>
       </div>
     </section>
+
+    <!-- QUÉ HACEMOS -->
+    <section class="sp-que">
+      <div class="sp-que-inner">
+        <div>
+          <p class="sp-que-subtitle tp_fade_bottom">Lo que ofrecemos</p>
+          <h2 class="sp-que-title">
+            <span class="titleBurrowing" style="display:block;">Qué</span>
+            <span class="titleBurrowing" style="display:block;">hacemos</span>
+          </h2>
+        </div>
+        <div>
+          <ul class="sp-que-list">
+            <li class="tp_fade_bottom">Mecanizado de piezas bajo plano</li>
+            <li class="tp_fade_bottom">Interpretación técnica y optimización de planos</li>
+            <li class="tp_fade_bottom">Fabricación de prototipos y series cortas/medias</li>
+            <li class="tp_fade_bottom">Mecanizados especiales y de alta precisión</li>
+            <li class="tp_fade_bottom">Oficina técnica propia y diseño CAD 3D</li>
+            <li class="tp_fade_bottom">Soporte en desarrollo y mejora de piezas</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- UN ÚNICO PROVEEDOR -->
+    <section class="sp-360">
+      <div class="sp-360-watermark">360°</div>
+      <div class="sp-360-inner">
+        <div class="sp-360-header">
+          <p class="sp-360-label tp_fade_bottom">Un único proveedor. Máxima eficiencia.</p>
+          <h2 class="sp-360-title">
+            <span class="titleBurrowing" style="display:block;">Nos encargamos</span>
+            <span class="titleBurrowing" style="display:block;">de todo el proceso</span>
+          </h2>
+        </div>
+        <div class="sp-360-steps">
+          <div class="sp-360-step tp_fade_bottom">
+            <div class="sp-360-dot">01</div>
+            <p class="sp-360-step-text">Aprovisionamiento de materiales</p>
+          </div>
+          <div class="sp-360-step tp_fade_bottom">
+            <div class="sp-360-dot">02</div>
+            <p class="sp-360-step-text">Mecanizado y procesos intermedios</p>
+          </div>
+          <div class="sp-360-step tp_fade_bottom">
+            <div class="sp-360-dot">03</div>
+            <p class="sp-360-step-text">Tratamientos térmicos y superficiales</p>
+          </div>
+          <div class="sp-360-step tp_fade_bottom">
+            <div class="sp-360-dot">04</div>
+            <p class="sp-360-step-text">Montaje de subconjuntos</p>
+          </div>
+          <div class="sp-360-step tp_fade_bottom">
+            <div class="sp-360-dot">05</div>
+            <p class="sp-360-step-text">Verificación y control final</p>
+          </div>
+          <div class="sp-360-step tp_fade_bottom">
+            <div class="sp-360-dot" style="background:#ee7419;border-color:#ee7419;color:#fff;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="sp-360-step-text" style="color:#ee7419;font-weight:600;">Entrega al cliente</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTORES + VALOR DIFERENCIAL -->
+    <section class="sp-sv">
+      <div class="sp-sv-inner">
+        <div>
+          <p class="sp-sv-col-title tp_fade_bottom">Sectores</p>
+          <div class="sp-sector-tags">
+            <span class="sp-sector-tag tp_fade_bottom">Aeronáutica</span>
+            <span class="sp-sector-tag tp_fade_bottom">Automoción</span>
+            <span class="sp-sector-tag tp_fade_bottom">Energía</span>
+            <span class="sp-sector-tag tp_fade_bottom">Defensa</span>
+            <span class="sp-sector-tag tp_fade_bottom">Maquinaria industrial</span>
+            <span class="sp-sector-tag tp_fade_bottom">Dispositivos médicos</span>
+            <span class="sp-sector-tag tp_fade_bottom">Ferroviario</span>
+          </div>
+        </div>
+        <div>
+          <p class="sp-sv-col-title tp_fade_bottom">Valor diferencial</p>
+          <ul class="sp-valor-list">
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">01</span><span class="sp-valor-text">Flexibilidad y cercanía</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">02</span><span class="sp-valor-text">Adaptación a cada cliente</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">03</span><span class="sp-valor-text">Alto nivel técnico</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">04</span><span class="sp-valor-text">Control de calidad riguroso</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">05</span><span class="sp-valor-text">Cumplimiento de plazos</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAPACIDADES TÉCNICAS -->
+    <section class="sp-cap">
+      <div class="sp-cap-inner">
+        <div class="sp-cap-header">
+          <h2 class="sp-cap-title">
+            <span class="titleBurrowing" style="display:block;">Capacidades</span>
+            <span class="titleBurrowing" style="display:block;">técnicas</span>
+          </h2>
+          <p class="sp-cap-desc tp_fade_bottom">Tecnología de mecanizado avanzado para los proyectos más exigentes.</p>
+        </div>
+        <div class="sp-cap-grid">
+          <div class="sp-cap-item tp_fade_bottom">
+            <div class="sp-cap-value">3<span>, 3+2</span><br>y 5 ejes</div>
+            <p class="sp-cap-label">Mecanizado multieje para geometrías complejas</p>
+          </div>
+          <div class="sp-cap-item tp_fade_bottom">
+            <div class="sp-cap-value">0,01<span>mm</span></div>
+            <p class="sp-cap-label">Alta precisión — tolerancias mínimas garantizadas</p>
+          </div>
+          <div class="sp-cap-item tp_fade_bottom">
+            <div class="sp-cap-value" style="font-size:clamp(24px,2.5vw,40px);">Aluminio,<br>acero,<br>composites</div>
+            <p class="sp-cap-label">Amplia variedad de materiales y resinas</p>
+          </div>
+          <div class="sp-cap-item tp_fade_bottom">
+            <div class="sp-cap-value">18.000<span>rpm</span></div>
+            <p class="sp-cap-label">Velocidad de husillo — MAZAK VTC-200B</p>
+          </div>
+          <div class="sp-cap-item tp_fade_bottom">
+            <div class="sp-cap-value" style="font-size:clamp(20px,2vw,32px);">CAD/<span>CAM</span></div>
+            <p class="sp-cap-label">Software avanzado para programación y simulación</p>
+          </div>
+          <div class="sp-cap-item tp_fade_bottom" style="display:flex;flex-direction:column;justify-content:space-between;">
+            <div class="sp-cap-value" style="font-size:clamp(20px,2vw,32px);">Oficina<br><span>técnica</span><br>propia</div>
+            <p class="sp-cap-label">Ingeniería y soporte desde el primer plano</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="sp-cta">
+      <h2 class="sp-cta-title">¿Tienes un proyecto<br>que fabricar?</h2>
+      <a href="index.html#contacto" class="sp-cta-btn tp-nav-link">
+        Hablemos
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </section>
+
   </div>
 
   <div class="back-to-top-wrapper" id="backToTop">
