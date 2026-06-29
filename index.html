@@ -286,21 +286,21 @@
       text-transform: uppercase; color: var(--tp-dark);
     }
     .tp-hero-down-line {
-      width: 1px; height: 48px;
-      background: var(--tp-dark);
+      width: 1px; height: 56px;
+      background: rgba(26,26,26,0.15);
       overflow: hidden;
       position: relative;
     }
     .tp-hero-down-line::after {
       content: '';
-      position: absolute; top: -100%; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.2);
-      animation: scrollLine 1.4s ease-in-out infinite;
+      position: absolute; top: -60%; left: 0;
+      width: 100%; height: 50%;
+      background: linear-gradient(to bottom, transparent, var(--tp-dark), transparent);
+      animation: scrollLine 1.6s cubic-bezier(0.4,0,0.6,1) infinite;
     }
     @keyframes scrollLine {
-      0%   { top: -100%; }
-      100% { top: 100%; }
+      0%   { top: -60%; }
+      100% { top: 160%; }
     }
 
     /* Forma angular naranja */
