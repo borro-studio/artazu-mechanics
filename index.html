@@ -435,12 +435,18 @@
       letter-spacing: -4px;
       color: var(--tp-dark);
     }
-    .tp-maquinaria-count {
-      font-size: 13px;
-      color: rgba(0,0,0,0.3);
-      letter-spacing: 2px;
-      text-transform: uppercase;
+    .tp-maquinaria-count { display: none; }
+    .tp-maquinaria-desc {
+      list-style: none;
+      text-align: right;
       align-self: flex-end;
+      max-width: 340px;
+    }
+    .tp-maquinaria-desc li {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(26,26,26,0.55);
+      line-height: 1.7;
     }
     .tp-maquinaria-grid {
       display: flex;
@@ -1109,10 +1115,14 @@
   <section class="tp-maquinaria-ptb" id="maquinaria">
     <div class="tp-maquinaria-header">
       <div>
-        <p class="tp-maquinaria-label">Maquinaria</p>
         <h2 class="tp-maquinaria-title">Capacidades<br>técnicas</h2>
       </div>
-      <span class="tp-maquinaria-count">02 máquinas</span>
+      <ul class="tp-maquinaria-desc">
+        <li>Mecanizado en 3, 3+2 y 5 ejes.</li>
+        <li>Alta precisión (tolerancias hasta 0,01 mm).</li>
+        <li>Materiales: aluminio, resinas, composites, acero.</li>
+        <li>Software CAD/CAM.</li>
+      </ul>
     </div>
 
     <div class="tp-maquinaria-grid">
