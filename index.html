@@ -63,7 +63,8 @@
       mix-blend-mode: difference;
     }
     body.cursor-hover #ball { width: 60px; height: 60px; }
-    body.menu-open #ball { background: #ee7419; mix-blend-mode: normal; }
+    body.menu-open #ball,
+    body.on-dark-section #ball { background: #ee7419; mix-blend-mode: normal; }
 
     /* ─── BACK TO TOP ─── */
     .back-to-top-wrapper {
@@ -1689,6 +1690,13 @@
         once: true,
         onEnter: () => animateCount(el, target, 1200)
       });
+    });
+
+    // ─── CURSOR NARANJA EN SECCIONES OSCURAS ───
+    document.addEventListener('mousemove', function(e) {
+      const els = document.elementsFromPoint(e.clientX, e.clientY);
+      const isDark = els.some(el => el.matches && el.matches('.tp-hero-area, .tp-project-ptb, .tp-contact-ptb, .tp-parallax-banner'));
+      document.body.classList.toggle('on-dark-section', isDark);
     });
 
     // ─── PARALLAX BANNER ───
