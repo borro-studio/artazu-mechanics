@@ -407,12 +407,19 @@
     }
 
     /* ─── MAQUINARIA ─── */
+    /* ── MAQUINARIA REDISEÑO ── */
     .tp-maquinaria-ptb {
-      background: var(--tp-bg);
+      background: var(--tp-dark);
       padding: 120px 0;
     }
     .tp-maquinaria-header {
+      padding: 0 40px;
       margin-bottom: 80px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 40px;
     }
     .tp-maquinaria-label {
       font-size: 11px;
@@ -422,90 +429,115 @@
       margin-bottom: 16px;
     }
     .tp-maquinaria-title {
-      font-size: 90px;
+      font-size: clamp(52px, 7vw, 100px);
       font-weight: 600;
-      line-height: 0.9;
-      letter-spacing: -5px;
-      color: var(--tp-dark);
+      line-height: 0.95;
+      letter-spacing: -4px;
+      color: var(--tp-light);
+    }
+    .tp-maquinaria-count {
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      align-self: flex-end;
     }
     .tp-maquinaria-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 60px;
+      display: flex;
+      flex-direction: column;
     }
     .tp-maquinaria-item {
-      border-top: 0.5px solid rgba(0,0,0,0.12);
-      padding-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      min-height: 480px;
       position: relative;
-      overflow: visible;
     }
+    .tp-maquinaria-item:nth-child(even) .tp-maquinaria-img { order: 2; }
+    .tp-maquinaria-item:nth-child(even) .tp-maquinaria-info { order: 1; border-right: 1px solid rgba(255,255,255,0.08); border-left: none; }
     .tp-maquinaria-img {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 320px;
-      margin-bottom: 32px;
+      padding: 60px 40px;
+      background: rgba(255,255,255,0.02);
     }
     .tp-maquinaria-img img {
-      max-height: 100%;
+      max-height: 320px;
       max-width: 100%;
       object-fit: contain;
-      mix-blend-mode: multiply;
+      mix-blend-mode: screen;
+      filter: brightness(1.1);
     }
+    .tp-maquinaria-info {
+      padding: 60px 48px;
+      border-left: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .tp-maquinaria-info-top {}
     .tp-maquinaria-name {
-      font-size: 22px;
+      font-size: clamp(32px, 3.5vw, 52px);
       font-weight: 600;
-      color: #ee7419;
-      letter-spacing: 1px;
+      color: var(--tp-light);
+      letter-spacing: -1.5px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .tp-maquinaria-sub {
+      font-size: 12px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 28px;
+      color: #ee7419;
+      margin-bottom: 48px;
     }
     .tp-maquinaria-specs {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 0;
-      border-top: 0.5px solid rgba(0,0,0,0.12);
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
     .tp-spec-col {
-      flex: 1;
-      min-width: 0;
-      padding: 20px 16px;
-      border-right: 0.5px solid rgba(0,0,0,0.12);
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-right: 1px solid rgba(255,255,255,0.08);
+      padding-right: 24px;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
-    .tp-spec-col:last-child { border-right: none; }
+    .tp-spec-col:nth-child(even) { border-right: none; padding-left: 24px; padding-right: 0; }
+    .tp-spec-col:nth-last-child(-n+2) { border-bottom: none; }
     .tp-spec-label {
       font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 1px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: rgba(26,26,26,0.4);
+      color: rgba(255,255,255,0.3);
       line-height: 1.3;
     }
     .tp-spec-value {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--tp-dark);
-      line-height: 1.3;
-      word-break: break-word;
+      font-size: clamp(22px, 2.5vw, 36px);
+      font-weight: 600;
+      color: var(--tp-light);
+      letter-spacing: -1px;
+      line-height: 1;
     }
+    .tp-spec-col.full { grid-column: 1/-1; border-right: none; padding-left: 0; }
+    .tp-spec-col.full .tp-spec-value { font-size: 20px; }
     @media (max-width: 767px) {
       .tp-maquinaria-ptb { padding: 60px 0 80px; }
-      .tp-maquinaria-header { text-align: center; margin-bottom: 40px; }
+      .tp-maquinaria-header { flex-direction: column; align-items: flex-start; gap: 12px; padding: 0 24px 32px; margin-bottom: 0; }
       .tp-maquinaria-title { font-size: 48px; letter-spacing: -2px; }
-      .tp-maquinaria-grid { grid-template-columns: 1fr; gap: 48px 0; max-width: 320px; margin-left: auto; margin-right: auto; }
-      .tp-maquinaria-item { padding: 20px 16px 16px; border-top: none; overflow: hidden; }
-      .tp-maquinaria-img { height: 220px; align-items: center; margin-bottom: 16px; }
-      .tp-maquinaria-img img { max-height: 200px; max-width: 100%; }
-      .tp-maquinaria-name { font-size: 16px; margin-bottom: 12px; text-align: center; }
-      .tp-maquinaria-specs { display: grid; grid-template-columns: 1fr 1fr; border-top: 0.5px solid rgba(0,0,0,0.12); }
-      .tp-spec-col { flex: unset; min-width: unset; padding: 14px 12px; text-align: center; border-right: 0.5px solid rgba(0,0,0,0.12); border-bottom: 0.5px solid rgba(0,0,0,0.12); }
-      .tp-spec-col:nth-child(even) { border-right: none; }
-      .tp-spec-col:nth-child(3), .tp-spec-col:nth-child(4) { border-bottom: none; }
-      .tp-spec-col:nth-child(5) { grid-column: 1 / -1; border-right: none; border-bottom: none; }
-      .tp-spec-value { font-size: 14px; }
-      .tp-spec-label { font-size: 10px; }
+      .tp-maquinaria-item { grid-template-columns: 1fr; min-height: unset; }
+      .tp-maquinaria-item:nth-child(even) .tp-maquinaria-img { order: 0; }
+      .tp-maquinaria-item:nth-child(even) .tp-maquinaria-info { order: 1; border-right: none; border-left: none; }
+      .tp-maquinaria-img { height: 260px; padding: 32px 24px; }
+      .tp-maquinaria-info { padding: 32px 24px; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); }
+      .tp-maquinaria-name { font-size: 28px; }
+      .tp-spec-value { font-size: 24px; }
+      .tp-maquinaria-count { display: none; }
     }
 
     /* ─── ABOUT ─── */
@@ -1075,62 +1107,66 @@
   <!-- ══════════════════════════════════
        MAQUINARIA
   ══════════════════════════════════ -->
-  <section class="tp-maquinaria-ptb">
-    <div class="container-1760">
-
-      <div class="tp-maquinaria-header">
-        <h2 class="tp-section-title">
-          <span style="display:block;">Capacidades técnicas</span>
-          <span style="display:block;">y maquinaria</span>
-        </h2>
+  <section class="tp-maquinaria-ptb" id="maquinaria">
+    <div class="tp-maquinaria-header">
+      <div>
+        <p class="tp-maquinaria-label">Maquinaria</p>
+        <h2 class="tp-maquinaria-title">Capacidades<br>técnicas</h2>
       </div>
+      <span class="tp-maquinaria-count">02 máquinas</span>
+    </div>
 
-      <div class="tp-maquinaria-grid">
+    <div class="tp-maquinaria-grid">
 
-        <!-- DMU 100 T -->
-        <div class="tp-maquinaria-item">
-          <div class="tp-maquinaria-img">
-            <img src="img/maquinas/dmu-100t.png" alt="DMU 100 T">
+      <!-- DMU 100 T -->
+      <div class="tp-maquinaria-item">
+        <div class="tp-maquinaria-img">
+          <img src="img/maquinas/dmu-100t.png" alt="DMU 100 T">
+        </div>
+        <div class="tp-maquinaria-info">
+          <div class="tp-maquinaria-info-top">
+            <h3 class="tp-maquinaria-name">DMU 100 T</h3>
+            <p class="tp-maquinaria-sub">Centro de mecanizado · 5 ejes</p>
           </div>
-          <h3 class="tp-maquinaria-name">DMU 100 T</h3>
           <div class="tp-maquinaria-specs">
             <div class="tp-spec-col">
-              <span class="tp-spec-label">Nº maquinas</span>
-              <span class="tp-spec-value">1</span>
-            </div>
-            <div class="tp-spec-col">
-              <span class="tp-spec-label">Recorridos (X Y Z)</span>
-              <span class="tp-spec-value">1000 × 700 × 1000</span>
+              <span class="tp-spec-label">Nº máquinas</span>
+              <span class="tp-spec-value" data-count="1">1</span>
             </div>
             <div class="tp-spec-col">
               <span class="tp-spec-label">Ejes</span>
-              <span class="tp-spec-value">5</span>
+              <span class="tp-spec-value" data-count="5">5</span>
             </div>
             <div class="tp-spec-col">
               <span class="tp-spec-label">RPM</span>
-              <span class="tp-spec-value">18.000</span>
+              <span class="tp-spec-value" data-count="18000">18.000</span>
             </div>
             <div class="tp-spec-col">
+              <span class="tp-spec-label">Recorrido X</span>
+              <span class="tp-spec-value" data-count="1000">1000<small style="font-size:0.4em;opacity:0.5;letter-spacing:0">mm</small></span>
+            </div>
+            <div class="tp-spec-col full">
               <span class="tp-spec-label">Materiales</span>
-              <span class="tp-spec-value">Acero<br>Aluminio</span>
+              <span class="tp-spec-value">Acero · Aluminio</span>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- MAZAK VTC-200B -->
-        <div class="tp-maquinaria-item">
-          <div class="tp-maquinaria-img">
-            <img src="img/maquinas/mazak-vtc200b.png" alt="MAZAK VTC-200B">
+      <!-- MAZAK VTC-200B -->
+      <div class="tp-maquinaria-item">
+        <div class="tp-maquinaria-img">
+          <img src="img/maquinas/mazak-vtc200b.png" alt="MAZAK VTC-200B">
+        </div>
+        <div class="tp-maquinaria-info">
+          <div class="tp-maquinaria-info-top">
+            <h3 class="tp-maquinaria-name">MAZAK VTC-200B</h3>
+            <p class="tp-maquinaria-sub">Centro de mecanizado · 3+1 ejes</p>
           </div>
-          <h3 class="tp-maquinaria-name">MAZAK VTC-200B</h3>
           <div class="tp-maquinaria-specs">
             <div class="tp-spec-col">
-              <span class="tp-spec-label">Nº maquinas</span>
-              <span class="tp-spec-value">2</span>
-            </div>
-            <div class="tp-spec-col">
-              <span class="tp-spec-label">Recorridos (X Y Z)</span>
-              <span class="tp-spec-value">1120 × 510 × 510</span>
+              <span class="tp-spec-label">Nº máquinas</span>
+              <span class="tp-spec-value" data-count="2">2</span>
             </div>
             <div class="tp-spec-col">
               <span class="tp-spec-label">Ejes</span>
@@ -1138,16 +1174,20 @@
             </div>
             <div class="tp-spec-col">
               <span class="tp-spec-label">RPM</span>
-              <span class="tp-spec-value">10.000</span>
+              <span class="tp-spec-value" data-count="10000">10.000</span>
             </div>
             <div class="tp-spec-col">
+              <span class="tp-spec-label">Recorrido X</span>
+              <span class="tp-spec-value" data-count="1120">1120<small style="font-size:0.4em;opacity:0.5;letter-spacing:0">mm</small></span>
+            </div>
+            <div class="tp-spec-col full">
               <span class="tp-spec-label">Materiales</span>
-              <span class="tp-spec-value">Acero<br>Aluminio</span>
+              <span class="tp-spec-value">Acero · Aluminio</span>
             </div>
           </div>
         </div>
-
       </div>
+
     </div>
   </section>
 
@@ -1535,49 +1575,26 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // ─── MAQUINARIA CARD — SVG orange border drawn once on scroll ───
-    function initMaqCards() {
-      const svgNS = 'http://www.w3.org/2000/svg';
-      document.querySelectorAll('.tp-maquinaria-item').forEach(item => {
-        const w = item.offsetWidth;
-        const h = item.offsetHeight;
-        const r = 14;
-        const perim = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 2 * Math.PI * r;
-
-        const svg = document.createElementNS(svgNS, 'svg');
-        svg.setAttribute('width', w);
-        svg.setAttribute('height', h);
-        svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;overflow:visible;z-index:1;';
-
-        const borderRect = document.createElementNS(svgNS, 'rect');
-        borderRect.setAttribute('x', '1');
-        borderRect.setAttribute('y', '1');
-        borderRect.setAttribute('width', w - 2);
-        borderRect.setAttribute('height', h - 2);
-        borderRect.setAttribute('rx', r);
-        borderRect.setAttribute('fill', 'none');
-        borderRect.setAttribute('stroke', '#ee7419');
-        borderRect.setAttribute('stroke-width', '1.5');
-        borderRect.setAttribute('stroke-dasharray', perim);
-        borderRect.setAttribute('stroke-dashoffset', perim);
-
-        svg.appendChild(borderRect);
-        item.appendChild(svg);
-
-        gsap.to(borderRect, {
-          strokeDashoffset: 0,
-          duration: 1.4,
-          ease: 'power2.inOut',
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 88%',
-            toggleActions: 'play none none none',
-          }
-        });
-      });
+    // ─── MAQUINARIA — número counter animado ───
+    function animateCount(el, target, duration) {
+      const start = performance.now();
+      const update = (now) => {
+        const t = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        el.childNodes[0].textContent = Math.round(ease * target).toLocaleString('es-ES');
+        if (t < 1) requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
     }
-
-    window.addEventListener('load', initMaqCards);
+    document.querySelectorAll('.tp-spec-value[data-count]').forEach(el => {
+      const target = parseInt(el.dataset.count);
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 90%',
+        once: true,
+        onEnter: () => animateCount(el, target, 1200)
+      });
+    });
 
     // ─── TRANSICIÓN DE PÁGINA ───
     document.querySelectorAll('a.tp-nav-link').forEach(link => {
