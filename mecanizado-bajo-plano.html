@@ -1048,30 +1048,25 @@
       .sp-cta { flex-direction: column; align-items: flex-start; }
     }
     @media (max-width: 767px) {
-      /* Hero — imagen arriba-derecha, título encima */
-      .sp-hero { padding: 120px 24px 80px; flex-direction: column; position: relative; overflow: visible; }
-      .sp-hero-content { display: block; position: relative; z-index: 2; }
+      /* Hero — botón > título > imagen (derecha) > descripción */
+      .sp-hero { padding: 120px 24px 80px; flex-direction: column; overflow: visible; }
+      .sp-hero-content { display: contents; }
       .sp-hero-content > a.tp-btn {
+        order: 1;
         font-size: 10px !important; padding: 9px 16px !important;
-        margin-bottom: 210px !important; letter-spacing: 1.5px !important;
+        margin-bottom: 24px !important; letter-spacing: 1.5px !important;
       }
-      /* Título a ancho completo, encima de la imagen */
-      .sp-hero-title { letter-spacing: -2px !important; margin-bottom: 0 !important; position: relative; z-index: 2; }
-      /* Imagen: absoluta arriba-derecha, detrás del título */
+      .sp-hero-title { order: 2; letter-spacing: -2px !important; margin-bottom: 0 !important; }
       .sp-hero-drawing-wrap {
-        position: absolute !important;
-        top: 90px; right: 0;
-        width: 72%; max-width: none; max-height: none;
-        margin: 0; z-index: 1;
+        order: 3;
         display: flex !important; justify-content: flex-end;
-        overflow: visible; margin-left: 0;
+        width: 100%; margin: 28px 0 32px;
+        max-height: none; overflow: visible; margin-left: 0;
       }
-      .sp-hero-img-wrap { width: 100%; max-width: 100%; }
+      .sp-hero-img-wrap { width: 72%; max-width: 290px; }
       .sp-hero-drawing-img { clip-path: none !important; }
-      /* Forma naranja más pequeña */
       .sp-hero-img-shape { clip-path: none !important; display: block !important; width: 42% !important; }
-      /* Descripción: empuja por debajo de la imagen */
-      .sp-hero .tp_fade_bottom { opacity: 1 !important; transform: none !important; margin-top: 72px; position: relative; z-index: 2; }
+      .sp-hero .tp_fade_bottom { order: 4; opacity: 1 !important; transform: none !important; }
       .sp-hero-content > div p { font-size: 14px !important; line-height: 1.65 !important; }
 
       /* Sections */
