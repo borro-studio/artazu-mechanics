@@ -925,7 +925,9 @@
     .sp-hero-content { flex: 0 0 52%; position: relative; z-index: 2; }
     .sp-hero-drawing-wrap { flex: 1; display: flex; align-items: center; justify-content: flex-end; position: relative; z-index: 2; padding-left: 40px; }
     .sp-hero-drawing-wrap { flex: 1; display: flex; align-items: center; justify-content: flex-end; position: relative; z-index: 2; padding-left: 60px; }
-    .sp-hero-drawing-img { width: 100%; max-width: 540px; height: auto; clip-path: inset(100% 0 0 0); filter: drop-shadow(0 20px 60px rgba(0,0,0,0.12)); }
+    .sp-hero-img-wrap { position: relative; width: 100%; max-width: 560px; }
+    .sp-hero-drawing-img { width: 100%; height: auto; position: relative; z-index: 2; mix-blend-mode: multiply; clip-path: inset(0 100% 0 0); }
+    .sp-hero-img-shape { position: absolute; top: 50%; right: -4%; transform: translateY(-50%) rotate(-15deg); width: 52%; z-index: 1; mix-blend-mode: multiply; clip-path: inset(0 0 100% 0); pointer-events: none; }
       position: absolute; right: -4vw; bottom: -6vw;
       font-size: 28vw; font-weight: 800; letter-spacing: -10px;
       color: rgba(0,0,0,0.04); line-height: 1; pointer-events: none;
@@ -1075,7 +1077,12 @@
       <!-- SVG DRAWING -->
       <!-- PIEZA PNG -->
       <div class="sp-hero-drawing-wrap" id="heroDrawing">
-        <img src="img/pieza-mecanizada.png" alt="Pieza mecanizada" class="sp-hero-drawing-img" id="heroDrawingImg">
+        <div class="sp-hero-img-wrap">
+          <svg class="sp-hero-img-shape" id="heroImgShape" viewBox="0 0 340 620" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="80,0 340,0 340,520 260,620 0,620 0,80" fill="#ee7419"/>
+          </svg>
+          <img src="img/pieza-mecanizada.png" alt="Pieza mecanizada" class="sp-hero-drawing-img" id="heroDrawingImg">
+        </div>
       </div>
     </section>
 
@@ -1205,12 +1212,18 @@
     function closeOffcanvas(){document.getElementById('offcanvasArea').classList.remove('open');document.body.style.overflow='';document.body.classList.remove('menu-open');}
     function toggleSubmenu(btn){btn.closest('.tp-offcanvas-menu-item').classList.toggle('open');}
 
-    // ─── IMAGEN PIEZA — reveal de abajo a arriba ───
-    gsap.to('#heroDrawingImg', {
-      clipPath: 'inset(0% 0 0% 0)',
+    // ─── IMAGEN PIEZA + FORMA NARANJA ───
+    gsap.to('#heroImgShape', {
+      clipPath: 'inset(0 0 0% 0)',
       duration: 1.2,
       ease: 'power3.inOut',
-      delay: 0.3
+      delay: 0.2
+    });
+    gsap.to('#heroDrawingImg', {
+      clipPath: 'inset(0 0% 0 0)',
+      duration: 1.2,
+      ease: 'power3.inOut',
+      delay: 0.4
     });
 
 
