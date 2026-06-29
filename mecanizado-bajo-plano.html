@@ -1250,12 +1250,14 @@
       if (!svg) return;
       const paths = svg.querySelectorAll('path, circle');
 
-      // Preparar cada path: stroke visible, fill oculto al inicio
+      // Guardar fill original y preparar stroke para animación
       paths.forEach(p => {
         const isCls1 = p.classList.contains('cls-1');
-        p.style.fill = isCls1 ? '#fff' : '#1a1a1a';
+        const originalFill = isCls1 ? '#ffffff' : '#000000';
+        p.dataset.origFill = originalFill;
+        p.style.fill = originalFill;
         p.style.fillOpacity = '0';
-        p.style.stroke = isCls1 ? '#fff' : '#1a1a1a';
+        p.style.stroke = originalFill;
         p.style.strokeWidth = '1.5';
 
         let len;
@@ -1264,10 +1266,9 @@
         p.style.strokeDashoffset = len;
       });
 
-      // Revelar el SVG
       svg.style.opacity = '1';
 
-      // Stagger: dibujar líneas, luego rellenar
+      // Fase 1: dibujar trazos
       gsap.to(paths, {
         strokeDashoffset: 0,
         duration: 0.25,
@@ -1275,11 +1276,16 @@
         ease: 'none',
         delay: 0.3,
         onComplete: function() {
+          // Fase 2: rellenar y quitar stroke → resultado = SVG original
           gsap.to(paths, {
             fillOpacity: 1,
-            duration: 0.6,
-            stagger: { each: 0.008, from: 'random' },
-            ease: 'power2.inOut'
+            strokeOpacity: 0,
+            duration: 0.5,
+            stagger: { each: 0.006, from: 'random' },
+            ease: 'power2.inOut',
+            onComplete: function() {
+              paths.forEach(p => { p.style.stroke = 'none'; p.style.strokeOpacity = ''; });
+            }
           });
         }
       });
