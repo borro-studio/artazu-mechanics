@@ -820,23 +820,10 @@
   </style>
 </head>
 
-  <style>
-    @keyframes pageReveal { from { opacity:0; } to { opacity:1; } }
-    #page-content { animation: pageReveal 0.7s ease forwards; }
-    #page-transition-overlay {
-      position: fixed; inset: 0; z-index: 999998;
-      background: #1a1a1a;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-  </style>
 <body>
 
   <!-- Custom Cursor -->
   <div id="magic-cursor"><div id="ball"></div></div>
-
-  <!-- Back to top -->
-  <div id="page-transition-overlay"></div>
 
   <div class="back-to-top-wrapper" id="backToTop">
     <button class="back-to-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
