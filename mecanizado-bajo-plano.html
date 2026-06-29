@@ -1048,34 +1048,29 @@
       .sp-cta { flex-direction: column; align-items: flex-start; }
     }
     @media (max-width: 767px) {
-      /* Hero */
+      /* Hero — orden: botón > título > imagen+forma naranja > descripción */
       .sp-hero { padding: 160px 24px 0; flex-direction: column; }
-      .sp-hero-title { letter-spacing: -2px !important; }
-      /* Botón volver: más pequeño */
+      /* display:contents hace que los hijos sean flex items directos de .sp-hero */
+      .sp-hero-content { display: contents; }
       .sp-hero-content > a.tp-btn {
-        font-size: 10px !important;
-        padding: 9px 16px !important;
-        margin-bottom: 40px !important;
-        letter-spacing: 1.5px !important;
+        order: 1;
+        font-size: 10px !important; padding: 9px 16px !important;
+        margin-bottom: 28px !important; letter-spacing: 1.5px !important;
       }
+      .sp-hero-title { order: 2; letter-spacing: -2px !important; margin-bottom: 20px !important; }
+      .sp-hero-drawing-wrap {
+        order: 3;
+        display: flex !important; justify-content: center;
+        width: 100%; margin: 0 0 36px; max-height: 300px;
+        overflow: visible; margin-left: 0;
+      }
+      .sp-hero .tp_fade_bottom { order: 4; opacity: 1 !important; transform: none !important; }
+      .sp-hero-img-wrap { max-width: 300px; position: relative; }
+      /* Sin clip-path en mobile — imagen y forma naranja visibles directamente */
+      .sp-hero-drawing-img { clip-path: none !important; }
+      .sp-hero-img-shape { clip-path: none !important; display: block !important; }
       /* Texto descripción: más pequeño */
       .sp-hero-content > div p { font-size: 14px !important; line-height: 1.65 !important; }
-      /* Force hero content visible — bypass GSAP load animation on mobile */
-      .sp-hero .tp_fade_bottom { opacity: 1 !important; transform: none !important; }
-      /* Show product image stacked below hero text */
-      .sp-hero-drawing-wrap {
-        display: flex !important;
-        margin-top: 40px;
-        margin-left: 0;
-        width: 100%;
-        justify-content: center;
-        overflow: hidden;
-        max-height: 260px;
-      }
-      .sp-hero-img-wrap { max-width: 280px; }
-      /* Bypass clip-path animation — show image directly on mobile */
-      .sp-hero-drawing-img { clip-path: none !important; }
-      .sp-hero-img-shape { clip-path: none !important; display: none; }
 
       /* Sections */
       .sp-que, .sp-360, .sp-sv, .sp-cap { padding: 80px 0; }
