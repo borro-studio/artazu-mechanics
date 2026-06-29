@@ -978,19 +978,18 @@
       height: 1px; background: rgba(0,0,0,0.15);
     }
     .sp-360-step { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; padding: 0 16px; }
-    .sp-360-dot { opacity: 0.25; transition: opacity 0.3s, background 0.4s, border-color 0.4s, color 0.4s;
-    }
-    .sp-360-dot.active {  opacity: 1; background: #ee7419; border-color: #ee7419; color: #fff; }
-    .sp-360-step-text { opacity: 0; transform: translateY(10px); transition: opacity 0.4s, transform 0.4s; }
-    .sp-360-step-text.active { opacity: 1; transform: translateY(0); }
-    .sp-360-dot-orig {
+    .sp-360-dot {
       width: 44px; height: 44px; border-radius: 50%;
-      border: 1px solid rgba(0,0,0,0.2); background: var(--tp-bg);
+      border: 1px solid rgba(0,0,0,0.15); background: var(--tp-bg);
       display: flex; align-items: center; justify-content: center;
       font-size: 11px; font-weight: 600; letter-spacing: 0; color: #ee7419;
       position: relative; z-index: 1; flex-shrink: 0;
+      opacity: 0.2; transition: opacity 0.4s, border-color 0.4s, box-shadow 0.4s;
     }
-    .sp-360-step-text { font-size: 14px; font-weight: 500; color: var(--tp-dark); line-height: 1.4; }
+    .sp-360-dot.active { opacity: 1; border-color: #ee7419; box-shadow: 0 0 0 3px rgba(238,116,25,0.15); }
+    .sp-360-step-text { font-size: 14px; font-weight: 500; color: var(--tp-dark); line-height: 1.4;
+      opacity: 0; transform: translateY(8px); transition: opacity 0.4s, transform 0.4s; }
+    .sp-360-step-text.active { opacity: 1; transform: translateY(0); }
 
     /* ── SECTORES + VALOR ── */
     .sp-sv { background: var(--tp-dark); padding: 120px 0; }
@@ -1255,34 +1254,50 @@
     });
     setTimeout(() => ScrollTrigger.refresh(), 200);
 
-    // ─── PROCESO — animación punto a punto ───
+    // ─── PROCESO — animación punto a punto en loop ───
     (function() {
       const steps = document.querySelectorAll('#processSteps .sp-360-step');
       const line = document.getElementById('processLine');
       if (!steps.length || !line) return;
 
       const total = steps.length;
+      const stepDelay = 420;   // ms entre pasos
+      const pauseEnd = 1200;   // pausa al llegar al último antes de reiniciar
+      let timer = null;
+      let started = false;
+
+      function resetAll() {
+        steps.forEach(step => {
+          step.querySelector('.sp-360-dot').classList.remove('active');
+          step.querySelector('.sp-360-step-text').classList.remove('active');
+        });
+        line.style.transition = 'none';
+        line.style.width = '0%';
+      }
+
+      function runSequence() {
+        resetAll();
+        steps.forEach((step, i) => {
+          timer = setTimeout(() => {
+            step.querySelector('.sp-360-dot').classList.add('active');
+            step.querySelector('.sp-360-step-text').classList.add('active');
+            const pct = (i / (total - 1)) * 100;
+            line.style.transition = 'width 0.38s ease';
+            line.style.width = pct + '%';
+            // Al terminar, esperar y reiniciar
+            if (i === total - 1) {
+              setTimeout(runSequence, pauseEnd);
+            }
+          }, i * stepDelay);
+        });
+      }
 
       ScrollTrigger.create({
         trigger: '#processSteps',
-        start: 'top 75%',
+        start: 'top 80%',
         once: true,
         onEnter: function() {
-          steps.forEach((step, i) => {
-            const dot = step.querySelector('.sp-360-dot');
-            const text = step.querySelector('.sp-360-step-text');
-            const delay = i * 0.38;
-
-            // Activar dot
-            setTimeout(() => {
-              if (dot) dot.classList.add('active');
-              if (text) text.classList.add('active');
-              // Avanzar línea
-              const pct = ((i) / (total - 1)) * 100;
-              line.style.transition = 'width 0.35s ease';
-              line.style.width = pct + '%';
-            }, delay * 1000 + 200);
-          });
+          if (!started) { started = true; runSequence(); }
         }
       });
     })();
