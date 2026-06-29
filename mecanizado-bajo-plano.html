@@ -1226,6 +1226,14 @@
     function toggleSubmenu(btn){btn.closest('.tp-offcanvas-menu-item').classList.toggle('open');}
 
     // ─── GSAP SCROLL ANIMATIONS ───
+    // Fallback: si GSAP no carga, mostrar todo igualmente
+    setTimeout(() => {
+      document.querySelectorAll('.tp_fade_bottom, .tp-char').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }, 1500);
+
     gsap.registerPlugin(ScrollTrigger);
 
     // tp_fade_bottom
