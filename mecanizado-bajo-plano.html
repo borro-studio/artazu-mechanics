@@ -941,6 +941,8 @@
     .sp-que { background: var(--tp-dark); padding: 120px 0; }
     .sp-que-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; align-items: start; padding: 0 40px; }
     .sp-que-title { font-size: clamp(60px, 6vw, 100px); font-weight: 700; letter-spacing: -4px; line-height: 0.95; color: var(--tp-light); }
+    .sp-que-title-row { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 48px); }
+    .sp-que-title-right { text-align: right; }
     .sp-que-subtitle { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #ee7419; margin-bottom: 24px; }
     .sp-que-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
     .sp-que-list li {
@@ -1081,7 +1083,10 @@
     <section class="sp-que">
       <div class="sp-que-inner">
         <div>
-          <h2 class="sp-que-title titleBurrowing">Un único interlocutor.<br>Máxima eficiencia.</h2>
+          <div class="sp-que-title-row">
+            <h2 class="sp-que-title titleBurrowing">Un único<br>proveedor.</h2>
+            <h2 class="sp-que-title titleBurrowing sp-que-title-right">Máxima<br>eficiencia.</h2>
+          </div>
         </div>
         <div>
           <ul class="sp-que-list">
