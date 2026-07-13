@@ -940,23 +940,60 @@
       .sp-hero-content { flex: unset; }
     }
 
-    /* ── QUÉ HACEMOS ── */
-    .sp-que { background: var(--tp-dark); padding: 60px 0; min-height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-    .sp-que-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; align-items: start; padding: 0 40px; }
-    .sp-que-title { font-size: clamp(60px, 6vw, 100px); font-weight: 700; letter-spacing: -4px; line-height: 0.95; color: var(--tp-light); }
-    .sp-que-title-row { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 48px); }
-    .sp-que-title-right { text-align: right; }
-    .sp-que-subtitle { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #ee7419; margin-bottom: 24px; }
-    .sp-que-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
-    .sp-que-list li {
-      font-size: clamp(16px, 1.4vw, 20px); font-weight: 400;
-      color: rgba(237,237,237,0.7); padding: 22px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      display: flex; align-items: center; gap: 16px;
-      transition: color 0.3s;
+    /* ── APLICACIONES SPLIT ── */
+    .sp-que { background: var(--tp-dark); min-height: 100vh; box-sizing: border-box; }
+    .sp-apps-split { display: flex; min-height: 100vh; }
+    .sp-apps-left {
+      width: 44%; flex-shrink: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 60px 56px 60px 40px;
     }
-    .sp-que-list li:hover { color: #fff; }
-    .sp-que-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #ee7419; flex-shrink: 0; }
+    .sp-apps-eyebrow {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(237,237,237,0.3); margin-bottom: 52px;
+    }
+    .sp-apps-list { list-style: none; }
+    .sp-apps-item {
+      display: flex; align-items: center; gap: 20px;
+      padding: 24px 0 24px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      cursor: pointer; position: relative;
+    }
+    .sp-apps-item:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .sp-apps-item::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0; width: 2px;
+      background: #ee7419;
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .sp-apps-item.is-active::before { transform: scaleY(1); }
+    .sp-apps-num {
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+      color: rgba(237,237,237,0.2); min-width: 22px;
+      font-variant-numeric: tabular-nums;
+      transition: color 0.3s ease;
+    }
+    .sp-apps-item.is-active .sp-apps-num { color: #ee7419; }
+    .sp-apps-name {
+      font-size: clamp(15px, 1.45vw, 20px); font-weight: 500;
+      color: rgba(237,237,237,0.4); line-height: 1.3; flex: 1;
+      transition: color 0.3s ease;
+    }
+    .sp-apps-item.is-active .sp-apps-name { color: #fff; }
+    .sp-apps-arrow {
+      font-size: 16px; color: transparent;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .sp-apps-item.is-active .sp-apps-arrow { color: #ee7419; transform: translateX(5px); }
+    .sp-apps-right { flex: 1; position: relative; overflow: hidden; background: #111; }
+    .sp-apps-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0;
+      transition: opacity 0.65s ease;
+      filter: brightness(0.78) contrast(1.05);
+    }
+    .sp-apps-img.is-active { opacity: 1; }
 
     /* ── 360 ── */
     .sp-360 { background: var(--tp-bg); padding: 120px 0; position: relative; overflow: hidden; }
@@ -1025,40 +1062,6 @@
     .sp-cap-value span { color: #ee7419; }
     .sp-cap-label { font-size: 15px; color: rgba(26,26,26,0.5); line-height: 1.5; }
 
-    /* ── APPLICATIONS MOSAIC ── */
-    .sp-apps-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 2fr 1.5fr 0.8fr;
-      height: calc(100vh - 260px);
-      gap: 12px;
-    }
-    .sp-app-card {
-      position: relative; overflow: hidden; border-radius: 4px;
-      background: #2a2a2a;
-      display: flex; align-items: flex-end;
-    }
-    .sp-app-card:last-child { grid-column: 1 / -1; }
-    .sp-app-card-img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover;
-      mix-blend-mode: multiply;
-      filter: sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.45);
-      transform: scale(1);
-      transition: filter 0.5s ease, transform 0.6s ease;
-    }
-    .sp-app-card:hover .sp-app-card-img {
-      filter: sepia(0) saturate(1.1) brightness(0.9);
-      transform: scale(1.04);
-    }
-    .sp-app-card-label {
-      position: relative; z-index: 2;
-      padding: 20px 24px;
-      font-size: 19px; font-weight: 600; color: #fff;
-      line-height: 1.3;
-      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
-      width: 100%;
-    }
 
     /* ── PROCESO COMPLETO ── */
     .sp-proceso { background: var(--tp-bg); padding: 120px 0; }
@@ -1182,9 +1185,12 @@
       .sp-cta { padding: 80px 24px; flex-direction: column; align-items: flex-start; gap: 32px; }
       .sp-cta-title { font-size: clamp(32px, 9vw, 48px) !important; }
 
-      /* Apps mosaic mobile */
-      .sp-apps-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 180px 140px 120px; height: auto; gap: 8px; }
-      .sp-app-card-label { font-size: 14px; padding: 12px 14px; }
+      /* Apps split mobile */
+      .sp-apps-split { flex-direction: column; min-height: auto; }
+      .sp-apps-left { width: 100%; padding: 48px 24px 32px; }
+      .sp-apps-right { height: 45vh; }
+      .sp-apps-eyebrow { margin-bottom: 28px; }
+      .sp-apps-item { padding: 18px 0 18px 14px; }
 
       /* Proceso mobile */
       .sp-proceso { padding: 80px 0; }
@@ -1241,31 +1247,45 @@
       </div>
     </section>
 
-    <!-- QUÉ OFRECEMOS -->
+    <!-- APLICACIONES -->
     <section class="sp-que">
-      <div class="sp-que-inner" style="grid-template-columns:1fr;">
-        <h2 style="font-size:clamp(48px,6vw,96px);font-weight:700;letter-spacing:-3px;line-height:1;color:#ffffff;margin-bottom:32px;" class="tp_fade_bottom">Aplicaciones</h2>
-        <div class="sp-apps-grid">
-          <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/Recurso 4@2x.png" alt="Utillajes de verificación para automoción" class="sp-app-card-img">
-            <div class="sp-app-card-label">Utillajes de verificación para automoción</div>
-          </div>
-          <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/s2.webp" alt="Control de piezas plásticas y composites" class="sp-app-card-img">
-            <div class="sp-app-card-label">Control de piezas plásticas y composites</div>
-          </div>
-          <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/s3.webp" alt="Sistemas de recanteo y posicionamiento" class="sp-app-card-img">
-            <div class="sp-app-card-label">Sistemas de recanteo y posicionamiento</div>
-          </div>
-          <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/s4.webp" alt="Utillajes para fibra de carbono" class="sp-app-card-img">
-            <div class="sp-app-card-label">Utillajes para fibra de carbono</div>
-          </div>
-          <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/service-thumb-1.jpg" alt="Probetas y útiles para ensayos" class="sp-app-card-img">
-            <div class="sp-app-card-label">Probetas y útiles para ensayos</div>
-          </div>
+      <div class="sp-apps-split">
+        <div class="sp-apps-left">
+          <p class="sp-apps-eyebrow">Aplicaciones</p>
+          <ul class="sp-apps-list">
+            <li class="sp-apps-item is-active" data-index="0">
+              <span class="sp-apps-num">01</span>
+              <span class="sp-apps-name">Utillajes de verificación para automoción</span>
+              <span class="sp-apps-arrow">→</span>
+            </li>
+            <li class="sp-apps-item" data-index="1">
+              <span class="sp-apps-num">02</span>
+              <span class="sp-apps-name">Control de piezas plásticas y composites</span>
+              <span class="sp-apps-arrow">→</span>
+            </li>
+            <li class="sp-apps-item" data-index="2">
+              <span class="sp-apps-num">03</span>
+              <span class="sp-apps-name">Sistemas de recanteo y posicionamiento</span>
+              <span class="sp-apps-arrow">→</span>
+            </li>
+            <li class="sp-apps-item" data-index="3">
+              <span class="sp-apps-num">04</span>
+              <span class="sp-apps-name">Utillajes para fibra de carbono</span>
+              <span class="sp-apps-arrow">→</span>
+            </li>
+            <li class="sp-apps-item" data-index="4">
+              <span class="sp-apps-num">05</span>
+              <span class="sp-apps-name">Probetas y útiles para ensayos</span>
+              <span class="sp-apps-arrow">→</span>
+            </li>
+          </ul>
+        </div>
+        <div class="sp-apps-right">
+          <img src="img/service/Recurso 4@2x.png" class="sp-apps-img is-active" data-index="0" alt="Utillajes de verificación para automoción">
+          <img src="img/service/s2.webp"           class="sp-apps-img"           data-index="1" alt="Control de piezas plásticas y composites">
+          <img src="img/service/s3.webp"           class="sp-apps-img"           data-index="2" alt="Sistemas de recanteo y posicionamiento">
+          <img src="img/service/s4.webp"           class="sp-apps-img"           data-index="3" alt="Utillajes para fibra de carbono">
+          <img src="img/service/service-thumb-1.jpg" class="sp-apps-img"         data-index="4" alt="Probetas y útiles para ensayos">
         </div>
       </div>
     </section>
@@ -1400,6 +1420,22 @@
           onEnter: function() {
             setTimeout(() => step.classList.add('filled'), i * 120);
           }
+        });
+      });
+    })();
+
+    // ─── APLICACIONES SPLIT — hover interaction ───
+    (function() {
+      const items = document.querySelectorAll('.sp-apps-item');
+      const imgs  = document.querySelectorAll('.sp-apps-img');
+      items.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          const idx = item.dataset.index;
+          items.forEach(i => i.classList.remove('is-active'));
+          imgs.forEach(i => i.classList.remove('is-active'));
+          item.classList.add('is-active');
+          const img = document.querySelector('.sp-apps-img[data-index="' + idx + '"]');
+          if (img) img.classList.add('is-active');
         });
       });
     })();
