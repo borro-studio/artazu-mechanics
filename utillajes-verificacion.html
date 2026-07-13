@@ -1025,20 +1025,24 @@
     .sp-cap-value span { color: #ee7419; }
     .sp-cap-label { font-size: 15px; color: rgba(26,26,26,0.5); line-height: 1.5; }
 
-    /* ── APPLICATIONS GRID ── */
+    /* ── APPLICATIONS ACCORDION ── */
     .sp-apps-grid {
-      display: grid;
-      grid-template-columns: 3fr 2fr;
-      grid-template-rows: 360px 240px 220px;
-      gap: 16px;
+      display: flex;
+      flex-direction: row;
+      height: 500px;
+      gap: 12px;
     }
     .sp-app-card {
+      flex: 1;
+      min-width: 52px;
       position: relative; overflow: hidden; border-radius: 4px;
       background: #2a2a2a;
       display: flex; align-items: flex-end;
+      transition: flex 0.55s cubic-bezier(0.4,0,0.2,1);
+      cursor: pointer;
     }
-    .sp-app-card--featured { grid-row: span 2; }
-    .sp-app-card--empty { background: #222; }
+    .sp-apps-grid:hover .sp-app-card { flex: 0.2; }
+    .sp-apps-grid:hover .sp-app-card:hover { flex: 5; }
     .sp-app-card-img {
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover;
@@ -1058,10 +1062,11 @@
       line-height: 1.3;
       background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
       width: 100%;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .sp-app-card--empty .sp-app-card-label {
-      color: rgba(255,255,255,0.5); background: none;
-    }
+    .sp-apps-grid:hover .sp-app-card:not(:hover) .sp-app-card-label { opacity: 0; }
 
     /* ── PROCESO COMPLETO ── */
     .sp-proceso { background: var(--tp-bg); padding: 120px 0; }
@@ -1185,10 +1190,12 @@
       .sp-cta { padding: 80px 24px; flex-direction: column; align-items: flex-start; gap: 32px; }
       .sp-cta-title { font-size: clamp(32px, 9vw, 48px) !important; }
 
-      /* Apps grid mobile */
-      .sp-apps-grid { grid-template-columns: 3fr 2fr; grid-template-rows: 200px 160px 160px; gap: 10px; }
-      .sp-app-card--featured { grid-row: span 2; }
-      .sp-app-card-label { font-size: 16px; padding: 14px 16px; }
+      /* Apps accordion mobile */
+      .sp-apps-grid { flex-direction: column; height: auto; gap: 8px; }
+      .sp-app-card { flex: none; height: 160px; min-width: 0; }
+      .sp-apps-grid:hover .sp-app-card { flex: none; height: 100px; }
+      .sp-apps-grid:hover .sp-app-card:hover { flex: none; height: 260px; }
+      .sp-app-card-label { font-size: 16px; padding: 14px 16px; white-space: normal; }
 
       /* Proceso mobile */
       .sp-proceso { padding: 80px 0; }
@@ -1240,7 +1247,7 @@
           <svg class="sp-hero-img-shape" id="heroImgShape" viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
             <polygon points="110,0 320,0 380,90 340,310 400,430 280,600 60,580 0,480 30,200 0,60" fill="#ee7419"/>
           </svg>
-          <img src="img/service/utillaje-hero.png" alt="Utillaje de verificación CMM" class="sp-hero-drawing-img" id="heroDrawingImg" style="mix-blend-mode:normal;">
+          <img src="img/service/utillaje-hero.png" alt="Utillaje de verificación CMM" class="sp-hero-drawing-img" id="heroDrawingImg" style="mix-blend-mode:normal;filter:grayscale(1);">
         </div>
       </div>
     </section>
