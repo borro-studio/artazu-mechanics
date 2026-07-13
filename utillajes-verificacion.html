@@ -1035,22 +1035,36 @@
     .sp-sv-col-title { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #ee7419; margin-bottom: 48px; }
     .sp-sector-tags { display: flex; flex-wrap: wrap; gap: 12px; }
 
-    /* ── PARTNER SECTION ── */
-    .sp-partner-inner { padding: 0 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 100px; align-items: center; }
+    /* ── PARTNER — statement + ticker ── */
+    .sp-sv { background: var(--tp-dark); overflow: hidden; }
+    .sp-partner-statement { padding: 140px 40px 100px; text-align: center; }
     .sp-partner-title {
-      font-size: clamp(38px, 5vw, 80px);
-      font-weight: 700; line-height: 1.05; letter-spacing: -2px;
-      color: #fff; margin: 0;
+      font-size: clamp(36px, 6vw, 96px); font-weight: 700;
+      letter-spacing: -3px; line-height: 1.05; color: #fff; margin: 0;
     }
-    .sp-partner-list { list-style: none; }
-    .sp-partner-item {
-      padding: 22px 0;
+    .sp-partner-ticker-wrap {
       border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 32px 0; overflow: hidden; cursor: default;
     }
-    .sp-partner-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .sp-partner-text {
-      font-size: clamp(17px, 1.5vw, 22px); font-weight: 400;
-      color: rgba(237,237,237,0.6); line-height: 1.4;
+    .sp-partner-ticker-track {
+      display: flex; align-items: center;
+      width: max-content;
+      animation: partner-scroll 30s linear infinite;
+    }
+    .sp-partner-ticker-track:hover { animation-play-state: paused; }
+    .sp-partner-ticker-item {
+      display: flex; align-items: center;
+      font-size: clamp(14px, 1.3vw, 18px); font-weight: 400;
+      color: rgba(237,237,237,0.4); white-space: nowrap;
+      padding: 0 44px;
+    }
+    .sp-partner-ticker-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: #ee7419; margin-left: 44px; flex-shrink: 0;
+    }
+    @keyframes partner-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
 
     .sp-sector-tag {
@@ -1082,39 +1096,50 @@
     .sp-cap-label { font-size: 15px; color: rgba(26,26,26,0.5); line-height: 1.5; }
 
 
-    /* ── PROCESO COMPLETO ── */
-    .sp-proceso { background: var(--tp-bg); padding: 120px 0; }
-    .sp-proceso-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; align-items: start; padding: 0 40px; }
-    .sp-proceso-title { font-size: clamp(56px, 6vw, 100px); font-weight: 700; letter-spacing: -4px; line-height: 1; color: var(--tp-dark); }
-    .sp-proceso-steps { display: flex; flex-direction: column; gap: 0; border-top: 1px solid rgba(0,0,0,0.1); }
-    .sp-proceso-step {
-      display: grid; grid-template-columns: 4px 1fr;
-      gap: 0 28px; align-items: stretch;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    .sp-proceso-step-bar {
-      background: rgba(0,0,0,0.08);
-      width: 4px; min-height: 80px;
+    /* ── PROCESO — horizontal pin scroll ── */
+    .sp-proceso { background: var(--tp-bg); overflow: hidden; height: 100vh; position: relative; }
+    .sp-proceso-progress { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(0,0,0,0.07); z-index: 10; }
+    .sp-proceso-progress-fill { height: 100%; width: 0%; background: #ee7419; }
+    .sp-proceso-track { display: flex; height: 100vh; width: max-content; will-change: transform; }
+    .sp-proceso-slide {
+      width: 100vw; height: 100vh; flex-shrink: 0;
       position: relative; overflow: hidden;
-      border-radius: 2px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 80px; box-sizing: border-box;
+      border-right: 1px solid rgba(0,0,0,0.06);
     }
-    .sp-proceso-step-bar::after {
-      content: ''; position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 0%; background: #ee7419;
-      transition: height 0.6s ease;
-      border-radius: 2px;
+    .sp-proceso-slide-bg-num {
+      position: absolute; right: -10px; bottom: -50px;
+      font-size: clamp(200px, 28vw, 420px); font-weight: 800;
+      letter-spacing: -15px; line-height: 0.85;
+      color: rgba(0,0,0,0.04); pointer-events: none; user-select: none;
     }
-    .sp-proceso-step.filled .sp-proceso-step-bar::after { height: 100%; }
-    .sp-proceso-step--last .sp-proceso-step-bar { background: #ee7419; }
-    .sp-proceso-step--last .sp-proceso-step-bar::after { display: none; }
-    .sp-proceso-step-label {
-      font-size: clamp(18px, 1.8vw, 24px); font-weight: 500;
-      color: var(--tp-dark); line-height: 1.3;
-      padding: 28px 0;
+    .sp-proceso-slide--last .sp-proceso-slide-bg-num { color: rgba(238,116,25,0.07); }
+    .sp-proceso-slide-step {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: #ee7419; margin-bottom: 20px;
     }
-    .sp-proceso-step--last .sp-proceso-step-label { color: #ee7419; font-weight: 600; }
+    .sp-proceso-slide-name {
+      font-size: clamp(40px, 5.5vw, 88px); font-weight: 700;
+      letter-spacing: -3px; line-height: 1.0; color: var(--tp-dark);
+    }
+    .sp-proceso-slide--last .sp-proceso-slide-name { color: #ee7419; }
+    .sp-proceso-slide-title-text {
+      font-size: clamp(56px, 8vw, 120px); font-weight: 700;
+      letter-spacing: -5px; line-height: 0.95; color: var(--tp-dark);
+    }
+    .sp-proceso-slide-sub {
+      font-size: clamp(15px, 1.2vw, 18px); color: rgba(26,26,26,0.5);
+      line-height: 1.7; max-width: 480px; margin-top: 28px;
+    }
+    .sp-proceso-scroll-hint {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 36px; font-size: 11px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: rgba(26,26,26,0.3);
+    }
+    .sp-proceso-scroll-hint::before {
+      content: ''; display: block; width: 32px; height: 1px; background: rgba(26,26,26,0.2);
+    }
 
     /* ── CTA ── */
     .sp-cta { background: #ee7419; padding: 120px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
@@ -1211,15 +1236,16 @@
       .sp-apps-eyebrow { margin-bottom: 28px; }
       .sp-apps-item { padding: 18px 0 18px 14px; }
 
-      /* Proceso mobile */
-      .sp-proceso { padding: 80px 0; }
-      .sp-proceso-inner { grid-template-columns: 1fr; gap: 48px; padding: 0 24px; }
-      .sp-proceso-title { font-size: clamp(48px, 12vw, 72px); letter-spacing: -3px; }
-      .sp-proceso-step-label { font-size: 18px; padding: 22px 0; }
-      .sp-proceso-step-bar { min-height: 66px; }
-
-      /* Partner section mobile */
-      .sp-partner-inner { grid-template-columns: 1fr !important; gap: 48px; }
+      /* Proceso mobile — vertical fallback */
+      .sp-proceso { height: auto; overflow: visible; padding: 0; }
+      .sp-proceso-progress { display: none; }
+      .sp-proceso-track { flex-direction: column; height: auto; width: 100%; }
+      .sp-proceso-slide { width: 100%; height: auto; min-height: 260px; padding: 52px 24px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
+      .sp-proceso-slide-bg-num { font-size: 38vw; bottom: -20px; }
+      .sp-proceso-scroll-hint { display: none; }
+      /* Partner mobile */
+      .sp-partner-statement { padding: 80px 24px 60px; }
+      .sp-partner-title { font-size: clamp(32px, 9vw, 56px); letter-spacing: -2px; }
     }
   </style>
 
@@ -1309,51 +1335,74 @@
       </div>
     </section>
 
-    <!-- PROCESO COMPLETO -->
+    <!-- PROCESO COMPLETO — horizontal pin scroll -->
     <section class="sp-proceso">
-      <div class="sp-proceso-inner">
-        <div class="sp-proceso-left">
-          <h2 class="sp-proceso-title titleBurrowing">Proceso<br><span style="color:#ee7419;">Completo</span></h2>
-          <p style="font-size:clamp(15px,1.3vw,18px);color:rgba(26,26,26,0.6);line-height:1.7;margin-top:32px;max-width:400px;">Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente.</p>
+      <div class="sp-proceso-progress" aria-hidden="true"><div class="sp-proceso-progress-fill" id="procesoFill"></div></div>
+      <div class="sp-proceso-track" id="procesoTrack">
+
+        <!-- Slide 0: Título -->
+        <div class="sp-proceso-slide">
+          <h2 class="sp-proceso-slide-title-text">Proceso<br><span style="color:#ee7419;">Completo</span></h2>
+          <p class="sp-proceso-slide-sub">Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente.</p>
+          <div class="sp-proceso-scroll-hint">Desliza para avanzar</div>
         </div>
-        <div class="sp-proceso-steps" id="processSteps">
-          <div class="sp-proceso-step tp_fade_bottom" data-index="0">
-            <div class="sp-proceso-step-bar"></div>
-            <p class="sp-proceso-step-label">Diseño 3D y simulación</p>
-          </div>
-          <div class="sp-proceso-step tp_fade_bottom" data-index="1">
-            <div class="sp-proceso-step-bar"></div>
-            <p class="sp-proceso-step-label">Análisis de interferencias</p>
-          </div>
-          <div class="sp-proceso-step tp_fade_bottom" data-index="2">
-            <div class="sp-proceso-step-bar"></div>
-            <p class="sp-proceso-step-label">Fabricación mecanizada</p>
-          </div>
-          <div class="sp-proceso-step tp_fade_bottom" data-index="3">
-            <div class="sp-proceso-step-bar"></div>
-            <p class="sp-proceso-step-label">Montaje y ajuste</p>
-          </div>
-          <div class="sp-proceso-step sp-proceso-step--last tp_fade_bottom" data-index="4">
-            <div class="sp-proceso-step-bar"></div>
-            <p class="sp-proceso-step-label">Validación final</p>
-          </div>
+
+        <!-- Slide 1 -->
+        <div class="sp-proceso-slide">
+          <div class="sp-proceso-slide-bg-num">01</div>
+          <div class="sp-proceso-slide-step">01 / 05</div>
+          <h3 class="sp-proceso-slide-name">Diseño 3D<br>y simulación</h3>
         </div>
+
+        <!-- Slide 2 -->
+        <div class="sp-proceso-slide">
+          <div class="sp-proceso-slide-bg-num">02</div>
+          <div class="sp-proceso-slide-step">02 / 05</div>
+          <h3 class="sp-proceso-slide-name">Análisis de<br>interferencias</h3>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="sp-proceso-slide">
+          <div class="sp-proceso-slide-bg-num">03</div>
+          <div class="sp-proceso-slide-step">03 / 05</div>
+          <h3 class="sp-proceso-slide-name">Fabricación<br>mecanizada</h3>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="sp-proceso-slide">
+          <div class="sp-proceso-slide-bg-num">04</div>
+          <div class="sp-proceso-slide-step">04 / 05</div>
+          <h3 class="sp-proceso-slide-name">Montaje<br>y ajuste</h3>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="sp-proceso-slide sp-proceso-slide--last">
+          <div class="sp-proceso-slide-bg-num">05</div>
+          <div class="sp-proceso-slide-step">05 / 05</div>
+          <h3 class="sp-proceso-slide-name">Validación<br>final</h3>
+        </div>
+
       </div>
     </section>
 
     <!-- MÁS QUE UN PROVEEDOR -->
     <section class="sp-sv">
-      <div class="sp-partner-inner">
-        <div class="tp_fade_bottom">
-          <h2 class="sp-partner-title">Más que un proveedor,<br>somos tu partner<br>en control<br>de calidad.</h2>
+      <div class="sp-partner-statement tp_fade_bottom">
+        <h2 class="sp-partner-title">Más que un proveedor,<br>somos tu partner<br>en control de calidad.</h2>
+      </div>
+      <div class="sp-partner-ticker-wrap">
+        <div class="sp-partner-ticker-track">
+          <span class="sp-partner-ticker-item">Soluciones a medida según la pieza del cliente<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Experiencia en múltiples sectores industriales<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Diseño y fabricación integrados en un solo equipo<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Fiabilidad contrastada en procesos de control<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Adaptación a prototipos y producción en serie<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Soluciones a medida según la pieza del cliente<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Experiencia en múltiples sectores industriales<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Diseño y fabricación integrados en un solo equipo<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Fiabilidad contrastada en procesos de control<span class="sp-partner-ticker-dot"></span></span>
+          <span class="sp-partner-ticker-item">Adaptación a prototipos y producción en serie<span class="sp-partner-ticker-dot"></span></span>
         </div>
-        <ul class="sp-partner-list">
-          <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-text">Soluciones a medida según la pieza del cliente.</span></li>
-          <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-text">Experiencia en múltiples sectores industriales.</span></li>
-          <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-text">Diseño y fabricación integrados en un solo equipo.</span></li>
-          <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-text">Fiabilidad contrastada en procesos de control.</span></li>
-          <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-text">Adaptación a prototipos y producción en serie.</span></li>
-        </ul>
       </div>
     </section>
 
@@ -1426,18 +1475,26 @@
     });
     setTimeout(() => ScrollTrigger.refresh(), 200);
 
-    // ─── PROCESO — fill bars on scroll ───
+    // ─── PROCESO — horizontal pin scroll ───
     (function() {
-      const steps = document.querySelectorAll('#processSteps .sp-proceso-step:not(.sp-proceso-step--last)');
-      steps.forEach((step, i) => {
-        ScrollTrigger.create({
-          trigger: step,
-          start: 'top 75%',
-          once: true,
-          onEnter: function() {
-            setTimeout(() => step.classList.add('filled'), i * 120);
+      const track = document.getElementById('procesoTrack');
+      const fill  = document.getElementById('procesoFill');
+      if (!track || window.innerWidth <= 767) return;
+
+      gsap.to(track, {
+        x: () => -(track.scrollWidth - window.innerWidth),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.sp-proceso',
+          pin: true,
+          scrub: 0.8,
+          start: 'top top',
+          end: () => '+=' + (track.scrollWidth - window.innerWidth),
+          invalidateOnRefresh: true,
+          onUpdate: self => {
+            if (fill) fill.style.width = (self.progress * 100) + '%';
           }
-        });
+        }
       });
     })();
 
