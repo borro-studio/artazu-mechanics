@@ -1036,26 +1036,28 @@
     .sp-sector-tags { display: flex; flex-wrap: wrap; gap: 12px; }
 
     /* ── PARTNER SECTION ── */
-    .sp-partner-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; padding: 0 40px; align-items: center; }
-    .sp-partner-rule { width: 36px; height: 3px; background: #ee7419; margin-bottom: 36px; }
+    .sp-partner-inner { padding: 0 40px; }
+    .sp-partner-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,0.12); }
     .sp-partner-title {
-      font-size: clamp(26px, 3vw, 48px);
-      font-weight: 400; line-height: 1.25; letter-spacing: -0.3px;
-      color: #fff; margin: 0;
+      font-size: clamp(38px, 5vw, 80px);
+      font-weight: 700; line-height: 1.05; letter-spacing: -2px;
+      color: #fff; margin: 0; max-width: 680px;
     }
-    .sp-partner-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
-    .sp-partner-item {
-      display: grid; grid-template-columns: 28px 1fr; gap: 16px;
-      align-items: baseline; padding: 22px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+    .sp-partner-sub { font-size: clamp(14px, 1.1vw, 16px); color: rgba(237,237,237,0.45); line-height: 1.6; max-width: 260px; flex-shrink: 0; padding-bottom: 6px; }
+    .sp-partner-cols { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .sp-partner-col {
+      padding: 36px 24px 36px 0;
+      border-right: 1px solid rgba(255,255,255,0.07);
     }
-    .sp-partner-idx {
-      font-size: 10px; font-weight: 500; letter-spacing: 1.5px;
-      color: rgba(237,237,237,0.2); font-variant-numeric: tabular-nums;
+    .sp-partner-col:first-child { padding-left: 0; }
+    .sp-partner-col:last-child { border-right: none; padding-right: 0; }
+    .sp-partner-col-num {
+      font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      color: #ee7419; margin-bottom: 20px; font-variant-numeric: tabular-nums;
     }
-    .sp-partner-text {
-      font-size: clamp(15px, 1.25vw, 17px); font-weight: 400;
-      color: rgba(237,237,237,0.7); line-height: 1.5;
+    .sp-partner-col-text {
+      font-size: clamp(13px, 1.05vw, 15px); font-weight: 400;
+      color: rgba(237,237,237,0.65); line-height: 1.55;
     }
 
     .sp-sector-tag {
@@ -1224,7 +1226,11 @@
       .sp-proceso-step-bar { min-height: 66px; }
 
       /* Partner section mobile */
-      .sp-partner-inner { grid-template-columns: 1fr !important; gap: 48px; }
+      .sp-partner-head { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .sp-partner-sub { max-width: 100%; }
+      .sp-partner-cols { grid-template-columns: 1fr 1fr; }
+      .sp-partner-col { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 28px 0; }
+      .sp-partner-col:last-child { border-bottom: none; }
     }
   </style>
 
@@ -1349,18 +1355,31 @@
     <!-- MÁS QUE UN PROVEEDOR -->
     <section class="sp-sv">
       <div class="sp-partner-inner">
-        <div class="tp_fade_bottom">
-          <div class="sp-partner-rule"></div>
-          <h2 class="sp-partner-title">Más que un proveedor,<br>somos tu partner<br>en control<br>de calidad industrial.</h2>
+        <div class="sp-partner-head tp_fade_bottom">
+          <h2 class="sp-partner-title">Más que un proveedor,<br>somos tu partner<br>en control de calidad.</h2>
+          <p class="sp-partner-sub">Desarrollamos soluciones a medida para cada cliente, con trazabilidad total desde el diseño hasta la pieza verificada.</p>
         </div>
-        <div>
-          <ul class="sp-partner-list">
-            <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-idx">01</span><span class="sp-partner-text">Soluciones a medida según pieza del cliente.</span></li>
-            <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-idx">02</span><span class="sp-partner-text">Experiencia en múltiples sectores industriales.</span></li>
-            <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-idx">03</span><span class="sp-partner-text">Integración de diseño y fabricación en un solo equipo.</span></li>
-            <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-idx">04</span><span class="sp-partner-text">Fiabilidad contrastada en procesos de control.</span></li>
-            <li class="sp-partner-item tp_fade_bottom"><span class="sp-partner-idx">05</span><span class="sp-partner-text">Capacidad de adaptación a prototipos y producción en serie.</span></li>
-          </ul>
+        <div class="sp-partner-cols">
+          <div class="sp-partner-col tp_fade_bottom">
+            <div class="sp-partner-col-num">01</div>
+            <p class="sp-partner-col-text">Soluciones a medida según pieza del cliente.</p>
+          </div>
+          <div class="sp-partner-col tp_fade_bottom">
+            <div class="sp-partner-col-num">02</div>
+            <p class="sp-partner-col-text">Experiencia en múltiples sectores industriales.</p>
+          </div>
+          <div class="sp-partner-col tp_fade_bottom">
+            <div class="sp-partner-col-num">03</div>
+            <p class="sp-partner-col-text">Integración de diseño y fabricación en un solo equipo.</p>
+          </div>
+          <div class="sp-partner-col tp_fade_bottom">
+            <div class="sp-partner-col-num">04</div>
+            <p class="sp-partner-col-text">Fiabilidad contrastada en procesos de control.</p>
+          </div>
+          <div class="sp-partner-col tp_fade_bottom">
+            <div class="sp-partner-col-num">05</div>
+            <p class="sp-partner-col-text">Capacidad de adaptación a prototipos y producción en serie.</p>
+          </div>
         </div>
       </div>
     </section>
