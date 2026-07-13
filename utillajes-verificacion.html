@@ -1039,6 +1039,18 @@
     }
     .sp-app-card--featured { grid-row: span 2; }
     .sp-app-card--empty { background: #222; }
+    .sp-app-card-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover;
+      mix-blend-mode: multiply;
+      filter: sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.25);
+      transform: scale(1);
+      transition: filter 0.5s ease, transform 0.6s ease;
+    }
+    .sp-app-card:hover .sp-app-card-img {
+      filter: sepia(0) saturate(1.1) brightness(0.9);
+      transform: scale(1.04);
+    }
     .sp-app-card-label {
       position: relative; z-index: 2;
       padding: 20px 24px;
@@ -1239,23 +1251,23 @@
         <h2 style="font-size:clamp(48px,6vw,96px);font-weight:700;letter-spacing:-3px;line-height:1;color:#ffffff;margin-bottom:48px;" class="tp_fade_bottom">Aplicaciones</h2>
         <div class="sp-apps-grid">
           <div class="sp-app-card sp-app-card--featured tp_fade_bottom">
-            <img src="img/service/Recurso 4@2x.png" alt="Utillajes de verificación para automoción" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.7);">
+            <img src="img/service/Recurso 4@2x.png" alt="Utillajes de verificación para automoción" class="sp-app-card-img">
             <div class="sp-app-card-label">Utillajes de verificación para automoción</div>
           </div>
           <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/s2.webp" alt="Control de piezas plásticas y composites" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.7);">
+            <img src="img/service/s2.webp" alt="Control de piezas plásticas y composites" class="sp-app-card-img">
             <div class="sp-app-card-label">Control de piezas plásticas y composites</div>
           </div>
           <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/s3.webp" alt="Sistemas de recanteo y posicionamiento" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.7);">
+            <img src="img/service/s3.webp" alt="Sistemas de recanteo y posicionamiento" class="sp-app-card-img">
             <div class="sp-app-card-label">Sistemas de recanteo y posicionamiento</div>
           </div>
           <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/s4.webp" alt="Utillajes para fibra de carbono" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.7);">
+            <img src="img/service/s4.webp" alt="Utillajes para fibra de carbono" class="sp-app-card-img">
             <div class="sp-app-card-label">Utillajes para fibra de carbono</div>
           </div>
           <div class="sp-app-card tp_fade_bottom">
-            <img src="img/service/service-thumb-1.jpg" alt="Probetas y útiles para ensayos" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.7);">
+            <img src="img/service/service-thumb-1.jpg" alt="Probetas y útiles para ensayos" class="sp-app-card-img">
             <div class="sp-app-card-label">Probetas y útiles para ensayos</div>
           </div>
         </div>
