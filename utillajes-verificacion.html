@@ -1028,8 +1028,8 @@
     /* ── APPLICATIONS GRID ── */
     .sp-apps-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 340px 220px 260px;
+      grid-template-columns: 3fr 2fr;
+      grid-template-rows: 360px 240px 220px;
       gap: 16px;
     }
     .sp-app-card {
@@ -1043,7 +1043,7 @@
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover;
       mix-blend-mode: multiply;
-      filter: sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.25);
+      filter: sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.45);
       transform: scale(1);
       transition: filter 0.5s ease, transform 0.6s ease;
     }
@@ -1186,7 +1186,7 @@
       .sp-cta-title { font-size: clamp(32px, 9vw, 48px) !important; }
 
       /* Apps grid mobile */
-      .sp-apps-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 160px 180px; gap: 10px; }
+      .sp-apps-grid { grid-template-columns: 3fr 2fr; grid-template-rows: 200px 160px 160px; gap: 10px; }
       .sp-app-card--featured { grid-row: span 2; }
       .sp-app-card-label { font-size: 16px; padding: 14px 16px; }
 
@@ -1240,7 +1240,7 @@
           <svg class="sp-hero-img-shape" id="heroImgShape" viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
             <polygon points="110,0 320,0 380,90 340,310 400,430 280,600 60,580 0,480 30,200 0,60" fill="#ee7419"/>
           </svg>
-          <img src="img/service/s1.webp" alt="Utillaje de verificación CMM" class="sp-hero-drawing-img" id="heroDrawingImg" style="mix-blend-mode:normal;object-fit:cover;border-radius:4px;">
+          <img src="img/service/utillaje-hero.png" alt="Utillaje de verificación CMM" class="sp-hero-drawing-img" id="heroDrawingImg" style="mix-blend-mode:normal;">
         </div>
       </div>
     </section>
