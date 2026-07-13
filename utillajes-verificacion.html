@@ -941,7 +941,7 @@
     }
 
     /* ── QUÉ HACEMOS ── */
-    .sp-que { background: var(--tp-bg); padding: 60px 0; min-height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    .sp-que { background: var(--tp-dark); padding: 60px 0; min-height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
     .sp-que-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; align-items: start; padding: 0 40px; }
     .sp-que-title { font-size: clamp(60px, 6vw, 100px); font-weight: 700; letter-spacing: -4px; line-height: 0.95; color: var(--tp-light); }
     .sp-que-title-row { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 48px); }
@@ -1028,9 +1028,9 @@
     /* ── APPLICATIONS MOSAIC ── */
     .sp-apps-grid {
       display: grid;
-      grid-template-columns: 3fr 2fr;
-      grid-template-rows: 1.5fr 1fr 0.9fr;
-      height: calc(100vh - 280px);
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 2fr 1.5fr 0.8fr;
+      height: calc(100vh - 260px);
       gap: 12px;
     }
     .sp-app-card {
@@ -1038,7 +1038,7 @@
       background: #2a2a2a;
       display: flex; align-items: flex-end;
     }
-    .sp-app-card--featured { grid-row: span 2; }
+    .sp-app-card:last-child { grid-column: 1 / -1; }
     .sp-app-card-img {
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover;
@@ -1183,8 +1183,7 @@
       .sp-cta-title { font-size: clamp(32px, 9vw, 48px) !important; }
 
       /* Apps mosaic mobile */
-      .sp-apps-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 180px 130px 140px; height: auto; gap: 8px; }
-      .sp-app-card--featured { grid-row: span 2; }
+      .sp-apps-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 180px 140px 120px; height: auto; gap: 8px; }
       .sp-app-card-label { font-size: 14px; padding: 12px 14px; }
 
       /* Proceso mobile */
@@ -1245,9 +1244,9 @@
     <!-- QUÉ OFRECEMOS -->
     <section class="sp-que">
       <div class="sp-que-inner" style="grid-template-columns:1fr;">
-        <h2 style="font-size:clamp(48px,6vw,96px);font-weight:700;letter-spacing:-3px;line-height:1;color:var(--tp-dark);margin-bottom:32px;" class="tp_fade_bottom">Aplicaciones</h2>
+        <h2 style="font-size:clamp(48px,6vw,96px);font-weight:700;letter-spacing:-3px;line-height:1;color:#ffffff;margin-bottom:32px;" class="tp_fade_bottom">Aplicaciones</h2>
         <div class="sp-apps-grid">
-          <div class="sp-app-card sp-app-card--featured tp_fade_bottom">
+          <div class="sp-app-card tp_fade_bottom">
             <img src="img/service/Recurso 4@2x.png" alt="Utillajes de verificación para automoción" class="sp-app-card-img">
             <div class="sp-app-card-label">Utillajes de verificación para automoción</div>
           </div>
@@ -1276,6 +1275,7 @@
       <div class="sp-proceso-inner">
         <div class="sp-proceso-left">
           <h2 class="sp-proceso-title titleBurrowing">Proceso<br><span style="color:#ee7419;">Completo</span></h2>
+          <p style="font-size:clamp(15px,1.3vw,18px);color:rgba(26,26,26,0.6);line-height:1.7;margin-top:32px;max-width:400px;">Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente.</p>
         </div>
         <div class="sp-proceso-steps" id="processSteps">
           <div class="sp-proceso-step tp_fade_bottom" data-index="0">
@@ -1407,11 +1407,11 @@
     // ─── CURSOR NARANJA + HEADER EN SECCIONES OSCURAS ───
     document.addEventListener('mousemove', function(e) {
       const els = document.elementsFromPoint(e.clientX, e.clientY);
-      const isDark = els.some(el => el.matches && el.matches('.sp-sv, .sp-cta'));
+      const isDark = els.some(el => el.matches && el.matches('.sp-que, .sp-sv, .sp-cta'));
       document.body.classList.toggle('on-dark-section', isDark);
     });
     window.addEventListener('scroll', function() {
-      const darkSections = document.querySelectorAll('.sp-sv, .sp-cta');
+      const darkSections = document.querySelectorAll('.sp-que, .sp-sv, .sp-cta');
       const headerBottom = 90;
       let onDark = false;
       darkSections.forEach(s => {
