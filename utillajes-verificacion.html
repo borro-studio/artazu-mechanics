@@ -1025,6 +1025,66 @@
     .sp-cap-value span { color: #ee7419; }
     .sp-cap-label { font-size: 15px; color: rgba(26,26,26,0.5); line-height: 1.5; }
 
+    /* ── APPLICATIONS GRID ── */
+    .sp-apps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 340px 220px;
+      gap: 16px;
+    }
+    .sp-app-card {
+      position: relative; overflow: hidden; border-radius: 4px;
+      background: #2a2a2a;
+      display: flex; align-items: flex-end;
+    }
+    .sp-app-card--featured { grid-row: span 2; }
+    .sp-app-card--empty { background: #222; }
+    .sp-app-card-label {
+      position: relative; z-index: 2;
+      padding: 20px 24px;
+      font-size: 15px; font-weight: 600; color: #fff;
+      line-height: 1.3;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+      width: 100%;
+    }
+    .sp-app-card--empty .sp-app-card-label {
+      color: rgba(255,255,255,0.5); background: none;
+    }
+
+    /* ── PROCESO COMPLETO ── */
+    .sp-proceso { background: var(--tp-bg); padding: 120px 0; }
+    .sp-proceso-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; align-items: start; padding: 0 40px; }
+    .sp-proceso-title { font-size: clamp(56px, 6vw, 100px); font-weight: 700; letter-spacing: -4px; line-height: 1; color: var(--tp-dark); }
+    .sp-proceso-steps { display: flex; flex-direction: column; gap: 0; border-top: 1px solid rgba(0,0,0,0.1); }
+    .sp-proceso-step {
+      display: grid; grid-template-columns: 4px 1fr;
+      gap: 0 28px; align-items: stretch;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .sp-proceso-step-bar {
+      background: rgba(0,0,0,0.08);
+      width: 4px; min-height: 80px;
+      position: relative; overflow: hidden;
+      border-radius: 2px;
+    }
+    .sp-proceso-step-bar::after {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 0%; background: #ee7419;
+      transition: height 0.6s ease;
+      border-radius: 2px;
+    }
+    .sp-proceso-step.filled .sp-proceso-step-bar::after { height: 100%; }
+    .sp-proceso-step--last .sp-proceso-step-bar { background: #ee7419; }
+    .sp-proceso-step--last .sp-proceso-step-bar::after { display: none; }
+    .sp-proceso-step-label {
+      font-size: clamp(18px, 1.8vw, 24px); font-weight: 500;
+      color: var(--tp-dark); line-height: 1.3;
+      padding: 28px 0;
+    }
+    .sp-proceso-step--last .sp-proceso-step-label { color: #ee7419; font-weight: 600; }
+
     /* ── CTA ── */
     .sp-cta { background: #ee7419; padding: 120px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
     .sp-cta-title { font-size: clamp(36px, 4vw, 64px); font-weight: 700; letter-spacing: -2px; color: #fff; line-height: 1; }
@@ -1112,6 +1172,21 @@
       /* CTA */
       .sp-cta { padding: 80px 24px; flex-direction: column; align-items: flex-start; gap: 32px; }
       .sp-cta-title { font-size: clamp(32px, 9vw, 48px) !important; }
+
+      /* Apps grid mobile */
+      .sp-apps-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 160px; gap: 10px; }
+      .sp-app-card--featured { grid-row: span 2; }
+      .sp-app-card-label { font-size: 13px; padding: 14px 16px; }
+
+      /* Proceso mobile */
+      .sp-proceso { padding: 80px 0; }
+      .sp-proceso-inner { grid-template-columns: 1fr; gap: 48px; padding: 0 24px; }
+      .sp-proceso-title { font-size: clamp(48px, 12vw, 72px); letter-spacing: -3px; }
+      .sp-proceso-step-label { font-size: 18px; padding: 22px 0; }
+      .sp-proceso-step-bar { min-height: 66px; }
+
+      /* Partner section mobile */
+      .sp-sv-inner[style*="1fr 1fr"] { grid-template-columns: 1fr !important; gap: 48px; }
     }
   </style>
 
@@ -1143,7 +1218,7 @@
             <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
             <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
           </svg>
-          <p style="font-size:20px;color:rgba(26,26,26,0.5);line-height:1.6;">En Artazu Mechanics diseñamos y fabricamos utillajes de verificación, útiles de sujeción y amarre, modelos y moldes a medida. Oficina técnica propia e integración completa del proceso.</p>
+          <p style="font-size:20px;color:rgba(26,26,26,0.5);line-height:1.6;">En Artazu Mechanics diseñamos y fabricamos utillajes de control que garantizan la correcta validación dimensional y funcional de piezas en entornos industriales exigentes.</p>
         </div>
       </div>
 
@@ -1158,84 +1233,81 @@
       </div>
     </section>
 
-    <!-- QUÉ HACEMOS -->
+    <!-- QUÉ OFRECEMOS -->
     <section class="sp-que">
-      <div class="sp-que-inner">
-        <div>
-          <div class="sp-que-title-row">
-            <h2 class="sp-que-title titleBurrowing">Un único<br>proveedor.</h2>
-            <h2 class="sp-que-title titleBurrowing sp-que-title-right">Máxima<br>eficiencia.</h2>
-          </div>
+      <div class="sp-que-inner" style="grid-template-columns:1fr;">
+        <div style="max-width:600px;margin-bottom:64px;">
+          <p class="sp-que-subtitle">Qué ofrecemos</p>
+          <p style="font-size:clamp(18px,1.6vw,22px);color:rgba(237,237,237,0.65);line-height:1.7;">En Artazu Mechanics diseñamos y fabricamos utillajes de control que garantizan la correcta validación dimensional y funcional de piezas en entornos industriales exigentes.</p>
         </div>
-        <div>
-          <ul class="sp-que-list">
-            <li class="tp_fade_bottom">Utillajes de verificación y control dimensional</li>
-            <li class="tp_fade_bottom">Útiles de sujeción y amarre para mecanizado</li>
-            <li class="tp_fade_bottom">Modelos y moldes a medida</li>
-            <li class="tp_fade_bottom">Diseño CAD 3D de utillajes</li>
-            <li class="tp_fade_bottom">Fabricación de prototipos y series</li>
-            <li class="tp_fade_bottom">Ingeniería y optimización de utillajes</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- UN ÚNICO PROVEEDOR -->
-    <section class="sp-360">
-      <div class="sp-360-watermark">360°</div>
-      <div class="sp-360-inner">
-        <div class="sp-360-header">
-          <h2 class="sp-360-title">
-            <span class="titleBurrowing" style="display:block;">Nos encargamos</span>
-            <span class="titleBurrowing" style="display:block;">de todo el proceso</span>
-          </h2>
-        </div>
-        <div class="sp-360-steps" id="processSteps">
-          <div class="sp-360-line-track"><div class="sp-360-line-fill" id="processLine"></div></div>
-          <div class="sp-360-step">
-            <div class="sp-360-dot">01</div>
-            <p class="sp-360-step-text">Análisis de requisitos</p>
+        <p class="sp-que-subtitle" style="margin-bottom:32px;">Aplicaciones</p>
+        <div class="sp-apps-grid">
+          <div class="sp-app-card sp-app-card--featured tp_fade_bottom">
+            <img src="img/service/Recurso 4@2x.png" alt="Utillajes de verificación para automoción" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.7);">
+            <div class="sp-app-card-label">Utillajes de verificación para automoción</div>
           </div>
-          <div class="sp-360-step">
-            <div class="sp-360-dot">02</div>
-            <p class="sp-360-step-text">Diseño CAD 3D</p>
+          <div class="sp-app-card tp_fade_bottom">
+            <img src="img/service/s2.webp" alt="Control de piezas plásticas y composites" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.7);">
+            <div class="sp-app-card-label">Control de piezas plásticas y composites</div>
           </div>
-          <div class="sp-360-step">
-            <div class="sp-360-dot">03</div>
-            <p class="sp-360-step-text">Ingeniería y validación</p>
+          <div class="sp-app-card tp_fade_bottom">
+            <img src="img/service/s3.webp" alt="Sistemas de recanteo y posicionamiento" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.7);">
+            <div class="sp-app-card-label">Sistemas de recanteo y posicionamiento</div>
           </div>
-          <div class="sp-360-step">
-            <div class="sp-360-dot">04</div>
-            <p class="sp-360-step-text">Fabricación y mecanizado</p>
+          <div class="sp-app-card sp-app-card--empty tp_fade_bottom">
+            <div class="sp-app-card-label">Utillajes para fibra de carbono</div>
           </div>
-          <div class="sp-360-step">
-            <div class="sp-360-dot">05</div>
-            <p class="sp-360-step-text">Verificación y ajuste</p>
-          </div>
-          <div class="sp-360-step">
-            <div class="sp-360-dot" style="background:#ee7419;border-color:#ee7419;color:#fff;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <p class="sp-360-step-text" style="color:#ee7419;font-weight:600;">Entrega al cliente</p>
+          <div class="sp-app-card sp-app-card--empty tp_fade_bottom">
+            <div class="sp-app-card-label">Probetas y útiles para ensayos</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTORES + VALOR DIFERENCIAL -->
+    <!-- PROCESO COMPLETO -->
+    <section class="sp-proceso">
+      <div class="sp-proceso-inner">
+        <div class="sp-proceso-left">
+          <h2 class="sp-proceso-title titleBurrowing">Proceso<br><span style="color:#ee7419;">Completo</span></h2>
+        </div>
+        <div class="sp-proceso-steps" id="processSteps">
+          <div class="sp-proceso-step tp_fade_bottom" data-index="0">
+            <div class="sp-proceso-step-bar"></div>
+            <p class="sp-proceso-step-label">Diseño 3D y simulación</p>
+          </div>
+          <div class="sp-proceso-step tp_fade_bottom" data-index="1">
+            <div class="sp-proceso-step-bar"></div>
+            <p class="sp-proceso-step-label">Análisis de interferencias</p>
+          </div>
+          <div class="sp-proceso-step tp_fade_bottom" data-index="2">
+            <div class="sp-proceso-step-bar"></div>
+            <p class="sp-proceso-step-label">Fabricación mecanizada</p>
+          </div>
+          <div class="sp-proceso-step tp_fade_bottom" data-index="3">
+            <div class="sp-proceso-step-bar"></div>
+            <p class="sp-proceso-step-label">Montaje y ajuste</p>
+          </div>
+          <div class="sp-proceso-step sp-proceso-step--last tp_fade_bottom" data-index="4">
+            <div class="sp-proceso-step-bar"></div>
+            <p class="sp-proceso-step-label">Validación final</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÁS QUE UN PROVEEDOR -->
     <section class="sp-sv">
-      <div class="sp-sv-inner">
-        <div class="sp-valor-title-wrap tp_fade_bottom">
-          <p style="font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;">Nuestro compromiso</p>
-          <h2 style="font-size:clamp(64px,8vw,120px);font-weight:700;line-height:0.95;letter-spacing:-4px;color:#ffffff;margin:0;">Valor<br><span style="color:#ee7419;">diferencial.</span></h2>
+      <div class="sp-sv-inner" style="grid-template-columns:1fr 1fr;align-items:center;">
+        <div class="tp_fade_bottom">
+          <h2 style="font-size:clamp(40px,5vw,80px);font-weight:700;line-height:1.05;letter-spacing:-2px;color:#ffffff;margin:0;">Más que un <span style="color:#ee7419;">proveedor,</span><br>somos tu <span style="color:#ee7419;">partner</span><br>en control<br>de calidad industrial.</h2>
         </div>
         <div>
           <ul class="sp-valor-list">
-            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">01</span><span class="sp-valor-text">Flexibilidad y cercanía</span></li>
-            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">02</span><span class="sp-valor-text">Adaptación a cada cliente</span></li>
-            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">03</span><span class="sp-valor-text">Alto nivel técnico</span></li>
-            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">04</span><span class="sp-valor-text">Control de calidad riguroso</span></li>
-            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">05</span><span class="sp-valor-text">Cumplimiento de plazos</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">—</span><span class="sp-valor-text">Soluciones a medida según pieza del cliente.</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">—</span><span class="sp-valor-text">Experiencia en múltiples sectores.</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">—</span><span class="sp-valor-text">Integración diseño + fabricación.</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">—</span><span class="sp-valor-text">Fiabilidad en procesos de control.</span></li>
+            <li class="sp-valor-item tp_fade_bottom"><span class="sp-valor-num">—</span><span class="sp-valor-text">Capacidad de adaptación a prototipos y serie.</span></li>
           </ul>
         </div>
       </div>
@@ -1310,50 +1382,18 @@
     });
     setTimeout(() => ScrollTrigger.refresh(), 200);
 
-    // ─── PROCESO — animación punto a punto en loop ───
+    // ─── PROCESO — fill bars on scroll ───
     (function() {
-      const steps = document.querySelectorAll('#processSteps .sp-360-step');
-      const line = document.getElementById('processLine');
-      if (!steps.length || !line) return;
-
-      const total = steps.length;
-      const stepDelay = 420;
-      const pauseEnd = 1200;
-      let timer = null;
-      let started = false;
-
-      function resetAll() {
-        steps.forEach(step => {
-          step.querySelector('.sp-360-dot').classList.remove('active');
-          step.querySelector('.sp-360-step-text').classList.remove('active');
+      const steps = document.querySelectorAll('#processSteps .sp-proceso-step:not(.sp-proceso-step--last)');
+      steps.forEach((step, i) => {
+        ScrollTrigger.create({
+          trigger: step,
+          start: 'top 75%',
+          once: true,
+          onEnter: function() {
+            setTimeout(() => step.classList.add('filled'), i * 120);
+          }
         });
-        line.style.transition = 'none';
-        line.style.width = '0%';
-      }
-
-      function runSequence() {
-        resetAll();
-        steps.forEach((step, i) => {
-          timer = setTimeout(() => {
-            step.querySelector('.sp-360-dot').classList.add('active');
-            step.querySelector('.sp-360-step-text').classList.add('active');
-            const pct = (i / (total - 1)) * 100;
-            line.style.transition = 'width 0.38s ease';
-            line.style.width = pct + '%';
-            if (i === total - 1) {
-              setTimeout(runSequence, pauseEnd);
-            }
-          }, i * stepDelay);
-        });
-      }
-
-      ScrollTrigger.create({
-        trigger: '#processSteps',
-        start: 'top 80%',
-        once: true,
-        onEnter: function() {
-          if (!started) { started = true; runSequence(); }
-        }
       });
     })();
 
