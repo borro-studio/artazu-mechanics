@@ -1038,7 +1038,8 @@
     /* ── PARTNER — statement + ticker ── */
     .sp-sv { background: var(--tp-dark); overflow: hidden; }
     .sp-partner-isotipo,
-    .sp-partner-wordmark-bg { display: none; }
+    .sp-partner-wordmark-bg,
+    .sp-partner-mobile-list { display: none; }
     .sp-apps-mobile-thumb { display: none; }
     .sp-partner-statement { padding: 140px 40px 100px; text-align: center; }
     .sp-partner-title {
@@ -1119,18 +1120,14 @@
       color: rgba(0,0,0,0.04); pointer-events: none; user-select: none;
     }
     .sp-proceso-slide--last .sp-proceso-slide-bg-num { color: rgba(238,116,25,0.07); }
-    .sp-proceso-slide-step {
-      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      color: #ee7419; margin-bottom: 20px;
-    }
     .sp-proceso-slide-name {
-      font-size: clamp(40px, 5.5vw, 88px); font-weight: 700;
-      letter-spacing: -3px; line-height: 1.0; color: var(--tp-dark);
+      font-size: clamp(28px, 3.2vw, 52px); font-weight: 700;
+      letter-spacing: -0.5px; line-height: 1.15; color: var(--tp-dark);
     }
     .sp-proceso-slide--last .sp-proceso-slide-name { color: #ee7419; }
     .sp-proceso-slide-title-text {
-      font-size: clamp(56px, 8vw, 120px); font-weight: 700;
-      letter-spacing: -5px; line-height: 0.95; color: var(--tp-dark);
+      font-size: clamp(44px, 5.5vw, 84px); font-weight: 700;
+      letter-spacing: -2px; line-height: 1.0; color: var(--tp-dark);
     }
     .sp-proceso-slide-sub {
       font-size: clamp(15px, 1.2vw, 18px); color: rgba(26,26,26,0.5);
@@ -1251,13 +1248,32 @@
       .sp-proceso-slide-bg-num { font-size: 38vw; bottom: -20px; }
       .sp-proceso-scroll-hint { display: none; }
       /* Partner mobile */
-      .sp-partner-statement { padding: 40px 24px 60px; }
+      .sp-partner-statement { padding: 40px 24px 48px; }
       .sp-partner-title { font-size: clamp(32px, 9vw, 56px); letter-spacing: -2px; }
-      /* Partner isotipo + wordmark */
+      .sp-partner-ticker-wrap { display: none; }
+      /* Isotipo + wordmark */
       .sp-partner-isotipo { display: flex; justify-content: center; padding: 60px 0 0; }
       .sp-partner-isotipo svg { width: 40px; height: auto; }
       .sp-partner-wordmark-bg { display: block; width: 100%; overflow: hidden; margin-top: 40px; }
       .sp-partner-wordmark-bg img { width: 100%; display: block; filter: invert(1) brightness(2); opacity: 0.07; }
+      /* Lista vertical con scroll reveal */
+      .sp-partner-mobile-list {
+        display: flex; flex-direction: column; align-items: center;
+        padding: 0 32px 0; text-align: center;
+      }
+      .sp-partner-mobile-item {
+        font-size: clamp(15px, 4.2vw, 18px); font-weight: 400;
+        color: rgba(237,237,237,0.55); line-height: 1.5;
+        opacity: 0; transform: translateY(16px);
+        transition: opacity 0.55s ease, transform 0.55s ease;
+      }
+      .sp-partner-mobile-item.sp-revealed { opacity: 1; transform: translateY(0); }
+      .sp-partner-mobile-dot {
+        width: 5px; height: 5px; border-radius: 50%;
+        background: #ee7419; margin: 18px auto;
+        opacity: 0; transition: opacity 0.4s ease;
+      }
+      .sp-partner-mobile-dot.sp-revealed { opacity: 1; }
       /* Apps accordion mobile */
       .sp-apps-right { display: none; }
       .sp-apps-mobile-thumb {
@@ -1377,35 +1393,30 @@
         <!-- Slide 1 -->
         <div class="sp-proceso-slide">
           <div class="sp-proceso-slide-bg-num">01</div>
-          <div class="sp-proceso-slide-step">01 / 05</div>
           <h3 class="sp-proceso-slide-name">Diseño 3D<br>y simulación</h3>
         </div>
 
         <!-- Slide 2 -->
         <div class="sp-proceso-slide">
           <div class="sp-proceso-slide-bg-num">02</div>
-          <div class="sp-proceso-slide-step">02 / 05</div>
           <h3 class="sp-proceso-slide-name">Análisis de<br>interferencias</h3>
         </div>
 
         <!-- Slide 3 -->
         <div class="sp-proceso-slide">
           <div class="sp-proceso-slide-bg-num">03</div>
-          <div class="sp-proceso-slide-step">03 / 05</div>
           <h3 class="sp-proceso-slide-name">Fabricación<br>mecanizada</h3>
         </div>
 
         <!-- Slide 4 -->
         <div class="sp-proceso-slide">
           <div class="sp-proceso-slide-bg-num">04</div>
-          <div class="sp-proceso-slide-step">04 / 05</div>
           <h3 class="sp-proceso-slide-name">Montaje<br>y ajuste</h3>
         </div>
 
         <!-- Slide 5 -->
         <div class="sp-proceso-slide sp-proceso-slide--last">
           <div class="sp-proceso-slide-bg-num">05</div>
-          <div class="sp-proceso-slide-step">05 / 05</div>
           <h3 class="sp-proceso-slide-name">Validación<br>final</h3>
         </div>
 
@@ -1425,6 +1436,18 @@
       </div>
       <div class="sp-partner-statement tp_fade_bottom">
         <h2 class="sp-partner-title">Más que un proveedor,<br>somos tu partner<br>en control de calidad.</h2>
+      </div>
+      <!-- lista vertical scroll-reveal — solo mobile -->
+      <div class="sp-partner-mobile-list" id="partnerMobileList">
+        <span class="sp-partner-mobile-item">Soluciones a medida según la pieza del cliente.</span>
+        <span class="sp-partner-mobile-dot"></span>
+        <span class="sp-partner-mobile-item">Experiencia en múltiples sectores industriales.</span>
+        <span class="sp-partner-mobile-dot"></span>
+        <span class="sp-partner-mobile-item">Diseño y fabricación integrados en un solo equipo.</span>
+        <span class="sp-partner-mobile-dot"></span>
+        <span class="sp-partner-mobile-item">Fiabilidad contrastada en procesos de control.</span>
+        <span class="sp-partner-mobile-dot"></span>
+        <span class="sp-partner-mobile-item">Adaptación a prototipos y producción en serie.</span>
       </div>
       <!-- wordmark bg — solo mobile -->
       <div class="sp-partner-wordmark-bg" aria-hidden="true">
@@ -1573,6 +1596,20 @@
           item.classList.add('is-active');
         });
       });
+    })();
+
+    // ─── PARTNER MOBILE — scroll reveal lista vertical ───
+    (function() {
+      const list = document.getElementById('partnerMobileList');
+      if (!list || window.innerWidth > 767) return;
+      const els = list.querySelectorAll('.sp-partner-mobile-item, .sp-partner-mobile-dot');
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          els.forEach((el, i) => setTimeout(() => el.classList.add('sp-revealed'), i * 110));
+          obs.disconnect();
+        }
+      }, { threshold: 0.15 });
+      obs.observe(list);
     })();
 
     // ─── CURSOR NARANJA + HEADER EN SECCIONES OSCURAS ───
