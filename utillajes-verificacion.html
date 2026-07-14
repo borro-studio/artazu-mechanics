@@ -1239,13 +1239,30 @@
       .sp-apps-eyebrow { margin-bottom: 28px; }
       .sp-apps-item { padding: 18px 0 18px 14px; }
 
-      /* Proceso mobile — vertical fallback */
+      /* Proceso mobile — vertical scroll reveal */
       .sp-proceso-outer { height: auto !important; }
       .sp-proceso { height: auto; overflow: visible; padding: 0; position: relative; }
       .sp-proceso-progress { display: none; }
       .sp-proceso-track { flex-direction: column; height: auto; width: 100%; transform: none !important; }
-      .sp-proceso-slide { width: 100%; height: auto; min-height: 260px; padding: 52px 24px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
-      .sp-proceso-slide-bg-num { font-size: 38vw; bottom: -20px; }
+      /* Title slide */
+      .sp-proceso-slide:first-child { width: 100%; height: auto; min-height: 0; padding: 52px 24px 32px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
+      .sp-proceso-slide:first-child .sp-proceso-slide-title-text { font-size: clamp(34px, 9.5vw, 48px); }
+      .sp-proceso-slide:first-child .sp-proceso-slide-sub { font-size: 14px; max-width: 100%; margin-top: 14px; }
+      /* Step slides — compact con número */
+      .sp-proceso-slide { width: 100%; height: auto; min-height: 0; padding: 28px 24px 36px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+      /* Reset dots/lines del diseño anterior */
+      .sp-proceso-slide:not(:first-child)::before,
+      .sp-proceso-slide:not(:first-child)::after { content: none; }
+      /* Número grande visible — arranca naranja, transiciona a gris */
+      .sp-proceso-slide-bg-num { display: block; font-size: 44vw; bottom: -18px; right: -4px; }
+      .sp-proceso-slide:not(:first-child) .sp-proceso-slide-bg-num { color: #ee7419; }
+      .sp-proceso-slide:not(:first-child).sp-revealed .sp-proceso-slide-bg-num { color: rgba(0,0,0,0.04); transition: color 1.6s ease 0.3s; }
+      .sp-proceso-slide--last.sp-revealed .sp-proceso-slide-bg-num { color: rgba(238,116,25,0.07); }
+      /* Nombre del paso */
+      .sp-proceso-slide-name { font-size: clamp(22px, 6vw, 30px); letter-spacing: -0.3px; line-height: 1.2; }
+      /* Scroll reveal — cada paso aparece por separado */
+      .sp-proceso-slide:not(:first-child) { opacity: 0; transform: translateY(14px); transition: opacity 0.45s ease, transform 0.45s ease; }
+      .sp-proceso-slide:not(:first-child).sp-revealed { opacity: 1; transform: translateY(0); }
       .sp-proceso-scroll-hint { display: none; }
       /* Partner mobile */
       .sp-partner-statement { padding: 40px 24px 48px; }
@@ -1610,6 +1627,21 @@
         }
       }, { threshold: 0.15 });
       obs.observe(list);
+    })();
+
+    // ─── PROCESO MOBILE — scroll reveal por paso ───
+    (function() {
+      if (window.innerWidth > 767) return;
+      const steps = document.querySelectorAll('.sp-proceso-slide:not(:first-child)');
+      steps.forEach(step => {
+        const obs = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting) {
+            step.classList.add('sp-revealed');
+            obs.disconnect();
+          }
+        }, { threshold: 0.3 });
+        obs.observe(step);
+      });
     })();
 
     // ─── CURSOR NARANJA + HEADER EN SECCIONES OSCURAS ───
