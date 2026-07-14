@@ -1111,14 +1111,17 @@
     .sp-proceso-left {
       display: flex; flex-direction: column; justify-content: flex-end;
       padding: 0 72px 72px; border-right: 1px solid rgba(0,0,0,0.06);
-      position: relative; overflow: hidden;
+      overflow: hidden;
     }
     .sp-proceso-wordmark {
-      position: absolute; bottom: -8px; left: -10px;
-      width: 115%; pointer-events: none; user-select: none;
+      flex: 1; overflow: hidden;
+      display: flex; align-items: flex-end;
+      margin: 0 -72px;
+      pointer-events: none; user-select: none;
     }
     .sp-proceso-wordmark img {
-      width: 100%; display: block; opacity: 0.05;
+      width: 120%; margin-left: -4px;
+      display: block; opacity: 0.05;
       clip-path: inset(0 0 24% 0);
     }
     .sp-proceso-right { position: relative; overflow: hidden; }
