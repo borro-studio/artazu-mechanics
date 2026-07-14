@@ -1100,22 +1100,34 @@
     .sp-cap-label { font-size: 15px; color: rgba(26,26,26,0.5); line-height: 1.5; }
 
 
-    /* ── PROCESO — horizontal sticky scroll ── */
-    .sp-proceso-outer { background: var(--tp-bg); }
-    .sp-proceso { background: var(--tp-bg); overflow: hidden; height: 100vh; position: sticky; top: 0; }
-    .sp-proceso-progress { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(0,0,0,0.07); z-index: 10; }
+    /* ── PROCESO — split pinned: título izquierda, pasos abajo→arriba derecha ── */
+    .sp-proceso-outer { background: var(--tp-bg); position: relative; }
+    .sp-proceso {
+      background: var(--tp-bg); overflow: hidden; height: 100vh;
+      position: absolute; top: 0; left: 0; right: 0;
+      display: grid; grid-template-columns: 42% 58%;
+    }
+    .sp-proceso.sp-pinned { position: fixed; top: 0; left: 0; right: 0; z-index: 2; }
+    .sp-proceso.sp-at-bottom { position: absolute; top: auto; bottom: 0; left: 0; right: 0; }
+    .sp-proceso-progress {
+      position: absolute; top: 0; left: 42%; right: 0; height: 3px;
+      background: rgba(0,0,0,0.07); z-index: 10;
+    }
     .sp-proceso-progress-fill { height: 100%; width: 0%; background: #ee7419; }
-    .sp-proceso-track { display: flex; height: 100vh; width: max-content; will-change: transform; }
-    .sp-proceso-slide {
-      width: 100vw; height: 100vh; flex-shrink: 0;
-      position: relative; overflow: hidden;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 80px; box-sizing: border-box;
-      border-right: 1px solid rgba(0,0,0,0.06);
+    .sp-proceso-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 56px 72px; border-right: 1px solid rgba(0,0,0,0.06);
+    }
+    .sp-proceso-right { position: relative; overflow: hidden; }
+    .sp-proceso-step {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 56px 72px; box-sizing: border-box; overflow: hidden;
+      will-change: transform;
     }
     .sp-proceso-slide-bg-num {
-      position: absolute; right: -10px; bottom: -50px;
-      font-size: clamp(200px, 28vw, 420px); font-weight: 800;
+      position: absolute; right: -10px; bottom: 0;
+      font-size: clamp(160px, 22vw, 340px); font-weight: 800;
       letter-spacing: -15px; line-height: 0.85;
       color: rgba(0,0,0,0.04); pointer-events: none; user-select: none;
     }
@@ -1131,15 +1143,7 @@
     }
     .sp-proceso-slide-sub {
       font-size: clamp(15px, 1.2vw, 18px); color: rgba(26,26,26,0.5);
-      line-height: 1.7; max-width: 480px; margin-top: 28px;
-    }
-    .sp-proceso-scroll-hint {
-      display: flex; align-items: center; gap: 12px;
-      margin-top: 36px; font-size: 11px; letter-spacing: 2.5px;
-      text-transform: uppercase; color: rgba(26,26,26,0.3);
-    }
-    .sp-proceso-scroll-hint::before {
-      content: ''; display: block; width: 32px; height: 1px; background: rgba(26,26,26,0.2);
+      line-height: 1.7; max-width: 380px; margin-top: 28px;
     }
 
     /* ── CTA ── */
@@ -1240,30 +1244,25 @@
       .sp-apps-item { padding: 18px 0 18px 14px; }
 
       /* Proceso mobile — vertical scroll reveal */
-      .sp-proceso-outer { height: auto !important; }
-      .sp-proceso { height: auto; overflow: visible; padding: 0; position: relative; }
+      .sp-proceso-outer { height: auto !important; position: static; }
+      .sp-proceso { height: auto; overflow: visible; position: relative !important; display: flex; flex-direction: column; grid-template-columns: unset; }
       .sp-proceso-progress { display: none; }
-      .sp-proceso-track { flex-direction: column; height: auto; width: 100%; transform: none !important; }
-      /* Title slide */
-      .sp-proceso-slide:first-child { width: 100%; height: auto; min-height: 0; padding: 52px 24px 32px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
-      .sp-proceso-slide:first-child .sp-proceso-slide-title-text { font-size: clamp(34px, 9.5vw, 48px); }
-      .sp-proceso-slide:first-child .sp-proceso-slide-sub { font-size: 14px; max-width: 100%; margin-top: 14px; }
+      .sp-proceso-left { padding: 52px 24px 32px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
+      .sp-proceso-slide-title-text { font-size: clamp(34px, 9.5vw, 48px); }
+      .sp-proceso-slide-sub { font-size: 14px; max-width: 100%; margin-top: 14px; }
+      .sp-proceso-right { position: relative; overflow: visible; }
       /* Step slides — compact con número */
-      .sp-proceso-slide { width: 100%; height: auto; min-height: 0; padding: 28px 24px 36px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
-      /* Reset dots/lines del diseño anterior */
-      .sp-proceso-slide:not(:first-child)::before,
-      .sp-proceso-slide:not(:first-child)::after { content: none; }
-      /* Número grande visible — arranca naranja, transiciona a gris */
+      .sp-proceso-step { position: relative; inset: auto; height: auto; padding: 28px 24px 36px; border-bottom: 1px solid rgba(0,0,0,0.06); will-change: auto; overflow: hidden; }
+      /* Número — arranca naranja, transiciona a gris */
       .sp-proceso-slide-bg-num { display: block; font-size: 44vw; bottom: -18px; right: -4px; }
-      .sp-proceso-slide:not(:first-child) .sp-proceso-slide-bg-num { color: #ee7419; }
-      .sp-proceso-slide:not(:first-child).sp-revealed .sp-proceso-slide-bg-num { color: rgba(0,0,0,0.04); transition: color 1.6s ease 0.3s; }
-      .sp-proceso-slide--last.sp-revealed .sp-proceso-slide-bg-num { color: rgba(238,116,25,0.07); }
-      /* Nombre del paso */
+      .sp-proceso-step .sp-proceso-slide-bg-num { color: #ee7419; }
+      .sp-proceso-step.sp-revealed .sp-proceso-slide-bg-num { color: rgba(0,0,0,0.04); transition: color 1.6s ease 0.3s; }
+      .sp-proceso-step.sp-proceso-slide--last.sp-revealed .sp-proceso-slide-bg-num { color: rgba(238,116,25,0.07); }
+      /* Nombre */
       .sp-proceso-slide-name { font-size: clamp(22px, 6vw, 30px); letter-spacing: -0.3px; line-height: 1.2; }
-      /* Scroll reveal — cada paso aparece por separado */
-      .sp-proceso-slide:not(:first-child) { opacity: 0; transform: translateY(14px); transition: opacity 0.45s ease, transform 0.45s ease; }
-      .sp-proceso-slide:not(:first-child).sp-revealed { opacity: 1; transform: translateY(0); }
-      .sp-proceso-scroll-hint { display: none; }
+      /* Scroll reveal */
+      .sp-proceso-step { opacity: 0; transform: translateY(14px); transition: opacity 0.45s ease, transform 0.45s ease; }
+      .sp-proceso-step.sp-revealed { opacity: 1; transform: translateY(0); }
       /* Partner mobile */
       .sp-partner-statement { padding: 40px 24px 48px; }
       .sp-partner-title { font-size: clamp(32px, 9vw, 56px); letter-spacing: -2px; }
@@ -1394,50 +1393,41 @@
       </div>
     </section>
 
-    <!-- PROCESO COMPLETO — horizontal sticky scroll -->
+    <!-- PROCESO COMPLETO — split sticky: título izquierda fijo, pasos derecha abajo→arriba -->
     <div class="sp-proceso-outer" id="procesoOuter">
     <section class="sp-proceso">
       <div class="sp-proceso-progress" aria-hidden="true"><div class="sp-proceso-progress-fill" id="procesoFill"></div></div>
-      <div class="sp-proceso-track" id="procesoTrack">
 
-        <!-- Slide 0: Título -->
-        <div class="sp-proceso-slide">
-          <h2 class="sp-proceso-slide-title-text">Proceso<br><span style="color:#ee7419;">Completo</span></h2>
-          <p class="sp-proceso-slide-sub">Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente.</p>
-          <div class="sp-proceso-scroll-hint">Desliza para avanzar</div>
-        </div>
+      <!-- Columna izquierda: título fijo -->
+      <div class="sp-proceso-left">
+        <h2 class="sp-proceso-slide-title-text">Proceso<br><span style="color:#ee7419;">Completo</span></h2>
+        <p class="sp-proceso-slide-sub">Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente.</p>
+      </div>
 
-        <!-- Slide 1 -->
-        <div class="sp-proceso-slide">
+      <!-- Columna derecha: pasos animados de abajo a arriba -->
+      <div class="sp-proceso-right" id="procesoRight">
+        <div class="sp-proceso-step" data-step="0">
           <div class="sp-proceso-slide-bg-num">01</div>
           <h3 class="sp-proceso-slide-name">Diseño 3D<br>y simulación</h3>
         </div>
-
-        <!-- Slide 2 -->
-        <div class="sp-proceso-slide">
+        <div class="sp-proceso-step" data-step="1">
           <div class="sp-proceso-slide-bg-num">02</div>
           <h3 class="sp-proceso-slide-name">Análisis de<br>interferencias</h3>
         </div>
-
-        <!-- Slide 3 -->
-        <div class="sp-proceso-slide">
+        <div class="sp-proceso-step" data-step="2">
           <div class="sp-proceso-slide-bg-num">03</div>
           <h3 class="sp-proceso-slide-name">Fabricación<br>mecanizada</h3>
         </div>
-
-        <!-- Slide 4 -->
-        <div class="sp-proceso-slide">
+        <div class="sp-proceso-step" data-step="3">
           <div class="sp-proceso-slide-bg-num">04</div>
           <h3 class="sp-proceso-slide-name">Montaje<br>y ajuste</h3>
         </div>
-
-        <!-- Slide 5 -->
-        <div class="sp-proceso-slide sp-proceso-slide--last">
+        <div class="sp-proceso-step sp-proceso-slide--last" data-step="4">
           <div class="sp-proceso-slide-bg-num">05</div>
           <h3 class="sp-proceso-slide-name">Validación<br>final</h3>
         </div>
-
       </div>
+
     </section>
     </div><!-- /sp-proceso-outer -->
 
@@ -1521,56 +1511,71 @@
     function closeOffcanvas(){document.getElementById('offcanvasArea').classList.remove('open');document.body.style.overflow='';document.body.classList.remove('menu-open');}
     function toggleSubmenu(btn){btn.closest('.tp-offcanvas-menu-item').classList.toggle('open');}
 
-    // ─── IMAGEN PIEZA + FORMA NARANJA ───
-    gsap.to('#heroImgShape', {
-      clipPath: 'inset(0 0 0% 0)',
-      duration: 1.2,
-      ease: 'power3.inOut',
-      delay: 0.2
-    });
-    gsap.to('#heroDrawingImg', {
-      clipPath: 'inset(0 0% 0 0)',
-      duration: 1.2,
-      ease: 'power3.inOut',
-      delay: 0.4
-    });
+    // ─── GSAP ANIMATIONS (guard para entornos sin CDN) ───
+    if (typeof gsap !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
 
-    // ─── GSAP SCROLL ANIMATIONS ───
-    gsap.registerPlugin(ScrollTrigger);
+      gsap.to('#heroImgShape', { clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power3.inOut', delay: 0.2 });
+      gsap.to('#heroDrawingImg', { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'power3.inOut', delay: 0.4 });
 
-    // tp_fade_bottom
-    gsap.utils.toArray('.tp_fade_bottom').forEach(el => {
-      gsap.fromTo(el, { opacity: 0, y: 30 }, {
-        opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      gsap.utils.toArray('.tp_fade_bottom').forEach(el => {
+        gsap.fromTo(el, { opacity: 0, y: 30 }, {
+          opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+        });
       });
-    });
 
-    // Títulos — fade + slide simple, sin split (evita cortes)
-    document.querySelectorAll('.titleBurrowing').forEach(el => {
-      gsap.fromTo(el, { opacity: 0, y: 40 }, {
-        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 92%', once: true }
+      document.querySelectorAll('.titleBurrowing').forEach(el => {
+        gsap.fromTo(el, { opacity: 0, y: 40 }, {
+          opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 92%', once: true }
+        });
       });
-    });
-    setTimeout(() => ScrollTrigger.refresh(), 200);
+      setTimeout(() => ScrollTrigger.refresh(), 200);
+    }
 
-    // ─── PROCESO — horizontal sticky scroll (pure JS, no GSAP pin) ───
+    // ─── PROCESO — split pinned: pasos animados abajo → arriba con dwell ───
     (function() {
       const outer = document.getElementById('procesoOuter');
-      const track = document.getElementById('procesoTrack');
+      const right = document.getElementById('procesoRight');
+      const sp    = outer ? outer.querySelector('.sp-proceso') : null;
       const fill  = document.getElementById('procesoFill');
-      if (!outer || !track) return;
+      if (!outer || !right || !sp) return;
+
+      const steps = right.querySelectorAll('.sp-proceso-step');
+      const numSteps = steps.length; // 5
+      // Estructura de segmentos (2*N-1):
+      // seg pares = dwell; seg impares = transición cruzada entre pasos
+      // N=5 → 9 segmentos, altura total = 2*N vistas
+      const totalSeg = 2 * numSteps - 1;
 
       function isMobile() { return window.innerWidth <= 767; }
+      function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; } // easeInOut
+
+      function getStepTy(seg, i) {
+        if (i === 0) {
+          if (seg <= 1) return 0;                           // dwell
+          if (seg <= 2) return -ease(seg - 1) * 100;       // salida
+          return -100;
+        }
+        var enter = 2 * i - 1; // segmento de entrada
+        var exit  = 2 * i + 1; // segmento de salida
+        if (seg < enter)       return 100;                  // aún abajo
+        if (seg < enter + 1)   return 100 - ease(seg - enter) * 100; // entrando
+        if (i === numSteps - 1) return 0;                  // último: queda visible
+        if (seg < exit)        return 0;                   // dwell
+        if (seg < exit + 1)    return -ease(seg - exit) * 100; // saliendo
+        return -100;
+      }
 
       function setup() {
         if (isMobile()) {
           outer.style.height = '';
-          track.style.transform = '';
+          sp.classList.remove('sp-pinned', 'sp-at-bottom');
+          steps.forEach(function(s) { s.style.transform = ''; });
           return;
         }
-        outer.style.height = (window.innerHeight + track.scrollWidth - window.innerWidth) + 'px';
+        outer.style.height = (2 * numSteps) * window.innerHeight + 'px';
       }
 
       function onScroll() {
@@ -1578,13 +1583,28 @@
         const rect = outer.getBoundingClientRect();
         const scrollable = outer.clientHeight - window.innerHeight;
         if (scrollable <= 0) return;
+
+        // JS-managed pinning (avoids CSS sticky bug with overflow on html)
+        if (rect.top > 0) {
+          sp.classList.remove('sp-pinned', 'sp-at-bottom');
+        } else if (rect.bottom <= window.innerHeight) {
+          sp.classList.remove('sp-pinned');
+          sp.classList.add('sp-at-bottom');
+        } else {
+          sp.classList.add('sp-pinned');
+          sp.classList.remove('sp-at-bottom');
+        }
+
         const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
-        const maxX = -(track.scrollWidth - window.innerWidth);
-        track.style.transform = 'translateX(' + (progress * maxX) + 'px)';
+        const seg = progress * totalSeg;
         if (fill) fill.style.width = (progress * 100) + '%';
+        steps.forEach(function(step, i) {
+          step.style.transform = 'translateY(' + getStepTy(seg, i) + '%)';
+        });
       }
 
       setup();
+      onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', function() { setup(); onScroll(); }, { passive: true });
     })();
@@ -1632,14 +1652,14 @@
     // ─── PROCESO MOBILE — scroll reveal por paso ───
     (function() {
       if (window.innerWidth > 767) return;
-      const steps = document.querySelectorAll('.sp-proceso-slide:not(:first-child)');
-      steps.forEach(step => {
-        const obs = new IntersectionObserver(entries => {
+      const steps = document.querySelectorAll('.sp-proceso-step');
+      steps.forEach(function(step) {
+        const obs = new IntersectionObserver(function(entries) {
           if (entries[0].isIntersecting) {
             step.classList.add('sp-revealed');
             obs.disconnect();
           }
-        }, { threshold: 0.3 });
+        }, { threshold: 0.25 });
         obs.observe(step);
       });
     })();
