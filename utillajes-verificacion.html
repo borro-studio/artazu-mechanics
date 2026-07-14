@@ -1063,8 +1063,7 @@
       opacity: 0; transition: opacity 0.4s ease;
     }
     .sp-partner-mobile-dot.sp-revealed { opacity: 1; }
-    .sp-partner-wordmark-bg { display: block; width: 100%; overflow: hidden; }
-    .sp-partner-wordmark-bg img { width: 100%; display: block; filter: invert(1) brightness(2); opacity: 0.07; }
+    .sp-partner-wordmark-bg { display: none; }
 
     .sp-sector-tag {
       border: 1px solid rgba(255,255,255,0.2); padding: 12px 24px;
@@ -1112,6 +1111,18 @@
     .sp-proceso-left {
       display: flex; flex-direction: column; justify-content: flex-end;
       padding: 0 72px 72px; border-right: 1px solid rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .sp-proceso-wordmark {
+      flex: 1; overflow: hidden;
+      display: flex; align-items: flex-end;
+      margin: 0 -72px;
+      pointer-events: none; user-select: none;
+    }
+    .sp-proceso-wordmark img {
+      width: 120%; margin-left: -4px;
+      display: block; opacity: 0.05;
+      clip-path: inset(0 0 24% 0);
     }
     .sp-proceso-right { position: relative; overflow: hidden; }
     .sp-proceso-step {
@@ -1242,6 +1253,7 @@
       .sp-proceso-outer { height: auto !important; position: static; }
       .sp-proceso { height: auto; overflow: visible; position: relative !important; display: flex; flex-direction: column; grid-template-columns: unset; }
       .sp-proceso-progress { display: none; }
+      .sp-proceso-wordmark { display: none; }
       .sp-proceso-left { padding: 52px 24px 32px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
       .sp-proceso-slide-title-text { font-size: clamp(34px, 9.5vw, 48px); }
       .sp-proceso-slide-sub { font-size: 14px; max-width: 100%; margin-top: 14px; }
@@ -1395,6 +1407,9 @@
 
       <!-- Columna izquierda: título fijo -->
       <div class="sp-proceso-left">
+        <div class="sp-proceso-wordmark" aria-hidden="true">
+          <img src="img/logo/logo-artazu.svg" alt="">
+        </div>
         <h2 class="sp-proceso-slide-title-text">Proceso<br><span style="color:#ee7419;">Completo</span></h2>
         <p class="sp-proceso-slide-sub">Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente.</p>
       </div>
@@ -1635,7 +1650,7 @@
     // ─── PARTNER MOBILE — scroll reveal lista vertical ───
     (function() {
       const list = document.getElementById('partnerMobileList');
-      if (!list || window.innerWidth > 767) return;
+      if (!list) return;
       const els = list.querySelectorAll('.sp-partner-mobile-item, .sp-partner-mobile-dot');
       const obs = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting) {
