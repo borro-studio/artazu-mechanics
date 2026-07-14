@@ -1111,18 +1111,16 @@
     .sp-proceso-left {
       display: flex; flex-direction: column; justify-content: flex-end;
       padding: 0 72px 72px; border-right: 1px solid rgba(0,0,0,0.06);
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
     .sp-proceso-wordmark {
-      flex: 1; overflow: hidden;
-      display: flex; align-items: flex-end;
-      margin: 0 -72px;
-      pointer-events: none; user-select: none;
+      position: absolute; top: 0; left: -5%;
+      width: 200%; pointer-events: none; user-select: none;
     }
     .sp-proceso-wordmark img {
-      width: 120%; margin-left: -4px;
-      display: block; opacity: 0.05;
-      clip-path: inset(0 0 24% 0);
+      width: 100%; display: block; opacity: 0.06;
+      /* clip top 13% (espacio en blanco SVG) y bottom 16% (MECHANICS) */
+      clip-path: inset(13% 0 16% 0);
     }
     .sp-proceso-right { position: relative; overflow: hidden; }
     .sp-proceso-step {
