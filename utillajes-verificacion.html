@@ -1103,7 +1103,7 @@
     /* ── PROCESO — split pinned: título izquierda, pasos abajo→arriba derecha ── */
     .sp-proceso-outer { background: var(--tp-bg); position: relative; }
     .sp-proceso {
-      background: var(--tp-bg); overflow: hidden; height: 100vh;
+      background: var(--tp-bg); overflow: hidden; height: 58vh;
       position: absolute; top: 0; left: 0; right: 0;
       display: grid; grid-template-columns: 42% 58%;
     }
@@ -1115,14 +1115,14 @@
     }
     .sp-proceso-progress-fill { height: 100%; width: 0%; background: #ee7419; }
     .sp-proceso-left {
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 56px 72px; border-right: 1px solid rgba(0,0,0,0.06);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 72px 72px; border-right: 1px solid rgba(0,0,0,0.06);
     }
     .sp-proceso-right { position: relative; overflow: hidden; }
     .sp-proceso-step {
       position: absolute; inset: 0;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 56px 72px; box-sizing: border-box; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 72px 72px; box-sizing: border-box; overflow: hidden;
       will-change: transform;
     }
     .sp-proceso-slide-bg-num {
@@ -1575,19 +1575,21 @@
           steps.forEach(function(s) { s.style.transform = ''; });
           return;
         }
-        outer.style.height = (2 * numSteps) * window.innerHeight + 'px';
+        var spH = sp.clientHeight;
+        outer.style.height = (2 * numSteps) * spH + 'px';
       }
 
       function onScroll() {
         if (isMobile()) return;
         const rect = outer.getBoundingClientRect();
-        const scrollable = outer.clientHeight - window.innerHeight;
+        const spH = sp.clientHeight;
+        const scrollable = outer.clientHeight - spH;
         if (scrollable <= 0) return;
 
         // JS-managed pinning (avoids CSS sticky bug with overflow on html)
         if (rect.top > 0) {
           sp.classList.remove('sp-pinned', 'sp-at-bottom');
-        } else if (rect.bottom <= window.innerHeight) {
+        } else if (-rect.top >= scrollable) {
           sp.classList.remove('sp-pinned');
           sp.classList.add('sp-at-bottom');
         } else {
