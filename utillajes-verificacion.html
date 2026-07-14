@@ -1037,6 +1037,9 @@
 
     /* ── PARTNER — statement + ticker ── */
     .sp-sv { background: var(--tp-dark); overflow: hidden; }
+    .sp-partner-isotipo,
+    .sp-partner-wordmark-bg { display: none; }
+    .sp-apps-mobile-thumb { display: none; }
     .sp-partner-statement { padding: 140px 40px 100px; text-align: center; }
     .sp-partner-title {
       font-size: clamp(36px, 6vw, 96px); font-weight: 700;
@@ -1248,8 +1251,22 @@
       .sp-proceso-slide-bg-num { font-size: 38vw; bottom: -20px; }
       .sp-proceso-scroll-hint { display: none; }
       /* Partner mobile */
-      .sp-partner-statement { padding: 80px 24px 60px; }
+      .sp-partner-statement { padding: 40px 24px 60px; }
       .sp-partner-title { font-size: clamp(32px, 9vw, 56px); letter-spacing: -2px; }
+      /* Partner isotipo + wordmark */
+      .sp-partner-isotipo { display: flex; justify-content: center; padding: 60px 0 0; }
+      .sp-partner-isotipo svg { width: 40px; height: auto; }
+      .sp-partner-wordmark-bg { display: block; width: 100%; overflow: hidden; margin-top: 40px; }
+      .sp-partner-wordmark-bg img { width: 100%; display: block; filter: invert(1) brightness(2); opacity: 0.07; }
+      /* Apps accordion mobile */
+      .sp-apps-right { display: none; }
+      .sp-apps-mobile-thumb {
+        overflow: hidden; max-height: 0;
+        transition: max-height 0.42s cubic-bezier(0.4,0,0.2,1);
+        width: calc(100% + 48px); margin: 0 -24px;
+      }
+      .sp-apps-mobile-thumb img { width: 100%; height: 220px; object-fit: cover; display: block; }
+      .sp-apps-item.is-active .sp-apps-mobile-thumb { max-height: 240px; }
     }
   </style>
 
@@ -1306,26 +1323,31 @@
               <span class="sp-apps-num">01</span>
               <span class="sp-apps-name">Utillajes de verificación para automoción</span>
               <span class="sp-apps-arrow">→</span>
+              <div class="sp-apps-mobile-thumb"><img src="img/service/Recurso 4@2x.png" alt=""></div>
             </li>
             <li class="sp-apps-item" data-index="1">
               <span class="sp-apps-num">02</span>
               <span class="sp-apps-name">Control de piezas plásticas y composites</span>
               <span class="sp-apps-arrow">→</span>
+              <div class="sp-apps-mobile-thumb"><img src="img/service/s2.webp" alt=""></div>
             </li>
             <li class="sp-apps-item" data-index="2">
               <span class="sp-apps-num">03</span>
               <span class="sp-apps-name">Sistemas de recanteo y posicionamiento</span>
               <span class="sp-apps-arrow">→</span>
+              <div class="sp-apps-mobile-thumb"><img src="img/service/s3.webp" alt=""></div>
             </li>
             <li class="sp-apps-item" data-index="3">
               <span class="sp-apps-num">04</span>
               <span class="sp-apps-name">Utillajes para fibra de carbono</span>
               <span class="sp-apps-arrow">→</span>
+              <div class="sp-apps-mobile-thumb"><img src="img/service/s4.webp" alt=""></div>
             </li>
             <li class="sp-apps-item" data-index="4">
               <span class="sp-apps-num">05</span>
               <span class="sp-apps-name">Probetas y útiles para ensayos</span>
               <span class="sp-apps-arrow">→</span>
+              <div class="sp-apps-mobile-thumb"><img src="img/service/service-thumb-1.jpg" alt=""></div>
             </li>
           </ul>
         </div>
@@ -1393,8 +1415,20 @@
 
     <!-- MÁS QUE UN PROVEEDOR -->
     <section class="sp-sv">
+      <!-- isotipo naranja — solo mobile -->
+      <div class="sp-partner-isotipo" aria-hidden="true">
+        <svg viewBox="0 0 8810.4 7443.53" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#ee7419" d="M8805.89,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11l-2454.42-5060.09c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+          <path fill="#ee7419" d="M5102.34,4624.72l-1111.23,2779.13c-20.35,50.9-91.45,53.43-115.38,4.11L1421.32,2347.87c-7.75-15.98-8.41-34.48-1.82-50.97l813.47-2034.45c134.61-336.66,604.91-353.42,763.15-27.2l2104.41,4338.49c7.75,15.98,8.41,34.48,1.82,50.97Z"/>
+          <circle fill="#ee7419" cx="1101.91" cy="6341.62" r="1101.91"/>
+        </svg>
+      </div>
       <div class="sp-partner-statement tp_fade_bottom">
         <h2 class="sp-partner-title">Más que un proveedor,<br>somos tu partner<br>en control de calidad.</h2>
+      </div>
+      <!-- wordmark bg — solo mobile -->
+      <div class="sp-partner-wordmark-bg" aria-hidden="true">
+        <img src="img/logo/logo-artazu.svg" alt="">
       </div>
       <div class="sp-partner-ticker-wrap">
         <div class="sp-partner-ticker-track">
@@ -1515,18 +1549,28 @@
       window.addEventListener('resize', function() { setup(); onScroll(); }, { passive: true });
     })();
 
-    // ─── APLICACIONES SPLIT — hover interaction ───
+    // ─── APLICACIONES SPLIT — hover (desktop) / click acordeón (mobile) ───
     (function() {
       const items = document.querySelectorAll('.sp-apps-item');
       const imgs  = document.querySelectorAll('.sp-apps-img');
+      const isMobile = () => window.innerWidth <= 767;
+
       items.forEach(item => {
+        // Desktop: hover crossfade
         item.addEventListener('mouseenter', () => {
+          if (isMobile()) return;
           const idx = item.dataset.index;
           items.forEach(i => i.classList.remove('is-active'));
           imgs.forEach(i => i.classList.remove('is-active'));
           item.classList.add('is-active');
           const img = document.querySelector('.sp-apps-img[data-index="' + idx + '"]');
           if (img) img.classList.add('is-active');
+        });
+        // Mobile: click accordion
+        item.addEventListener('click', () => {
+          if (!isMobile()) return;
+          items.forEach(i => i.classList.remove('is-active'));
+          item.classList.add('is-active');
         });
       });
     })();
