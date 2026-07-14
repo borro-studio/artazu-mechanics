@@ -1111,15 +1111,20 @@
     .sp-proceso-left {
       display: flex; flex-direction: column; justify-content: flex-end;
       padding: 0 72px 72px; border-right: 1px solid rgba(0,0,0,0.06);
-      position: relative; overflow: hidden;
     }
-    .sp-proceso-wordmark {
-      position: absolute; top: 0; left: -5%;
-      width: 200%; pointer-events: none; user-select: none;
+    .sp-proceso-outer-wm {
+      position: absolute; left: 0; top: 58vh;
+      width: 42%; overflow: hidden;
+      pointer-events: none; user-select: none;
     }
-    .sp-proceso-wordmark img {
-      width: 100%; display: block; opacity: 0.10;
-      /* clip top 13% (espacio en blanco SVG) y bottom 16% (MECHANICS) */
+    .sp-proceso-outer-wm.sp-pinned {
+      position: fixed; top: 58vh; left: 0;
+    }
+    .sp-proceso-outer-wm.sp-at-bottom {
+      position: absolute; top: auto; bottom: 0; left: 0;
+    }
+    .sp-proceso-outer-wm img {
+      width: 200%; margin-left: -5%; display: block; opacity: 0.10;
       clip-path: inset(13% 0 16% 0);
     }
     .sp-proceso-right { position: relative; overflow: hidden; }
@@ -1251,7 +1256,7 @@
       .sp-proceso-outer { height: auto !important; position: static; }
       .sp-proceso { height: auto; overflow: visible; position: relative !important; display: flex; flex-direction: column; grid-template-columns: unset; }
       .sp-proceso-progress { display: none; }
-      .sp-proceso-wordmark { display: none; }
+      .sp-proceso-outer-wm { display: none; }
       .sp-proceso-left { padding: 52px 24px 32px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
       .sp-proceso-slide-title-text { font-size: clamp(34px, 9.5vw, 48px); }
       .sp-proceso-slide-sub { font-size: 14px; max-width: 100%; margin-top: 14px; }
@@ -1405,9 +1410,6 @@
 
       <!-- Columna izquierda: título fijo -->
       <div class="sp-proceso-left">
-        <div class="sp-proceso-wordmark" aria-hidden="true">
-          <img src="img/logo/logo-artazu.svg" alt="">
-        </div>
         <h2 class="sp-proceso-slide-title-text">Proceso<br><span style="color:#ee7419;">Completo</span></h2>
         <p class="sp-proceso-slide-sub">Desarrollamos soluciones a medida para la verificación de piezas seriadas y prototipos, adaptadas a las especificaciones técnicas de cada cliente.</p>
       </div>
@@ -1437,6 +1439,9 @@
       </div>
 
     </section>
+    <div class="sp-proceso-outer-wm" aria-hidden="true">
+      <img src="img/logo/logo-artazu.svg" alt="">
+    </div>
     </div><!-- /sp-proceso-outer -->
 
     <!-- MÁS QUE UN PROVEEDOR -->
@@ -1547,6 +1552,7 @@
       const outer = document.getElementById('procesoOuter');
       const right = document.getElementById('procesoRight');
       const sp    = outer ? outer.querySelector('.sp-proceso') : null;
+      const wm    = outer ? outer.querySelector('.sp-proceso-outer-wm') : null;
       const fill  = document.getElementById('procesoFill');
       if (!outer || !right || !sp) return;
 
@@ -1580,6 +1586,7 @@
         if (isMobile()) {
           outer.style.height = '';
           sp.classList.remove('sp-pinned', 'sp-at-bottom');
+          if (wm) wm.classList.remove('sp-pinned', 'sp-at-bottom');
           steps.forEach(function(s) { s.style.transform = ''; });
           return;
         }
@@ -1597,12 +1604,15 @@
         // JS-managed pinning (avoids CSS sticky bug with overflow on html)
         if (rect.top > 0) {
           sp.classList.remove('sp-pinned', 'sp-at-bottom');
+          if (wm) wm.classList.remove('sp-pinned', 'sp-at-bottom');
         } else if (-rect.top >= scrollable) {
           sp.classList.remove('sp-pinned');
           sp.classList.add('sp-at-bottom');
+          if (wm) { wm.classList.remove('sp-pinned'); wm.classList.add('sp-at-bottom'); }
         } else {
           sp.classList.add('sp-pinned');
           sp.classList.remove('sp-at-bottom');
+          if (wm) { wm.classList.add('sp-pinned'); wm.classList.remove('sp-at-bottom'); }
         }
 
         const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
