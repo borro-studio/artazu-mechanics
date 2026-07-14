@@ -1096,8 +1096,9 @@
     .sp-cap-label { font-size: 15px; color: rgba(26,26,26,0.5); line-height: 1.5; }
 
 
-    /* ── PROCESO — horizontal pin scroll ── */
-    .sp-proceso { background: var(--tp-bg); overflow: hidden; height: 100vh; position: relative; }
+    /* ── PROCESO — horizontal sticky scroll ── */
+    .sp-proceso-outer { background: var(--tp-bg); }
+    .sp-proceso { background: var(--tp-bg); overflow: hidden; height: 100vh; position: sticky; top: 0; }
     .sp-proceso-progress { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(0,0,0,0.07); z-index: 10; }
     .sp-proceso-progress-fill { height: 100%; width: 0%; background: #ee7419; }
     .sp-proceso-track { display: flex; height: 100vh; width: max-content; will-change: transform; }
@@ -1163,6 +1164,8 @@
       .sp-cap-header { flex-direction: column; align-items: flex-start; gap: 24px; }
       .sp-cap-desc { text-align: left; }
       .sp-cta { flex-direction: column; align-items: flex-start; }
+      /* tablet: keep horizontal scroll but reduce slide padding */
+      .sp-proceso-slide { padding: 60px 48px; }
     }
     @media (max-width: 767px) {
       .sp-br-mobile { display: block; }
@@ -1237,9 +1240,10 @@
       .sp-apps-item { padding: 18px 0 18px 14px; }
 
       /* Proceso mobile — vertical fallback */
-      .sp-proceso { height: auto; overflow: visible; padding: 0; }
+      .sp-proceso-outer { height: auto !important; }
+      .sp-proceso { height: auto; overflow: visible; padding: 0; position: relative; }
       .sp-proceso-progress { display: none; }
-      .sp-proceso-track { flex-direction: column; height: auto; width: 100%; }
+      .sp-proceso-track { flex-direction: column; height: auto; width: 100%; transform: none !important; }
       .sp-proceso-slide { width: 100%; height: auto; min-height: 260px; padding: 52px 24px; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
       .sp-proceso-slide-bg-num { font-size: 38vw; bottom: -20px; }
       .sp-proceso-scroll-hint { display: none; }
@@ -1335,7 +1339,8 @@
       </div>
     </section>
 
-    <!-- PROCESO COMPLETO — horizontal pin scroll -->
+    <!-- PROCESO COMPLETO — horizontal sticky scroll -->
+    <div class="sp-proceso-outer" id="procesoOuter">
     <section class="sp-proceso">
       <div class="sp-proceso-progress" aria-hidden="true"><div class="sp-proceso-progress-fill" id="procesoFill"></div></div>
       <div class="sp-proceso-track" id="procesoTrack">
@@ -1384,6 +1389,7 @@
 
       </div>
     </section>
+    </div><!-- /sp-proceso-outer -->
 
     <!-- MÁS QUE UN PROVEEDOR -->
     <section class="sp-sv">
@@ -1475,27 +1481,38 @@
     });
     setTimeout(() => ScrollTrigger.refresh(), 200);
 
-    // ─── PROCESO — horizontal pin scroll ───
+    // ─── PROCESO — horizontal sticky scroll (pure JS, no GSAP pin) ───
     (function() {
+      const outer = document.getElementById('procesoOuter');
       const track = document.getElementById('procesoTrack');
       const fill  = document.getElementById('procesoFill');
-      if (!track || window.innerWidth <= 767) return;
+      if (!outer || !track) return;
 
-      gsap.to(track, {
-        x: () => -(track.scrollWidth - window.innerWidth),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.sp-proceso',
-          pin: true,
-          scrub: 0.8,
-          start: 'top top',
-          end: () => '+=' + (track.scrollWidth - window.innerWidth),
-          invalidateOnRefresh: true,
-          onUpdate: self => {
-            if (fill) fill.style.width = (self.progress * 100) + '%';
-          }
+      function isMobile() { return window.innerWidth <= 767; }
+
+      function setup() {
+        if (isMobile()) {
+          outer.style.height = '';
+          track.style.transform = '';
+          return;
         }
-      });
+        outer.style.height = (window.innerHeight + track.scrollWidth - window.innerWidth) + 'px';
+      }
+
+      function onScroll() {
+        if (isMobile()) return;
+        const rect = outer.getBoundingClientRect();
+        const scrollable = outer.clientHeight - window.innerHeight;
+        if (scrollable <= 0) return;
+        const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+        const maxX = -(track.scrollWidth - window.innerWidth);
+        track.style.transform = 'translateX(' + (progress * maxX) + 'px)';
+        if (fill) fill.style.width = (progress * 100) + '%';
+      }
+
+      setup();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', function() { setup(); onScroll(); }, { passive: true });
     })();
 
     // ─── APLICACIONES SPLIT — hover interaction ───
