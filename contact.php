@@ -25,7 +25,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-$destinatario = 'info@borrostudio.com';
+$destinatario = 'comercial@artazumechanics.com';
 $asunto       = 'Nuevo mensaje desde la web — Artazu Mechanics';
 
 $cuerpo  = "Has recibido un nuevo mensaje desde el formulario de contacto de artazumechanics.com\n\n";
