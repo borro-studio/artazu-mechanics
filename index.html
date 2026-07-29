@@ -1410,24 +1410,57 @@
 
       <!-- Columna derecha: formulario -->
       <div class="tp-contact-right">
-        <form class="tp-contact-form" onsubmit="return false;">
+        <form class="tp-contact-form" id="contactForm">
           <div class="tp-contact-field">
-            <input type="text" placeholder="Nombre" required>
+            <input type="text" name="nombre" placeholder="Nombre" required>
           </div>
           <div class="tp-contact-field">
-            <input type="email" placeholder="Email" required>
+            <input type="email" name="email" placeholder="Email" required>
           </div>
           <div class="tp-contact-field">
-            <input type="text" placeholder="Empresa (opcional)">
+            <input type="text" name="empresa" placeholder="Empresa (opcional)">
           </div>
           <div class="tp-contact-field">
-            <textarea rows="5" placeholder="Cuéntanos tu proyecto..." required></textarea>
+            <textarea name="mensaje" rows="5" placeholder="Cuéntanos tu proyecto..." required></textarea>
           </div>
-          <button type="submit" class="tp-contact-btn">
-            <span>Enviar mensaje</span>
+          <button type="submit" class="tp-contact-btn" id="contactBtn">
+            <span id="contactBtnText">Enviar mensaje</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
+          <p id="contactMsg" style="margin-top:12px;font-size:14px;display:none;"></p>
         </form>
+        <script>
+          document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('contactBtn');
+            const msg = document.getElementById('contactMsg');
+            const txt = document.getElementById('contactBtnText');
+            btn.disabled = true;
+            txt.textContent = 'Enviando...';
+            msg.style.display = 'none';
+            try {
+              const res = await fetch('contact.php', {
+                method: 'POST',
+                body: new FormData(this)
+              });
+              const data = await res.json();
+              if (data.ok) {
+                msg.style.color = '#4caf50';
+                msg.textContent = '¡Mensaje enviado! Nos pondremos en contacto contigo pronto.';
+                this.reset();
+              } else {
+                msg.style.color = '#e53935';
+                msg.textContent = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
+              }
+            } catch {
+              msg.style.color = '#e53935';
+              msg.textContent = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
+            }
+            msg.style.display = 'block';
+            btn.disabled = false;
+            txt.textContent = 'Enviar mensaje';
+          });
+        </script>
       </div>
 
     </div>
