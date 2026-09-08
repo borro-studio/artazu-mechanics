@@ -34,8 +34,10 @@ $cuerpo .= "Email:   $email\n";
 if ($empresa) $cuerpo .= "Empresa: $empresa\n";
 $cuerpo .= "\nMensaje:\n$mensaje\n";
 
-$cabeceras  = "From: no-reply@artazumechanics.com\r\n";
-$cabeceras .= "Reply-To: $email\r\n";
+$cabeceras  = "From: Artazu Mechanics <artazu@artazumechanics.com>\r\n";
+$cabeceras .= "Reply-To: $nombre <$email>\r\n";
+$cabeceras .= "MIME-Version: 1.0\r\n";
+$cabeceras .= "Content-Type: text/plain; charset=UTF-8\r\n";
 $cabeceras .= "X-Mailer: PHP/" . phpversion();
 
 if (mail($destinatario, $asunto, $cuerpo, $cabeceras)) {
